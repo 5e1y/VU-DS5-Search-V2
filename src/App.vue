@@ -11,6 +11,12 @@ import passwordCheck from './components/passwordCheck.vue'
 import inputSearchBar from './components/inputSearchBar.vue'
 import iconBadge from './components/iconBadge.vue'
 import buttonHeader from './components/buttonHeader.vue'
+import labelInteractiveChip from './components/labelInteractiveChip.vue'
+import textLink from './components/textLink.vue'
+import scrollArea from './components/scrollArea.vue'
+import labelMain from './components/labelMain.vue'
+import captionMain from './components/captionMain.vue'
+import buttonSpecialMenu from './components/buttonSpecialMenu.vue'
 
 const eyeValue = ref(false)
 const inputDefault = ref('')
@@ -52,6 +58,12 @@ const passwordInputState = computed(() =>
 // inputSearchBar
 const searchValue = ref('')
 const lastSearch = ref('')
+
+// labelInteractiveChip
+const chips = ref(['Canapé 3 places', 'Couleur beige', 'Prix < 500€'])
+function removeChip(i: number) {
+  chips.value.splice(i, 1)
+}
 </script>
 
 <template>
@@ -389,6 +401,110 @@ const lastSearch = ref('')
         <buttonHeader label="Panier" icon="ShoppingBag" badge="number" :count="3" />
         <buttonHeader label="Désactivé" icon="ShoppingBag" badge="number" :count="1" :disabled="true" />
         <buttonHeader label="Lien" icon="HelpCircle" href="#" />
+      </div>
+    </section>
+
+
+    <!-- ─────────────────────────────────────────────────────── -->
+
+    <section>
+      <h2>labelInteractiveChip — filtres actifs</h2>
+      <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center;">
+        <labelInteractiveChip
+          v-for="(chip, i) in chips"
+          :key="chip"
+          :text="chip"
+          @remove="removeChip(i)"
+        />
+        <span v-if="chips.length === 0" style="font-size: 13px; color: #666;">Tous les chips ont été retirés — rechargez la page pour réinitialiser.</span>
+      </div>
+    </section>
+
+    <section>
+      <h2>textLink — formes et états</h2>
+      <div style="display: flex; flex-direction: column; gap: 1rem;">
+        <p style="font-size: 14px; font-family: Poppins, sans-serif;">
+          Texte avec un
+          <textLink text="lien externe" href="https://vuejs.org" />
+          intégré dans un paragraphe.
+        </p>
+        <p style="font-size: 14px; font-family: Poppins, sans-serif;">
+          Texte avec un
+          <textLink text="lien avec icône" href="https://vuejs.org" :show-icon="true" />
+          et chevron.
+        </p>
+        <div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: center;">
+          <textLink text="Lien externe (href)" href="https://vuejs.org" />
+          <textLink text="Action (button)" @click="() => {}" />
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>scrollArea — hauteur dynamique</h2>
+      <div style="display: flex; gap: 2rem; flex-wrap: wrap; align-items: flex-start;">
+        <scrollArea height="200px" style="width: 280px; background: var(--surface-neutral); border-radius: 8px; padding: 8px;">
+          <div v-for="i in 20" :key="i" style="padding: 8px; font-size: 14px; font-family: Poppins, sans-serif; border-bottom: 1px solid rgba(0,0,0,0.05);">
+            Ligne {{ i }} — contenu scrollable
+          </div>
+        </scrollArea>
+        <scrollArea height="200px" style="width: 280px; background: var(--surface-neutral); border-radius: 8px; padding: 8px;">
+          <div style="padding: 8px; font-size: 14px; font-family: Poppins, sans-serif;">
+            Contenu court — pas de scrollbar visible
+          </div>
+        </scrollArea>
+      </div>
+    </section>
+
+
+    <!-- ─────────────────────────────────────────────────────── -->
+
+    <section>
+      <h2>labelMain</h2>
+      <div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center;">
+        <labelMain text="Info" type="info" />
+        <labelMain text="Positif" type="positive" />
+        <labelMain text="Attention" type="attention" />
+        <labelMain text="Négatif" type="negative" />
+        <labelMain text="Neutre" type="neutral" />
+        <labelMain text="Elevated" type="elevated" />
+      </div>
+      <div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 8px;">
+        <labelMain text="Info" type="info" :fill="false" />
+        <labelMain text="Positif" type="positive" :fill="false" />
+        <labelMain text="Attention" type="attention" :fill="false" />
+        <labelMain text="Négatif" type="negative" :fill="false" />
+        <labelMain text="Neutre" type="neutral" :fill="false" />
+      </div>
+      <div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 8px;">
+        <labelMain text="Large" type="info" size="large" icon-left="CircleDashed" icon-right="CircleDashed" />
+        <labelMain text="Icône gauche" type="positive" size="large" icon-left="CircleDashed" />
+        <labelMain text="Icône droite" type="negative" icon-right="CircleDashed" />
+      </div>
+    </section>
+
+    <section>
+      <h2>captionMain</h2>
+      <div style="display: flex; flex-direction: column; gap: 8px; max-width: 480px;">
+        <captionMain type="neutral" icon="CircleDashed" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor." />
+        <captionMain type="info" icon="CircleDashed" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor." />
+        <captionMain type="positive" icon="CircleDashed" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor." />
+        <captionMain type="attention" icon="CircleDashed" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor." />
+        <captionMain type="negative" icon="CircleDashed" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor." />
+        <captionMain type="info" :show-icon="false" text="Sans icône — Lorem ipsum dolor sit amet." />
+        <captionMain type="neutral" icon="Info">
+          <p class="medium-200">Contenu riche via <strong>slot</strong>.</p>
+          <p class="medium-200">Deuxième ligne du slot.</p>
+        </captionMain>
+      </div>
+    </section>
+
+    <section>
+      <h2>buttonSpecialMenu</h2>
+      <div style="display: flex; gap: 16px; align-items: flex-start;">
+        <buttonSpecialMenu device="desktop" />
+        <buttonSpecialMenu device="mobile" />
+        <buttonSpecialMenu device="desktop" :disabled="true" />
       </div>
     </section>
 
