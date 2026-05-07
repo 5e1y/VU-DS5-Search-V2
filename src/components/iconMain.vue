@@ -31,7 +31,17 @@ const SIZE_MAP: Record<IconSize, number> = {
   'extra-extra-large': 48,
 }
 
+const STROKE_MAP: Record<IconSize, number> = {
+  'extra-small': 1,
+  small: 1.3,
+  medium: 1.67,
+  large: 2,
+  'extra-large': 2.67,
+  'extra-extra-large': 3,
+}
+
 const sizeInPx = computed(() => SIZE_MAP[props.size])
+const strokeWidth = computed(() => STROKE_MAP[props.size])
 
 const iconComponent = computed(
   () => (LucideIcons as Record<string, unknown>)[props.icon] as Component | undefined,
@@ -40,7 +50,7 @@ const iconComponent = computed(
 
 <template>
   <div :class="['icon-main', focus && 'icon-main--focus']">
-    <component :is="iconComponent" :size="sizeInPx" />
+    <component :is="iconComponent" :size="sizeInPx" :stroke-width="strokeWidth" />
   </div>
 </template>
 

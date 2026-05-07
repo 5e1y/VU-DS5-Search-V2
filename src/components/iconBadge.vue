@@ -35,7 +35,7 @@ const displayCount = computed(() => (props.count > 99 ? '99+' : String(props.cou
       v-else-if="badge === 'check'"
       class="icon-badge__pastille icon-badge__pastille--check"
     >
-      <Check :size="12" />
+      <Check :size="12" :stroke-width="3" />
     </div>
 
     <div v-else-if="badge === 'dot'" class="icon-badge__pastille icon-badge__pastille--dot" />

@@ -22,7 +22,7 @@ defineEmits<{ click: [] }>()
     :disabled="disabled"
     @click="$emit('click')"
   >
-    <iconMain icon="Menu" :size="device === 'mobile' ? 'medium' : 'small'" />
+    <iconMain icon="Menu" :size="device === 'mobile' ? 'large' : 'medium'" />
     <span v-if="device === 'desktop'" class="btn-menu__label medium-200">
       Tous nos produits
     </span>
@@ -80,10 +80,10 @@ defineEmits<{ click: [] }>()
 /* ── Mobile variant ──────────────────────────────────────── */
 .btn-menu--mobile {
   flex-direction: column;
-  padding-top: var(--spacing-extra-extra-small);
-  padding-bottom: 20px;
-  padding-inline: var(--spacing-small);
-  gap: var(--spacing-extra-extra-small);
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  gap: 0;
 }
 
 .btn-menu__label-mobile {
