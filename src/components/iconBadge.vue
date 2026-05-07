@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { Check } from 'lucide-vue-next'
 import iconMain from './iconMain.vue'
 
 type BadgeVariant = 'number' | 'check' | 'dot' | 'none'
@@ -35,7 +34,7 @@ const displayCount = computed(() => (props.count > 99 ? '99+' : String(props.cou
       v-else-if="badge === 'check'"
       class="icon-badge__pastille icon-badge__pastille--check"
     >
-      <Check :size="12" :stroke-width="3" />
+      <iconMain icon="Check" size="extra-small" :stroke-width="2" />
     </div>
 
     <div v-else-if="badge === 'dot'" class="icon-badge__pastille icon-badge__pastille--dot" />

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import iconBadge from './iconBadge.vue'
 
 type BadgeVariant = 'number' | 'check' | 'dot' | 'none'
@@ -10,7 +9,6 @@ const props = withDefaults(
     icon?: string
     badge?: BadgeVariant
     count?: number
-    href?: string
     disabled?: boolean
   }>(),
   {
@@ -19,21 +17,17 @@ const props = withDefaults(
     disabled: false,
   },
 )
-
-const tag = computed(() => (props.href ? 'a' : 'button'))
 </script>
 
 <template>
-  <component
-    :is="tag"
-    :href="href"
-    :disabled="tag === 'button' ? disabled : undefined"
+  <button
+    :disabled="disabled"
     :aria-disabled="disabled"
     :class="['btn-header', disabled && 'btn-header--disabled']"
   >
     <span v-if="label" class="btn-header__label medium-200">{{ label }}</span>
     <iconBadge v-if="icon" :icon="icon" :badge="badge" :count="count" />
-  </component>
+  </button>
 </template>
 
 <style scoped>
@@ -41,6 +35,7 @@ const tag = computed(() => (props.href ? 'a' : 'button'))
   display: inline-flex;
   align-items: center;
   overflow: hidden;
+  flex-shrink: 0;
   padding: var(--spacing-extra-small);
   border-radius: var(--radius-round);
   background: transparent;

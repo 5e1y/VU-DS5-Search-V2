@@ -17,6 +17,20 @@ import scrollArea from './components/scrollArea.vue'
 import labelMain from './components/labelMain.vue'
 import captionMain from './components/captionMain.vue'
 import buttonSpecialMenu from './components/buttonSpecialMenu.vue'
+import vuLogo from './components/vuLogo.vue'
+import promoHeader from './components/promoHeader.vue'
+import toggleLike from './components/toggleLike.vue'
+import toggleMain from './components/toggleMain.vue'
+import toggleChoice from './components/toggleChoice.vue'
+import websiteHeader from './components/websiteHeader.vue'
+
+// websiteHeader
+const headerCartCount = ref(2)
+const headerAccountLoggedIn = ref(true)
+const headerAccountName = ref('Florian')
+const headerPromo = ref(true)
+const headerShowLang = ref(false)
+const headerExtraLinks = ref([{ label: 'Collection Rouge Passion', href: '#' }])
 
 const eyeValue = ref(false)
 const inputDefault = ref('')
@@ -59,6 +73,22 @@ const passwordInputState = computed(() =>
 const searchValue = ref('')
 const lastSearch = ref('')
 
+// toggleLike
+const likeWhite = ref(false)
+const likeBlack = ref(false)
+const likeWishlist = ref(false)
+
+// toggleMain
+const mainCheck = ref(false)
+const mainRadio = ref(false)
+const mainSwitch = ref(false)
+
+// toggleChoice
+const choiceCheck = ref(false)
+const choiceRadio = ref(false)
+const choiceStrokeCheck = ref(false)
+const choiceStrokeRadio = ref(false)
+
 // labelInteractiveChip
 const chips = ref(['Canapé 3 places', 'Couleur beige', 'Prix < 500€'])
 function removeChip(i: number) {
@@ -67,7 +97,39 @@ function removeChip(i: number) {
 </script>
 
 <template>
-  <main style="padding: 2rem; display: flex; flex-direction: column; gap: 2rem; font-family: Poppins, sans-serif;">
+  <websiteHeader
+    :promo="headerPromo"
+    :cart-count="headerCartCount"
+    :account-logged-in="headerAccountLoggedIn"
+    :account-name="headerAccountName"
+    :show-language-selection="headerShowLang"
+    :extra-nav-links="headerExtraLinks"
+    @menu-click="() => {}"
+  />
+
+  <main style="padding: 2rem; padding-top: 10rem; display: flex; flex-direction: column; gap: 2rem; font-family: Poppins, sans-serif;">
+
+    <section>
+      <h2>websiteHeader — contrôles</h2>
+      <div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; font-size: 14px; font-family: Poppins, sans-serif;">
+        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+          <input type="checkbox" v-model="headerPromo" /> Promo
+        </label>
+        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+          <input type="checkbox" v-model="headerAccountLoggedIn" /> Compte connecté
+        </label>
+        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+          <input type="checkbox" v-model="headerShowLang" /> Sélecteur langue
+        </label>
+        <label style="display: flex; align-items: center; gap: 6px;">
+          Panier :
+          <input type="number" v-model.number="headerCartCount" min="0" max="99" style="width: 48px; border: 1px solid #ccc; border-radius: 4px; padding: 2px 6px;" />
+        </label>
+      </div>
+      <p style="font-size: 13px; color: #666; margin-top: 8px; font-family: Poppins, sans-serif;">
+        Scroller la page pour voir le header se rétracter en version sticky. Redimensionner à ≤991px pour le layout mobile.
+      </p>
+    </section>
 
     <section>
       <h2>iconMain — toutes les tailles</h2>
@@ -400,7 +462,6 @@ function removeChip(i: number) {
         <buttonHeader label="Florian" icon="User2" badge="check" />
         <buttonHeader label="Panier" icon="ShoppingBag" badge="number" :count="3" />
         <buttonHeader label="Désactivé" icon="ShoppingBag" badge="number" :count="1" :disabled="true" />
-        <buttonHeader label="Lien" icon="HelpCircle" href="#" />
       </div>
     </section>
 
@@ -505,6 +566,174 @@ function removeChip(i: number) {
         <buttonSpecialMenu device="desktop" />
         <buttonSpecialMenu device="mobile" />
         <buttonSpecialMenu device="desktop" :disabled="true" />
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────────────────────── -->
+
+    <section>
+      <h2>vuLogo — variantes linguistiques</h2>
+      <div style="display: flex; gap: 2rem; align-items: center; flex-wrap: wrap;">
+        <div style="width: 180px;">
+          <vuLogo type="vente" />
+        </div>
+        <div style="width: 180px;">
+          <vuLogo type="kauf" />
+        </div>
+        <div style="width: 100px;">
+          <vuLogo type="vente" />
+        </div>
+        <div style="width: 100px;">
+          <vuLogo type="kauf" />
+        </div>
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────────────────────── -->
+
+    <section style="padding: 0; overflow: hidden;">
+      <h2 style="padding: 0 2rem;">promoHeader — desktop</h2>
+      <promoHeader
+        device="desktop"
+        promo-code="VENTEUNIQUE10"
+        :discount="10"
+        :min-amount="500"
+        :target-date="new Date('2025-12-31T23:59:59')"
+      />
+    </section>
+
+    <section style="padding: 0; overflow: hidden;">
+      <h2 style="padding: 0 2rem;">promoHeader — mobile</h2>
+      <div style="width: 390px;">
+        <promoHeader
+          device="mobile"
+          promo-code="VENTEUNIQUE10"
+          :discount="10"
+          :min-amount="500"
+          :target-date="new Date('2025-12-31T23:59:59')"
+        />
+      </div>
+    </section>
+
+    <section style="padding: 0; overflow: hidden;">
+      <h2 style="padding: 0 2rem;">promoHeader — code et réductions personnalisés</h2>
+      <promoHeader
+        device="desktop"
+        promo-code="SUMMER20"
+        :discount="20"
+        :min-amount="300"
+        :target-date="new Date('2025-08-31T23:59:59')"
+      />
+    </section>
+
+    <!-- ─────────────────────────────────────────────────────── -->
+
+    <section>
+      <h2>toggleLike — color white (product box)</h2>
+      <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; background: #888; padding: 1rem; border-radius: 8px;">
+        <toggleLike color="white" v-model="likeWhite" />
+        <span style="font-size: 13px; color: white;">liked: {{ likeWhite }}</span>
+        <toggleLike color="white" :model-value="true" />
+        <toggleLike color="white" :disabled="true" />
+      </div>
+    </section>
+
+    <section>
+      <h2>toggleLike — color black (fiche produit)</h2>
+      <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+        <toggleLike color="black" v-model="likeBlack" />
+        <span style="font-size: 13px; color: #666;">liked: {{ likeBlack }}</span>
+        <toggleLike color="black" :model-value="true" />
+        <toggleLike color="black" :disabled="true" />
+      </div>
+    </section>
+
+    <section>
+      <h2>toggleLike — inWishlist (page wishlist)</h2>
+      <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; background: #888; padding: 1rem; border-radius: 8px;">
+        <toggleLike color="white" :in-wishlist="true" v-model="likeWishlist" />
+        <span style="font-size: 13px; color: white;">clicked: {{ likeWishlist }}</span>
+        <toggleLike color="white" :in-wishlist="true" :disabled="true" />
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────────────────────── -->
+
+    <section>
+      <h2>toggleMain — checkbox</h2>
+      <div style="display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap;">
+        <toggleMain type="check" v-model="mainCheck" />
+        <span style="font-size: 13px; color: #666;">checked: {{ mainCheck }}</span>
+        <toggleMain type="check" :model-value="false" />
+        <toggleMain type="check" :model-value="true" />
+        <toggleMain type="check" :model-value="false" :disabled="true" />
+        <toggleMain type="check" :model-value="true" :disabled="true" />
+      </div>
+    </section>
+
+    <section>
+      <h2>toggleMain — radio</h2>
+      <div style="display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap;">
+        <toggleMain type="radio" v-model="mainRadio" />
+        <span style="font-size: 13px; color: #666;">checked: {{ mainRadio }}</span>
+        <toggleMain type="radio" :model-value="false" />
+        <toggleMain type="radio" :model-value="true" />
+        <toggleMain type="radio" :model-value="false" :disabled="true" />
+        <toggleMain type="radio" :model-value="true" :disabled="true" />
+      </div>
+    </section>
+
+    <section>
+      <h2>toggleMain — switch</h2>
+      <div style="display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap;">
+        <toggleMain type="switch" v-model="mainSwitch" />
+        <span style="font-size: 13px; color: #666;">on: {{ mainSwitch }}</span>
+        <toggleMain type="switch" :model-value="false" />
+        <toggleMain type="switch" :model-value="true" />
+        <toggleMain type="switch" :model-value="false" :disabled="true" />
+        <toggleMain type="switch" :model-value="true" :disabled="true" />
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────────────────────── -->
+
+    <section>
+      <h2>toggleChoice — sans stroke (checkbox)</h2>
+      <div style="display: flex; flex-direction: column; max-width: 280px; border-left: 1px solid #eee; padding-left: 1rem;">
+        <toggleChoice toggle-type="check" label="Livraison express" v-model="choiceCheck" />
+        <toggleChoice toggle-type="check" label="Livraison express" description="Sous 24h" v-model="choiceCheck" />
+        <toggleChoice toggle-type="check" label="Désactivé" :disabled="true" />
+        <span style="font-size: 13px; color: #666; padding: 4px 0;">checked: {{ choiceCheck }}</span>
+      </div>
+    </section>
+
+    <section>
+      <h2>toggleChoice — sans stroke (radio)</h2>
+      <div style="display: flex; flex-direction: column; max-width: 280px; border-left: 1px solid #eee; padding-left: 1rem;">
+        <toggleChoice toggle-type="radio" label="Moins de 500€" v-model="choiceRadio" />
+        <toggleChoice toggle-type="radio" label="De 500€ à 1000€" description="Large sélection" v-model="choiceRadio" />
+        <toggleChoice toggle-type="radio" label="Désactivé" :disabled="true" />
+        <span style="font-size: 13px; color: #666; padding: 4px 0;">checked: {{ choiceRadio }}</span>
+      </div>
+    </section>
+
+    <section>
+      <h2>toggleChoice — avec stroke (checkbox)</h2>
+      <div style="display: flex; flex-direction: column; gap: 4px; max-width: 280px;">
+        <toggleChoice toggle-type="check" :stroke="true" label="Droit" v-model="choiceStrokeCheck" />
+        <toggleChoice toggle-type="check" :stroke="true" label="Gauche" description="Orienté gauche" v-model="choiceStrokeCheck" />
+        <toggleChoice toggle-type="check" :stroke="true" label="Désactivé" :disabled="true" />
+        <span style="font-size: 13px; color: #666;">checked: {{ choiceStrokeCheck }}</span>
+      </div>
+    </section>
+
+    <section>
+      <h2>toggleChoice — avec stroke (radio)</h2>
+      <div style="display: flex; flex-direction: column; gap: 4px; max-width: 280px;">
+        <toggleChoice toggle-type="radio" :stroke="true" label="Droit" v-model="choiceStrokeRadio" />
+        <toggleChoice toggle-type="radio" :stroke="true" label="Gauche" description="Orienté gauche" v-model="choiceStrokeRadio" />
+        <toggleChoice toggle-type="radio" :stroke="true" label="Désactivé" :disabled="true" />
+        <span style="font-size: 13px; color: #666;">checked: {{ choiceStrokeRadio }}</span>
       </div>
     </section>
 

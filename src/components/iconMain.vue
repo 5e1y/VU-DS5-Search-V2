@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, type Component } from 'vue'
+import { computed, ref, watch, onMounted, type Component } from 'vue'
 import * as LucideIcons from 'lucide-vue-next'
 
 type IconSize =
@@ -15,6 +15,7 @@ const props = withDefaults(
     icon: string
     size?: IconSize
     focus?: boolean
+    strokeWidth?: number
   }>(),
   {
     size: 'large',
@@ -41,15 +42,45 @@ const STROKE_MAP: Record<IconSize, number> = {
 }
 
 const sizeInPx = computed(() => SIZE_MAP[props.size])
-const strokeWidth = computed(() => STROKE_MAP[props.size])
+const strokeWidth = computed(() =>
+  props.strokeWidth !== undefined
+    ? props.strokeWidth / scaleFactor.value
+    : STROKE_MAP[props.size],
+)
 
 const iconComponent = computed(
   () => (LucideIcons as Record<string, unknown>)[props.icon] as Component | undefined,
 )
+
+const iconRef = ref<HTMLElement | null>(null)
+const scaleFactor = computed(() => sizeInPx.value / 24)
+
+function applyViewBoxScale() {
+  const svg = iconRef.value?.querySelector('svg')
+  if (!svg) return
+
+  const size = sizeInPx.value
+  svg.setAttribute('viewBox', `0 0 ${size} ${size}`)
+
+  let scaleGroup = svg.querySelector<SVGGElement>('g[data-icon-scale]')
+  if (!scaleGroup) {
+    scaleGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g') as SVGGElement
+    scaleGroup.setAttribute('data-icon-scale', '')
+    while (svg.firstChild) {
+      scaleGroup.appendChild(svg.firstChild)
+    }
+    svg.appendChild(scaleGroup)
+  }
+
+  scaleGroup.setAttribute('transform', `scale(${scaleFactor.value})`)
+}
+
+onMounted(applyViewBoxScale)
+watch([() => props.icon, sizeInPx], applyViewBoxScale, { flush: 'post' })
 </script>
 
 <template>
-  <div :class="['icon-main', focus && 'icon-main--focus']">
+  <div ref="iconRef" :class="['icon-main', focus && 'icon-main--focus']">
     <component :is="iconComponent" :size="sizeInPx" :stroke-width="strokeWidth" />
   </div>
 </template>
