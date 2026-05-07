@@ -1,0 +1,221 @@
+/* DS5 — Semantic tokens
+ * THIS is the layer designs & components must consume.
+ * Never reach past it into primitives (see tokens/README.md).
+ * Source: Kigen - Design System Generator (2026-04-21)
+ *
+ * Depends on: tokens/primitives.css (must be loaded first).
+ */
+
+:root {
+  /* ---------------------------------------------------------------- */
+  /* Radius                                                           */
+  /* ---------------------------------------------------------------- */
+
+  /* radius — base */
+  --radius-round: 9999px;
+
+  /* radius — aliases */
+  --radius-none: var(--primitive-0-rem);
+  --radius-extra-extra-small: var(--primitive-0-5-rem);
+  --radius-extra-small: var(--primitive-0-625-rem);
+  --radius-small: var(--primitive-0-875-rem);
+  --radius-medium: var(--primitive-1-25-rem);
+  --radius-large: var(--primitive-1-75-rem);
+  --radius-extra-large: var(--primitive-3-rem);
+  --radius-focus-mode: var(--primitive-0-25rem);
+
+  /* ---------------------------------------------------------------- */
+  /* Stroke                                                           */
+  /* ---------------------------------------------------------------- */
+
+  /* stroke — base */
+  --stroke-passive: 1px;
+  --stroke-active: 2px;
+
+  /* stroke — aliases */
+  --stroke-neutral-light: var(--primitive-squid-opacity-50);
+  --stroke-neutral-medium: var(--primitive-squid-opacity-100);
+  --stroke-neutral-hard: var(--primitive-squid-opacity-200);
+
+  /* ---------------------------------------------------------------- */
+  /* Spacing                                                          */
+  /* ---------------------------------------------------------------- */
+
+  --spacing-none: var(--primitive-0-rem);
+  --spacing-minuscule: var(--primitive-0-125-rem);
+  --spacing-extra-extra-small: var(--primitive-0-25rem);
+  --spacing-extra-small: var(--primitive-0-5-rem);
+  --spacing-small: var(--primitive-0-75rem);
+  --spacing-medium: var(--primitive-1-rem);
+  --spacing-large: var(--primitive-1-5-rem);
+  --spacing-extra-large: var(--primitive-2-rem);
+  --spacing-double-large: var(--primitive-3-rem);
+  --spacing-extra-extra-large: var(--primitive-4-rem);
+  --spacing-huge: var(--primitive-8-rem);
+
+  /* ---------------------------------------------------------------- */
+  /* Surface                                                          */
+  /* ---------------------------------------------------------------- */
+
+  --surface-background: var(--primitive-white-white);
+  --surface-neutral: var(--primitive-squid-opacity-50);
+  --surface-negative: var(--primitive-red-tint-50);
+  --surface-attention: var(--primitive-orange-tint-50);
+  --surface-positive: var(--primitive-green-tint-50);
+  --surface-information: var(--primitive-blue-tint-50);
+  --surface-notification: var(--primitive-red-tint-600);
+  --surface-separator: var(--primitive-squid-opacity-200);
+
+  /* ---------------------------------------------------------------- */
+  /* Text & icon                                                      */
+  /* ---------------------------------------------------------------- */
+
+  --text-icon-neutral-light: var(--primitive-squid-opacity-500);
+  --text-icon-neutral-medium: var(--primitive-squid-opacity-700);
+  --text-icon-neutral-hard: var(--primitive-squid-opacity-950);
+  --text-icon-neutral-on-dark: var(--primitive-white-white);
+  --text-icon-negative-light: var(--primitive-red-tint-600);
+  --text-icon-negative-medium: var(--primitive-red-tint-700);
+  --text-icon-attention-light: var(--primitive-orange-tint-600);
+  --text-icon-attention-medium: var(--primitive-orange-tint-700);
+  --text-icon-positive-light: var(--primitive-green-tint-600);
+  --text-icon-positive-medium: var(--primitive-green-tint-700);
+  --text-icon-information-light: var(--primitive-blue-tint-600);
+  --text-icon-information-medium: var(--primitive-blue-tint-700);
+
+  /* ---------------------------------------------------------------- */
+  /* Interactive                                                      */
+  /* ---------------------------------------------------------------- */
+
+  /* primary */
+  --interactive-primary-background-default: var(--primitive-squid-opacity-950);
+  --interactive-primary-background-rollover: var(--primitive-squid-opacity-700);
+  --interactive-primary-background-disabled: var(--primitive-squid-opacity-200);
+
+  /* secondary */
+  --interactive-secondary-stroke-default: var(--primitive-squid-opacity-400);
+  --interactive-secondary-stroke-rollover: var(--primitive-squid-opacity-700);
+  --interactive-secondary-stroke-active: var(--primitive-squid-opacity-700);
+  --interactive-secondary-stroke-disabled: var(--primitive-squid-opacity-200);
+  --interactive-secondary-stroke-negative: var(--primitive-red-tint-600);
+  --interactive-secondary-stroke-focus: var(--primitive-blue-tint-600);
+
+  /* tertiary */
+  --interactive-tertiary-background-default: var(--primitive-squid-opacity-100);
+  --interactive-tertiary-background-rollover: var(--primitive-squid-opacity-200);
+
+  /* ghost */
+  --interactive-ghost-background-default: var(--surface-background);
+  --interactive-ghost-background-rollover: var(--primitive-squid-opacity-100);
+
+  /* input */
+  --interactive-input-background-default: var(--primitive-squid-opacity-50);
+  --interactive-input-background-active: var(--primitive-white-white);
+
+  /* on-image */
+  --interactive-on-image-background-default: var(--primitive-squid-opacity-400);
+  --interactive-on-image-background-rollover: var(--primitive-squid-opacity-500);
+  --interactive-on-image-background-active: var(--primitive-squid-opacity-950);
+  --interactive-on-image-stroke-default: var(--primitive-white-opacity-30-);
+  --interactive-on-image-stroke-rollover: var(--primitive-white-opacity-20-);
+
+  /* product-box */
+  --interactive-product-box-stroke-default: var(--primitive-white-white);
+  --interactive-product-box-stroke-rollover: var(--primitive-squid-opacity-200);
+
+  /* tab */
+  --interactive-tab-background-rollover: var(--primitive-white-opacity-90-);
+  --interactive-tab-background-active: var(--primitive-white-white);
+  --interactive-tab-range-background-rollover: var(--primitive-white-opacity-60-);
+  --interactive-tab-range-background-active: var(--primitive-white-opacity-60-);
+
+  /* text-icon */
+  --interactive-text-icon-background-default: var(--primitive-squid-opacity-700);
+  --interactive-text-icon-background-rollover: var(--primitive-squid-opacity-950);
+  --interactive-text-icon-background-disabled: var(--primitive-squid-opacity-400);
+
+  /* switch */
+  --interactive-switch-background-default: var(--primitive-squid-opacity-500);
+  --interactive-switch-background-rollover: var(--primitive-squid-opacity-700);
+  --interactive-switch-background-active: var(--primitive-squid-opacity-950);
+
+  /* list-item */
+  --interactive-list-item-background-active: var(--primitive-squid-opacity-50);
+
+  /* ---------------------------------------------------------------- */
+  /* Shadow                                                           */
+  /* ---------------------------------------------------------------- */
+
+  --shadow-neutral: var(--primitive-squid-opacity-50);
+  --shadow-focus-focus: var(--primitive-white-white);
+  --shadow-focus-default: var(--primitive-blue-tint-600);
+  --shadow-focus-active: var(--primitive-squid-opacity-400);
+  --shadow-focus-negative: var(--primitive-red-tint-200);
+
+  /* ---------------------------------------------------------------- */
+  /* Effect (shadow composition + bg-blur)                            */
+  /* ---------------------------------------------------------------- */
+
+  --effect-shadow-position-none: var(--primitive-0-rem);
+  --effect-shadow-position-small: var(--primitive-0-25rem);
+  --effect-shadow-position-medium: var(--primitive-0-75rem);
+  --effect-shadow-position-large: var(--primitive-1-rem);
+  --effect-shadow-blur-none: var(--primitive-0-rem);
+  --effect-shadow-blur-small: var(--primitive-0-75rem);
+  --effect-shadow-blur-medium: var(--primitive-1-25-rem);
+  --effect-shadow-blur-large: var(--primitive-1-5-rem);
+  --effect-shadow-spread-none: var(--primitive-0-rem);
+  --effect-shadow-spread-small: var(--primitive-0-125-rem);
+  --effect-shadow-spread-medium: var(--primitive-0-25rem);
+  --effect-bg-blur-blur-none: var(--primitive-0-rem);
+  --effect-bg-blur-blur-small: var(--primitive-0-625-rem);
+  --effect-bg-blur-blur-default: var(--primitive-1-25-rem);
+}
+
+
+/* ================================================================== */
+/* Responsive themes                                                  */
+/* Apply via [data-theme='Desktop' | 'Tablet' | 'Mobile'] on <html>.  */
+/* ================================================================== */
+
+/* Desktop */
+[data-theme='Desktop'] {
+  /* base */
+  --responsive-device: desktop;
+  --static-content-max-width: 800px;
+
+  /* aliases */
+  --responsive-margin: var(--spacing-double-large);
+  --responsive-screen-size: var(--screen-size-desktop);
+  --slider-content-responsive-default: var(--primitive-20-rem);
+  --slider-content-fixed-small: var(--primitive-9-rem);
+  --side-column-width: var(--primitive-22-5-rem);
+}
+
+/* Tablet */
+[data-theme='Tablet'] {
+  /* base */
+  --responsive-device: mobile;
+  --static-content-max-width: 0;
+
+  /* aliases */
+  --responsive-margin: var(--spacing-large);
+  --responsive-screen-size: var(--screen-size-tablet);
+  --slider-content-responsive-default: var(--primitive-16-rem);
+  --slider-content-fixed-small: var(--primitive-9-rem);
+  --side-column-width: var(--primitive-16-rem);
+}
+
+/* Mobile */
+[data-theme='Mobile'] {
+  /* base */
+  --responsive-device: mobile;
+  --side-column-width: 351px;
+  --static-content-max-width: 0;
+
+  /* aliases */
+  --responsive-margin: var(--spacing-small);
+  --responsive-screen-size: var(--screen-size-mobile);
+  --slider-content-responsive-default: var(--primitive-16-rem);
+  --slider-content-fixed-small: var(--primitive-9-rem);
+}

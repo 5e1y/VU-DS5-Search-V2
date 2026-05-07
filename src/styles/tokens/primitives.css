@@ -1,0 +1,170 @@
+/* DS5 — Primitives
+ * Root / base tokens. NEVER consume these directly in designs or components.
+ * They exist only to be referenced by semantic tokens.
+ * Source: Kigen - Design System Generator (2026-04-21)
+ */
+
+:root {
+  /* ---------------------------------------------------------------- */
+  /* Typography                                                       */
+  /* ---------------------------------------------------------------- */
+
+  /* font-family */
+  --font-family-poppins: poppins;
+  --font-family-recoleta-alt: recoleta alt;
+
+  /* font-weight */
+  --font-weight-400: normal;
+  --font-weight-500: medium;
+  --font-weight-600: semi bold;
+  --font-weight-700: bold;
+
+  /* letter-spacing */
+  --letter-spacing-100: 0;
+  --letter-spacing-200: 0;
+  --letter-spacing-300: 0;
+  --letter-spacing-400: 0;
+  --letter-spacing-500: 0;
+  --letter-spacing-600: -1px;
+  --letter-spacing-700: -1px;
+  --letter-spacing-800: -1px;
+  --letter-spacing-900: -2px;
+  --letter-spacing-1000: -2px;
+
+  /* font-size */
+  --font-size-100: var(--primitive-0-75rem);
+  --font-size-200: var(--primitive-0-875-rem);
+  --font-size-300: var(--primitive-1-rem);
+  --font-size-400: var(--primitive-1-25-rem);
+  --font-size-500: var(--primitive-1-5-rem);
+  --font-size-600: var(--primitive-2-rem);
+  --font-size-700: var(--primitive-2-5-rem);
+  --font-size-800: var(--primitive-3-rem);
+  --font-size-900: var(--primitive-4-rem);
+  --font-size-1000: var(--primitive-5-rem);
+
+  /* line-height */
+  --line-height-100: var(--primitive-1-rem);
+  --line-height-200: var(--primitive-1-25-rem);
+  --line-height-300: var(--primitive-1-5-rem);
+  --line-height-400: var(--primitive-1-5-rem);
+  --line-height-500: var(--primitive-2-rem);
+  --line-height-600: var(--primitive-2-5-rem);
+  --line-height-700: var(--primitive-3-rem);
+  --line-height-800: var(--primitive-3-5-rem);
+  --line-height-900: var(--primitive-5-rem);
+  --line-height-1000: var(--primitive-6-rem);
+
+  /* paragraph-spacing */
+  --paragraph-spacing-100: var(--primitive-0-25rem);
+  --paragraph-spacing-200: var(--primitive-0-375-rem);
+  --paragraph-spacing-300: var(--primitive-0-5-rem);
+  --paragraph-spacing-400: var(--primitive-0-625-rem);
+  --paragraph-spacing-500: var(--primitive-0-75rem);
+  --paragraph-spacing-600: var(--primitive-0-875-rem);
+  --paragraph-spacing-700: var(--primitive-1-rem);
+  --paragraph-spacing-800: var(--primitive-1-25-rem);
+  --paragraph-spacing-900: var(--primitive-1-5-rem);
+  --paragraph-spacing-1000: var(--primitive-1-75-rem);
+
+  /* ---------------------------------------------------------------- */
+  /* Spacing scale (px)                                               */
+  /* ---------------------------------------------------------------- */
+
+  --primitive-0-rem: 0;
+  --primitive-0-125-rem: 2px;
+  --primitive-0-25rem: 4px;
+  --primitive-0-375-rem: 6px;
+  --primitive-0-5-rem: 8px;
+  --primitive-0-625-rem: 10px;
+  --primitive-0-75rem: 12px;
+  --primitive-0-875-rem: 14px;
+  --primitive-1-rem: 16px;
+  --primitive-1-25-rem: 20px;
+  --primitive-1-5-rem: 24px;
+  --primitive-1-75-rem: 28px;
+  --primitive-2-rem: 32px;
+  --primitive-2-25-rem: 36px;
+  --primitive-2-5-rem: 40px;
+  --primitive-2-75-rem: 44px;
+  --primitive-3-rem: 48px;
+  --primitive-3-5-rem: 56px;
+  --primitive-4-rem: 64px;
+  --primitive-5-rem: 80px;
+  --primitive-6-rem: 96px;
+  --primitive-7-rem: 112px;
+  --primitive-8-rem: 128px;
+  --primitive-9-rem: 144px;
+  --primitive-10-rem: 160px;
+  --primitive-11-rem: 176px;
+  --primitive-12-rem: 192px;
+  --primitive-16-rem: 256px;
+  --primitive-20-rem: 320px;
+  --primitive-22-5-rem: 360px;
+
+  /* ---------------------------------------------------------------- */
+  /* Colors                                                           */
+  /* ---------------------------------------------------------------- */
+
+  /* red */
+  --primitive-red-tint-50: #ffebef;
+  --primitive-red-tint-100: #ffe5eb;
+  --primitive-red-tint-200: #ffccd6;
+  --primitive-red-tint-600: #e5002d;
+  --primitive-red-tint-700: #d6002a;
+  --primitive-red-tint-800: #bd0025;
+
+  /* orange */
+  --primitive-orange-tint-50: #fff1eb;
+  --primitive-orange-tint-100: #ffede5;
+  --primitive-orange-tint-200: #ffd0bd;
+  --primitive-orange-tint-600: #c74900;
+  --primitive-orange-tint-700: #bd4800;
+  --primitive-orange-tint-800: #a34100;
+
+  /* green */
+  --primitive-green-tint-50: #e1fef5;
+  --primitive-green-tint-100: #d6fff1;
+  --primitive-green-tint-200: #b2ffe4;
+  --primitive-green-tint-600: #008554;
+  --primitive-green-tint-700: #008051;
+  --primitive-green-tint-800: #007a4b;
+
+  /* blue */
+  --primitive-blue-tint-50: #e1f8fe;
+  --primitive-blue-tint-100: #dbf7ff;
+  --primitive-blue-tint-200: #ade9ff;
+  --primitive-blue-tint-600: #0072d6;
+  --primitive-blue-tint-700: #006adb;
+  --primitive-blue-tint-800: #005bd1;
+
+  /* squid (neutral opacities) */
+  --primitive-squid-opacity-50: rgba(197, 185, 187, 0.14000000059604645);
+  --primitive-squid-opacity-100: rgba(209, 199, 201, 0.20000000298023224);
+  --primitive-squid-opacity-200: rgba(184, 168, 171, 0.3199999928474426);
+  --primitive-squid-opacity-300: rgba(185, 167, 171, 0.4399999976158142);
+  --primitive-squid-opacity-400: rgba(86, 67, 69, 0.5);
+  --primitive-squid-opacity-500: rgba(31, 20, 21, 0.6100000143051147);
+  --primitive-squid-opacity-700: rgba(23, 13, 14, 0.800000011920929);
+  --primitive-squid-opacity-950: #130c0c;
+
+  /* white */
+  --primitive-white-white: #ffffff;
+  --primitive-white-opacity-10-: rgba(249, 250, 251, 0.10000000149011612);
+  --primitive-white-opacity-20-: rgba(249, 250, 251, 0.20000000298023224);
+  --primitive-white-opacity-30-: rgba(249, 250, 251, 0.30000001192092896);
+  --primitive-white-opacity-40-: rgba(249, 250, 251, 0.4000000059604645);
+  --primitive-white-opacity-50-: rgba(249, 250, 251, 0.5);
+  --primitive-white-opacity-60-: rgba(249, 250, 251, 0.6000000238418579);
+  --primitive-white-opacity-70-: rgba(249, 250, 251, 0.699999988079071);
+  --primitive-white-opacity-80-: rgba(249, 250, 251, 0.800000011920929);
+  --primitive-white-opacity-90-: rgba(249, 250, 251, 0.8999999761581421);
+
+  /* ---------------------------------------------------------------- */
+  /* Breakpoints                                                      */
+  /* ---------------------------------------------------------------- */
+
+  --screen-size-desktop: 1440px;
+  --screen-size-tablet: 768px;
+  --screen-size-mobile: 375px;
+}

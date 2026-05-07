@@ -1,0 +1,324 @@
+/* DS5 — Utility classes (text styles + effect styles)
+ * Drop-in classes that mirror Figma's "Text Styles" and "Effect Styles".
+ * Use these directly on elements (e.g. class="heading-700") rather than
+ * re-writing the same font/shadow declarations.
+ *
+ * Depends on: tokens/primitives.css and tokens/semantic.css (loaded first).
+ */
+
+/* ================================================================== */
+/* Text Styles                                                        */
+/* ================================================================== */
+
+/* Body — normal (Poppins 400) */
+.normal-100 {
+  font-family: var(--font-family-poppins);
+  font-size: var(--font-size-100);
+  font-weight: 400;
+  line-height: var(--line-height-100);
+  letter-spacing: var(--letter-spacing-100);
+}
+
+.normal-200 {
+  font-family: var(--font-family-poppins);
+  font-size: var(--font-size-200);
+  font-weight: 400;
+  line-height: var(--line-height-200);
+  letter-spacing: var(--letter-spacing-200);
+}
+
+.normal-300 {
+  font-family: var(--font-family-poppins);
+  font-size: var(--font-size-300);
+  font-weight: 400;
+  line-height: var(--line-height-300);
+  letter-spacing: var(--letter-spacing-300);
+}
+
+.normal-400 {
+  font-family: var(--font-family-poppins);
+  font-size: var(--font-size-400);
+  font-weight: 400;
+  line-height: var(--line-height-400);
+  letter-spacing: var(--letter-spacing-400);
+}
+
+.normal-500 {
+  font-family: var(--font-family-poppins);
+  font-size: var(--font-size-500);
+  font-weight: 400;
+  line-height: var(--line-height-500);
+  letter-spacing: var(--letter-spacing-500);
+}
+
+/* Body — medium (Poppins 500) */
+.medium-100 {
+  font-family: var(--font-family-poppins);
+  font-size: var(--font-size-100);
+  font-weight: 500;
+  line-height: var(--line-height-100);
+  letter-spacing: var(--letter-spacing-100);
+}
+
+.medium-200 {
+  font-family: var(--font-family-poppins);
+  font-size: var(--font-size-200);
+  font-weight: 500;
+  line-height: var(--line-height-200);
+  letter-spacing: var(--letter-spacing-200);
+}
+
+.medium-300 {
+  font-family: var(--font-family-poppins);
+  font-size: var(--font-size-300);
+  font-weight: 500;
+  line-height: var(--line-height-300);
+  letter-spacing: var(--letter-spacing-300);
+}
+
+.medium-400 {
+  font-family: var(--font-family-poppins);
+  font-size: var(--font-size-400);
+  font-weight: 500;
+  line-height: var(--line-height-400);
+  letter-spacing: var(--letter-spacing-400);
+}
+
+.medium-500 {
+  font-family: var(--font-family-poppins);
+  font-size: var(--font-size-500);
+  font-weight: 500;
+  line-height: var(--line-height-500);
+  letter-spacing: var(--letter-spacing-500);
+}
+
+.medium-600 {
+  font-family: var(--font-family-poppins);
+  font-size: var(--font-size-600);
+  font-weight: 500;
+  line-height: var(--line-height-600);
+  letter-spacing: var(--letter-spacing-600);
+}
+
+.medium-700 {
+  font-family: var(--font-family-poppins);
+  font-size: var(--font-size-700);
+  font-weight: 500;
+  line-height: var(--line-height-700);
+  letter-spacing: var(--letter-spacing-700);
+}
+
+/* Body — medium underlined (Poppins 500 + underline) */
+.medium-underline-100 {
+  font-family: var(--font-family-poppins);
+  font-size: var(--font-size-100);
+  font-weight: 500;
+  line-height: var(--line-height-100);
+  letter-spacing: var(--letter-spacing-100);
+  text-decoration: underline;
+}
+
+.medium-underline-200 {
+  font-family: var(--font-family-poppins);
+  font-size: var(--font-size-200);
+  font-weight: 500;
+  line-height: var(--line-height-200);
+  letter-spacing: var(--letter-spacing-200);
+  text-decoration: underline;
+}
+
+.medium-underline-300 {
+  font-family: var(--font-family-poppins);
+  font-size: var(--font-size-300);
+  font-weight: 500;
+  line-height: var(--line-height-300);
+  letter-spacing: var(--letter-spacing-300);
+  text-decoration: underline;
+}
+
+.medium-underline-400 {
+  font-family: var(--font-family-poppins);
+  font-size: var(--font-size-400);
+  font-weight: 500;
+  line-height: var(--line-height-400);
+  letter-spacing: var(--letter-spacing-400);
+  text-decoration: underline;
+}
+
+.medium-underline-500 {
+  font-family: var(--font-family-poppins);
+  font-size: var(--font-size-500);
+  font-weight: 500;
+  line-height: var(--line-height-500);
+  letter-spacing: var(--letter-spacing-500);
+  text-decoration: underline;
+}
+
+.medium-underline-600 {
+  font-family: var(--font-family-poppins);
+  font-size: var(--font-size-600);
+  font-weight: 500;
+  line-height: var(--line-height-600);
+  letter-spacing: var(--letter-spacing-600);
+  text-decoration: underline;
+}
+
+.medium-underline-700 {
+  font-family: var(--font-family-poppins);
+  font-size: var(--font-size-700);
+  font-weight: 500;
+  line-height: var(--line-height-700);
+  letter-spacing: var(--letter-spacing-700);
+  text-decoration: underline;
+}
+
+/* Body — semi bold (Poppins 600) */
+.semi-bold-100 {
+  font-family: var(--font-family-poppins);
+  font-size: var(--font-size-100);
+  font-weight: 600;
+  line-height: var(--line-height-100);
+  letter-spacing: var(--letter-spacing-100);
+}
+
+.semi-bold-200 {
+  font-family: var(--font-family-poppins);
+  font-size: var(--font-size-200);
+  font-weight: 600;
+  line-height: var(--line-height-200);
+  letter-spacing: var(--letter-spacing-200);
+}
+
+.semi-bold-300 {
+  font-family: var(--font-family-poppins);
+  font-size: var(--font-size-300);
+  font-weight: 600;
+  line-height: var(--line-height-300);
+  letter-spacing: var(--letter-spacing-300);
+}
+
+.semi-bold-400 {
+  font-family: var(--font-family-poppins);
+  font-size: var(--font-size-400);
+  font-weight: 600;
+  line-height: var(--line-height-400);
+  letter-spacing: var(--letter-spacing-400);
+}
+
+.semi-bold-500 {
+  font-family: var(--font-family-poppins);
+  font-size: var(--font-size-500);
+  font-weight: 600;
+  line-height: var(--line-height-500);
+  letter-spacing: var(--letter-spacing-500);
+}
+
+.semi-bold-600 {
+  font-family: var(--font-family-poppins);
+  font-size: var(--font-size-600);
+  font-weight: 600;
+  line-height: var(--line-height-600);
+  letter-spacing: var(--letter-spacing-600);
+}
+
+.semi-bold-700 {
+  font-family: var(--font-family-poppins);
+  font-size: var(--font-size-700);
+  font-weight: 600;
+  line-height: var(--line-height-700);
+  letter-spacing: var(--letter-spacing-700);
+}
+
+/* Headings (Recoleta Alt 400) */
+.heading-400 {
+  font-family: var(--font-family-recoleta-alt);
+  font-size: var(--font-size-400);
+  font-weight: 400;
+  line-height: var(--line-height-400);
+  letter-spacing: var(--letter-spacing-400);
+}
+
+.heading-500 {
+  font-family: var(--font-family-recoleta-alt);
+  font-size: var(--font-size-500);
+  font-weight: 400;
+  line-height: var(--line-height-500);
+  letter-spacing: var(--letter-spacing-600);
+}
+
+.heading-600 {
+  font-family: var(--font-family-recoleta-alt);
+  font-size: var(--font-size-600);
+  font-weight: 400;
+  line-height: var(--line-height-600);
+  letter-spacing: var(--letter-spacing-600);
+}
+
+.heading-700 {
+  font-family: var(--font-family-recoleta-alt);
+  font-size: var(--font-size-700);
+  font-weight: 400;
+  line-height: var(--line-height-700);
+  letter-spacing: var(--letter-spacing-700);
+}
+
+.heading-800 {
+  font-family: var(--font-family-recoleta-alt);
+  font-size: var(--font-size-800);
+  font-weight: 400;
+  line-height: var(--line-height-800);
+  letter-spacing: var(--letter-spacing-800);
+}
+
+.heading-900 {
+  font-family: var(--font-family-recoleta-alt);
+  font-size: var(--font-size-900);
+  font-weight: 400;
+  line-height: var(--line-height-900);
+  letter-spacing: var(--letter-spacing-900);
+}
+
+.heading-1000 {
+  font-family: var(--font-family-recoleta-alt);
+  font-size: var(--font-size-1000);
+  font-weight: 400;
+  line-height: var(--line-height-1000);
+  letter-spacing: var(--letter-spacing-1000);
+}
+
+
+/* ================================================================== */
+/* Effect Styles                                                      */
+/* ================================================================== */
+
+.shadow-small {
+  box-shadow: var(--effect-shadow-position-none) var(--effect-shadow-position-small) var(--effect-shadow-blur-small) var(--effect-shadow-spread-none) var(--shadow-neutral);
+}
+
+.shadow-medium {
+  box-shadow: var(--effect-shadow-position-none) var(--effect-shadow-position-medium) var(--effect-shadow-blur-medium) var(--effect-shadow-spread-none) rgba(197, 185, 187, 0.14000000059604645);
+}
+
+.shadow-large {
+  box-shadow: var(--effect-shadow-position-none) var(--effect-shadow-position-large) var(--effect-shadow-blur-large) var(--effect-shadow-spread-none) var(--shadow-neutral);
+}
+
+.special-primary-on-picture-small {
+  box-shadow: var(--effect-shadow-position-none) var(--effect-shadow-position-small) var(--effect-shadow-blur-small) var(--effect-shadow-spread-none) var(--shadow-neutral);
+}
+
+.special-primary-on-picture-default {
+  box-shadow: var(--effect-shadow-position-none) var(--effect-shadow-position-small) var(--effect-shadow-blur-small) var(--effect-shadow-spread-none) var(--shadow-neutral);
+}
+
+.special-focus-default {
+  box-shadow: var(--effect-shadow-position-none) var(--effect-shadow-position-none) var(--effect-shadow-blur-none) var(--effect-shadow-spread-medium) var(--shadow-focus-default);
+}
+
+.special-focus-neutral {
+  box-shadow: var(--effect-shadow-position-none) var(--effect-shadow-position-none) var(--effect-shadow-blur-none) var(--effect-shadow-spread-medium) var(--shadow-focus-active);
+}
+
+.special-focus-negative {
+  box-shadow: var(--effect-shadow-position-none) var(--effect-shadow-position-none) var(--effect-shadow-blur-none) var(--effect-shadow-spread-medium) var(--shadow-focus-negative);
+}
