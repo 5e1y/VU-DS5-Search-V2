@@ -35,7 +35,7 @@ const emit = defineEmits<{
     <Check
       v-if="type === 'check' && modelValue"
       class="toggle-main__check"
-      :size="12"
+      :size="16"
       :stroke-width="2.5"
     />
     <span v-if="type === 'switch'" class="toggle-main__thumb" />
@@ -87,6 +87,11 @@ const emit = defineEmits<{
 .toggle-main--check.toggle-main--active {
   background: var(--interactive-switch-background-active);
   border-color: var(--interactive-switch-background-active);
+}
+
+.toggle-main--check.toggle-main--active:not(:disabled):hover {
+  background: var(--interactive-primary-background-rollover);
+  border-color: var(--interactive-primary-background-rollover);
 }
 
 .toggle-main--check:disabled {
