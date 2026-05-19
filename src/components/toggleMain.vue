@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Check } from 'lucide-vue-next'
+import iconMain from './iconMain.vue'
 
 withDefaults(
   defineProps<{
@@ -32,11 +32,11 @@ const emit = defineEmits<{
     :aria-checked="modelValue"
     @click="emit('update:modelValue', !modelValue)"
   >
-    <Check
+    <iconMain
       v-if="type === 'check' && modelValue"
+      icon="Check"
+      size="small"
       class="toggle-main__check"
-      :size="16"
-      :stroke-width="2.5"
     />
     <span v-if="type === 'switch'" class="toggle-main__thumb" />
   </button>
@@ -192,6 +192,7 @@ const emit = defineEmits<{
   color: white;
   flex-shrink: 0;
   animation: check-in 150ms ease;
+  pointer-events: none;
 }
 
 @keyframes check-in {
