@@ -113,7 +113,7 @@ const emit = defineEmits<{
   transition: transform 150ms ease;
 }
 
-.toggle-main--radio:not(:disabled):hover {
+.toggle-main--radio:not(:disabled):not(.toggle-main--active):hover {
   border-color: var(--text-icon-neutral-medium);
 }
 
@@ -128,6 +128,10 @@ const emit = defineEmits<{
 .toggle-main--radio:disabled {
   background: var(--surface-neutral);
   border-color: transparent;
+}
+
+.toggle-main--radio:disabled::after {
+  transform: scale(0);
 }
 
 /* ── SWITCH ── */

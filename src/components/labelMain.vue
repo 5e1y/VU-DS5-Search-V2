@@ -32,11 +32,11 @@ withDefaults(
       type === 'elevated' && fill && 'shadow-small',
     ]"
   >
-    <iconMain v-if="iconLeft" :icon="iconLeft" size="extra-small" />
+    <iconMain v-if="iconLeft" :icon="iconLeft" size="small" />
     <span class="label-main__text" :class="size === 'large' ? 'normal-200' : 'normal-100'">
       {{ text }}
     </span>
-    <iconMain v-if="iconRight" :icon="iconRight" size="extra-small" />
+    <iconMain v-if="iconRight" :icon="iconRight" size="small" />
   </div>
 </template>
 
