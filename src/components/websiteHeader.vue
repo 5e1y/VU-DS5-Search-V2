@@ -128,7 +128,7 @@ onUnmounted(() => {
             <ButtonHeader label="Aide & Contact" icon="HelpCircle" />
             <ButtonHeader
               :label="accountLoggedIn ? accountName : 'Se connecter'"
-              icon="User"
+              icon="User2"
               :badge="accountLoggedIn ? 'check' : 'dot'"
             />
             <ButtonHeader
@@ -193,7 +193,7 @@ onUnmounted(() => {
           <div class="wh-actions">
             <ButtonHeader icon="HelpCircle" />
             <ButtonHeader
-              icon="User"
+              icon="User2"
               :badge="accountLoggedIn ? 'check' : 'dot'"
             />
             <ButtonHeader
