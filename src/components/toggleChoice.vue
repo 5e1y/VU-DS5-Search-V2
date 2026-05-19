@@ -87,22 +87,22 @@ const emit = defineEmits<{
 .toggle-choice--stroke {
   padding: var(--spacing-small);
   border-radius: var(--radius-small);
-  border: var(--stroke-passive) solid var(--interactive-secondary-stroke-default);
+  box-shadow: inset 0 0 0 var(--stroke-passive) var(--interactive-secondary-stroke-default);
   align-items: center;
 }
 
 .toggle-choice--stroke:not(.toggle-choice--disabled):hover {
-  border-color: var(--interactive-secondary-stroke-rollover);
+  box-shadow: inset 0 0 0 var(--stroke-passive) var(--interactive-secondary-stroke-rollover);
 }
 
 .toggle-choice--stroke.toggle-choice--active {
-  border-width: var(--stroke-active);
-  border-color: var(--interactive-secondary-stroke-active);
+  box-shadow: inset 0 0 0 var(--stroke-active) var(--interactive-secondary-stroke-active);
 }
 
 .toggle-choice--stroke:focus-visible {
   outline: none;
   box-shadow:
+    inset 0 0 0 var(--stroke-passive) var(--interactive-secondary-stroke-rollover),
     0 0 0 var(--effect-shadow-spread-small) var(--shadow-focus-focus),
     0 0 0 var(--effect-shadow-spread-medium) var(--shadow-focus-default);
 }
@@ -115,7 +115,7 @@ const emit = defineEmits<{
 
 .toggle-choice--stroke.toggle-choice--disabled {
   background: var(--surface-neutral);
-  border-color: transparent;
+  box-shadow: none;
 }
 
 /* ── Toggle visual ── */

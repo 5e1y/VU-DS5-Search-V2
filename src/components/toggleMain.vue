@@ -95,7 +95,7 @@ const emit = defineEmits<{
 }
 
 .toggle-main--check:disabled {
-  background: var(--surface-neutral);
+  background: var(--interactive-primary-background-disabled);
   border-color: transparent;
 }
 
@@ -131,12 +131,12 @@ const emit = defineEmits<{
 }
 
 .toggle-main--radio:disabled {
-  background: var(--surface-neutral);
+  background: var(--interactive-primary-background-disabled);
   border-color: transparent;
 }
 
 .toggle-main--radio:disabled::after {
-  transform: scale(0);
+  background: var(--surface-background);
 }
 
 /* ── SWITCH ── */
@@ -156,7 +156,7 @@ const emit = defineEmits<{
 }
 
 .toggle-main--switch:disabled {
-  background: var(--surface-neutral);
+  background: var(--interactive-primary-background-disabled);
 }
 
 /* Switch thumb */
@@ -184,7 +184,7 @@ const emit = defineEmits<{
 }
 
 .toggle-main--switch:disabled .toggle-main__thumb {
-  background: var(--surface-neutral);
+  background: var(--surface-background);
 }
 
 /* Checkmark */
