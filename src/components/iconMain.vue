@@ -42,11 +42,10 @@ const STROKE_MAP: Record<IconSize, number> = {
 }
 
 const sizeInPx = computed(() => SIZE_MAP[props.size])
-const strokeWidth = computed(() =>
-  props.strokeWidth !== undefined
-    ? props.strokeWidth / scaleFactor.value
-    : STROKE_MAP[props.size],
-)
+const strokeWidth = computed(() => {
+  const base = props.strokeWidth !== undefined ? props.strokeWidth : STROKE_MAP[props.size]
+  return base / scaleFactor.value
+})
 
 const iconComponent = computed(
   () => (LucideIcons as Record<string, unknown>)[props.icon] as Component | undefined,
