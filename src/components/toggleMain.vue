@@ -1,14 +1,15 @@
 <script setup lang="ts">
-import iconMain from './iconMain.vue'
 
 withDefaults(
   defineProps<{
     type?: 'check' | 'radio' | 'switch'
+    tag?: string
     modelValue?: boolean
     disabled?: boolean
   }>(),
   {
     type: 'check',
+    tag: 'button',
     modelValue: false,
     disabled: false,
   },
@@ -20,26 +21,38 @@ const emit = defineEmits<{
 </script>
 
 <template>
-  <button
-    type="button"
+  <component
+    :is="tag"
+    :type="tag === 'button' ? 'button' : undefined"
     class="toggle-main"
     :class="[
       `toggle-main--${type}`,
       modelValue && 'toggle-main--active',
+      disabled && 'toggle-main--disabled',
     ]"
-    :disabled="disabled"
-    :role="type === 'radio' ? 'radio' : 'checkbox'"
-    :aria-checked="modelValue"
-    @click="emit('update:modelValue', !modelValue)"
+    :disabled="tag === 'button' ? disabled : undefined"
+    :role="tag === 'button' ? (type === 'radio' ? 'radio' : 'checkbox') : undefined"
+    :aria-checked="tag === 'button' ? modelValue : undefined"
+    @click="tag === 'button' && emit('update:modelValue', !modelValue)"
   >
-    <iconMain
+    <svg
       v-if="type === 'check' && modelValue"
-      icon="Check"
-      size="small"
+      width="16"
+      height="16"
+      viewBox="0 0 16 16"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="3"
+      stroke-linecap="round"
+      stroke-linejoin="round"
       class="toggle-main__check"
-    />
+    >
+      <g transform="scale(0.6667)">
+        <polyline points="20,6 9,17 4,12" />
+      </g>
+    </svg>
     <span v-if="type === 'switch'" class="toggle-main__thumb" />
-  </button>
+  </component>
 </template>
 
 <style scoped>
@@ -66,7 +79,8 @@ const emit = defineEmits<{
     0 0 0 var(--effect-shadow-spread-medium) var(--shadow-focus-default);
 }
 
-.toggle-main:disabled {
+.toggle-main:disabled,
+.toggle-main.toggle-main--disabled {
   cursor: not-allowed;
   pointer-events: none;
 }
@@ -80,21 +94,21 @@ const emit = defineEmits<{
   border: var(--stroke-passive) solid var(--text-icon-neutral-light);
 }
 
-.toggle-main--check:not(:disabled):hover {
+.toggle-main--check:not(:disabled):not(.toggle-main--disabled):not(.toggle-main--active):hover {
   border-color: var(--text-icon-neutral-medium);
 }
 
 .toggle-main--check.toggle-main--active {
   background: var(--interactive-switch-background-active);
-  border-color: var(--interactive-switch-background-active);
+  border-color: transparent;
 }
 
-.toggle-main--check.toggle-main--active:not(:disabled):hover {
+.toggle-main--check.toggle-main--active:not(:disabled):not(.toggle-main--disabled):hover {
   background: var(--interactive-primary-background-rollover);
-  border-color: var(--interactive-primary-background-rollover);
 }
 
-.toggle-main--check:disabled {
+.toggle-main--check:disabled,
+.toggle-main--check.toggle-main--disabled {
   background: var(--interactive-primary-background-disabled);
   border-color: transparent;
 }
@@ -118,7 +132,7 @@ const emit = defineEmits<{
   transition: transform 150ms ease;
 }
 
-.toggle-main--radio:not(:disabled):not(.toggle-main--active):hover {
+.toggle-main--radio:not(:disabled):not(.toggle-main--disabled):not(.toggle-main--active):hover {
   border-color: var(--text-icon-neutral-medium);
 }
 
@@ -130,12 +144,14 @@ const emit = defineEmits<{
   transform: scale(1);
 }
 
-.toggle-main--radio:disabled {
+.toggle-main--radio:disabled,
+.toggle-main--radio.toggle-main--disabled {
   background: var(--interactive-primary-background-disabled);
   border-color: transparent;
 }
 
-.toggle-main--radio:disabled::after {
+.toggle-main--radio:disabled::after,
+.toggle-main--radio.toggle-main--disabled::after {
   background: var(--surface-background);
 }
 
@@ -147,7 +163,7 @@ const emit = defineEmits<{
   background: var(--interactive-switch-background-default);
 }
 
-.toggle-main--switch:not(:disabled):hover {
+.toggle-main--switch:not(:disabled):not(.toggle-main--disabled):hover {
   background: var(--interactive-switch-background-rollover);
 }
 
@@ -155,7 +171,8 @@ const emit = defineEmits<{
   background: var(--interactive-switch-background-active);
 }
 
-.toggle-main--switch:disabled {
+.toggle-main--switch:disabled,
+.toggle-main--switch.toggle-main--disabled {
   background: var(--interactive-primary-background-disabled);
 }
 
@@ -171,7 +188,7 @@ const emit = defineEmits<{
   transition: left 200ms ease;
 }
 
-.toggle-main--switch:not(:disabled):hover .toggle-main__thumb {
+.toggle-main--switch:not(:disabled):not(.toggle-main--disabled):hover .toggle-main__thumb {
   left: 12.5%;
 }
 
@@ -179,11 +196,12 @@ const emit = defineEmits<{
   left: 43.75%;
 }
 
-.toggle-main--switch.toggle-main--active:not(:disabled):hover .toggle-main__thumb {
+.toggle-main--switch.toggle-main--active:not(:disabled):not(.toggle-main--disabled):hover .toggle-main__thumb {
   left: 37.5%;
 }
 
-.toggle-main--switch:disabled .toggle-main__thumb {
+.toggle-main--switch:disabled .toggle-main__thumb,
+.toggle-main--switch.toggle-main--disabled .toggle-main__thumb {
   background: var(--surface-background);
 }
 
