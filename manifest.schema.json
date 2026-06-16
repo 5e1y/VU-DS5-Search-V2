@@ -1,0 +1,101 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "DS5 Components Manifest",
+  "description": "Source à la demande décrivant chaque composant disponible pour la génération de prototypes. Clé = nom du composant.",
+  "type": "object",
+  "properties": {
+    "$generatedAt": { "type": "string", "format": "date-time" },
+    "components": {
+      "type": "object",
+      "additionalProperties": { "$ref": "#/definitions/component" }
+    }
+  },
+  "required": ["components"],
+  "definitions": {
+    "component": {
+      "type": "object",
+      "description": "Champs marqués (auto) sont générables via vue-docgen-api ; les autres sont écrits/maintenus par le designer.",
+      "properties": {
+        "file": { "type": "string", "description": "(auto) Nom du fichier source, ex. buttonMain.vue" },
+        "import": { "type": "string", "description": "(auto) Instruction d'import à utiliser dans un écran" },
+        "status": { "type": "string", "enum": ["mirror", "official"], "description": "mirror = recodé pour le proto ; official = issu du Storybook DS" },
+        "category": { "type": "string", "description": "actions | forms | navigation | content | layout | feedback | commerce" },
+        "summary": { "type": "string", "description": "Une phrase : quand utiliser ce composant" },
+        "dependencies": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "(auto) Autres composants du DS importés par celui-ci"
+        },
+        "props": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/prop" },
+          "description": "(auto) Extrait des defineProps + withDefaults"
+        },
+        "slots": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" },
+              "description": { "type": "string" }
+            },
+            "required": ["name"]
+          }
+        },
+        "events": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" },
+              "payload": { "type": "string" },
+              "description": { "type": "string" }
+            },
+            "required": ["name"]
+          }
+        },
+        "usage": {
+          "type": "object",
+          "description": "Couche sémantique humaine — la vraie valeur designer",
+          "properties": {
+            "do": { "type": "array", "items": { "type": "string" } },
+            "doNot": { "type": "array", "items": { "type": "string" } }
+          }
+        },
+        "a11y": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Points d'accessibilité gérés ou à respecter"
+        },
+        "examples": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "title": { "type": "string" },
+              "code": { "type": "string" }
+            },
+            "required": ["code"]
+          }
+        }
+      },
+      "required": ["file", "import", "status", "summary", "props"]
+    },
+    "prop": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "type": { "type": "string", "description": "Type TS, ex. string | boolean | union" },
+        "required": { "type": "boolean" },
+        "default": { "description": "Valeur par défaut (string, bool, etc.)" },
+        "options": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Valeurs autorisées si union de littéraux"
+        },
+        "description": { "type": "string" }
+      },
+      "required": ["name", "type", "required"]
+    }
+  }
+}

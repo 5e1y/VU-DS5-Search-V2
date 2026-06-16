@@ -1,0 +1,94 @@
+{
+  "$schema": "./manifest.schema.json",
+  "$generatedAt": "2026-06-16T00:00:00Z",
+  "components": {
+    "ButtonMain": {
+      "file": "buttonMain.vue",
+      "import": "import ButtonMain from '@/components/buttonMain.vue'",
+      "status": "mirror",
+      "category": "actions",
+      "summary": "Bouton d'action principal. Rendu en <button>, ou en <a> si href est fourni.",
+      "dependencies": ["IconMain"],
+      "props": [
+        {
+          "name": "type",
+          "type": "union",
+          "required": false,
+          "default": "primary",
+          "options": ["primary", "secondary", "tertiary", "text", "ghost", "primary-on-picture"],
+          "description": "Style visuel. 'primary' = action principale ; 'secondary' = bordure ; 'tertiary'/'ghost' = faible emphase ; 'text' = lien souligné ; 'primary-on-picture' = posé sur une image (fond flouté)."
+        },
+        {
+          "name": "size",
+          "type": "union",
+          "required": false,
+          "default": "default",
+          "options": ["default", "small"],
+          "description": "Taille. 'small' réduit le padding du label et l'icône."
+        },
+        {
+          "name": "iconLeft",
+          "type": "string",
+          "required": false,
+          "description": "Nom d'icône (passé à IconMain) affichée avant le label."
+        },
+        {
+          "name": "iconRight",
+          "type": "string",
+          "required": false,
+          "description": "Nom d'icône affichée après le label."
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "description": "Texte du bouton. Optionnel pour un bouton icône seule."
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Désactive le bouton (gère button et lien via aria-disabled)."
+        },
+        {
+          "name": "href",
+          "type": "string",
+          "required": false,
+          "description": "Si fourni, le composant est rendu en <a>. Sinon en <button>."
+        }
+      ],
+      "usage": {
+        "do": [
+          "Utiliser 'primary' pour l'action dominante d'un écran (une seule par zone).",
+          "Fournir href pour une vraie navigation (rend un <a> accessible).",
+          "Utiliser 'primary-on-picture' uniquement par-dessus une image."
+        ],
+        "doNot": [
+          "Ne pas mettre d'emoji dans label : passer par iconLeft/iconRight.",
+          "Ne pas utiliser un nom d'icône qui n'existe pas dans le set IconMain.",
+          "Ne pas restyler le bouton par des overrides ; choisir une variante existante."
+        ]
+      },
+      "a11y": [
+        "État disabled géré pour <button> (disabled) et <a> (aria-disabled).",
+        "Anneau de focus via :focus-visible déjà stylé.",
+        "Pour un bouton icône seule (sans label), prévoir un libellé accessible."
+      ],
+      "examples": [
+        {
+          "title": "Action principale",
+          "code": "<ButtonMain type=\"primary\" label=\"Ajouter au panier\" iconLeft=\"cart\" />"
+        },
+        {
+          "title": "Lien secondaire",
+          "code": "<ButtonMain type=\"secondary\" label=\"Voir le produit\" href=\"/p/123\" />"
+        },
+        {
+          "title": "Bouton texte",
+          "code": "<ButtonMain type=\"text\" label=\"Tout afficher\" iconRight=\"arrow-right\" />"
+        }
+      ]
+    }
+  }
+}
