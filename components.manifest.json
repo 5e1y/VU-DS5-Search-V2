@@ -89,6 +89,215 @@
           "code": "<ButtonMain type=\"text\" label=\"Tout afficher\" iconRight=\"arrow-right\" />"
         }
       ]
+    },
+    "SelectProductAac": {
+      "file": "selectProductAac.vue",
+      "import": "import SelectProductAac from '@/components/selectProductAac.vue'",
+      "status": "mirror",
+      "category": "forms",
+      "summary": "Ligne cliquable de la partie information d'une fiche produit (parcours Aide au Choix). Affiche un titre, la valeur retenue, un badge du nombre de valeurs possibles et un chevron ; émet 'click' pour ouvrir un panel de sélection.",
+      "dependencies": ["IconMain", "LabelMain"],
+      "props": [
+        {
+          "name": "title",
+          "type": "string",
+          "required": true,
+          "description": "Libellé de l'attribut, ex. 'Couleur :'."
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "required": false,
+          "default": "",
+          "description": "Valeur actuellement sélectionnée (tronquée en ellipsis si trop longue)."
+        },
+        {
+          "name": "count",
+          "type": "number",
+          "required": false,
+          "description": "Nombre de valeurs possibles. Le badge n'est rendu que si count est fourni."
+        },
+        {
+          "name": "image",
+          "type": "string",
+          "required": false,
+          "description": "URL d'une vignette produit. Si fournie, une vignette 64px est affichée à gauche."
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Désactive la ligne (attribut disabled natif + aria-disabled)."
+        }
+      ],
+      "events": [
+        {
+          "name": "click",
+          "payload": "void",
+          "description": "Émis au clic (ou Entrée/Espace) pour ouvrir le panel de sélection."
+        }
+      ],
+      "usage": {
+        "do": [
+          "Utiliser uniquement dans la partie information d'une fiche produit.",
+          "Fournir count pour indiquer le nombre de choix disponibles.",
+          "Laisser le parent gérer l'ouverture du panel à la réception de 'click'."
+        ],
+        "doNot": [
+          "Ne pas rendre le panel directement dans ce composant ; émettre 'click'.",
+          "Ne pas restyler la ligne par des overrides ; consommer le composant tel quel.",
+          "Ne pas mettre d'icône autre que le chevron-right intégré."
+        ]
+      },
+      "a11y": [
+        "Rendu en <button> natif : focusable et activable au clavier (Entrée/Espace).",
+        "État disabled géré (attribut disabled + aria-disabled).",
+        "Anneau de focus via :focus-visible déjà stylé."
+      ],
+      "examples": [
+        {
+          "title": "Attribut avec valeur et compteur",
+          "code": "<SelectProductAac title=\"Couleur :\" value=\"Bleu nuit\" :count=\"9\" @click=\"openPanel\" />"
+        },
+        {
+          "title": "Avec vignette produit",
+          "code": "<SelectProductAac title=\"Modèle :\" value=\"Canapé 3 places\" :count=\"4\" image=\"/img/sofa.jpg\" @click=\"openPanel\" />"
+        },
+        {
+          "title": "Sans compteur",
+          "code": "<SelectProductAac title=\"Livraison :\" value=\"Standard\" @click=\"openPanel\" />"
+        }
+      ]
+    },
+    "InputSliderButton": {
+      "file": "inputSliderButton.vue",
+      "import": "import InputSliderButton from '@/components/inputSliderButton.vue'",
+      "status": "mirror",
+      "category": "forms",
+      "summary": "Poignée du composant InputSlider. Brique présentationnelle (zone tactile 44px + point central). Ne pas utiliser seul : il est destiné à InputSlider.",
+      "dependencies": [],
+      "props": [
+        {
+          "name": "state",
+          "type": "union",
+          "required": false,
+          "default": "default",
+          "options": ["default", "rollover"],
+          "description": "État visuel. 'default' = point 16px ; 'rollover' = point 24px (survol ou glissement actif). Le survol agrandit aussi le point via CSS."
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Atténue la poignée et neutralise l'effet de survol."
+        }
+      ],
+      "usage": {
+        "do": [
+          "Laisser InputSlider piloter le prop state (rollover pendant le glissement)."
+        ],
+        "doNot": [
+          "Ne pas utiliser ce composant seul hors d'un InputSlider.",
+          "Ne pas y ajouter de gestion d'événements : la poignée est présentationnelle."
+        ]
+      },
+      "a11y": [
+        "Élément présentationnel : le rôle slider et le clavier sont portés par le bouton parent dans InputSlider."
+      ],
+      "examples": [
+        {
+          "title": "État rollover",
+          "code": "<InputSliderButton state=\"rollover\" />"
+        }
+      ]
+    },
+    "InputSlider": {
+      "file": "inputSlider.vue",
+      "import": "import InputSlider from '@/components/inputSlider.vue'",
+      "status": "mirror",
+      "category": "forms",
+      "summary": "Slider de plage à deux poignées pour les panels d'aide au choix des fiches produit (filtres prix, dimensions, valeurs numériques). Deux champs de saisie synchronisés affichent et modifient les bornes ; un label décrit le contexte.",
+      "dependencies": ["InputSliderButton", "Input"],
+      "props": [
+        {
+          "name": "modelValue",
+          "type": "[number, number]",
+          "required": false,
+          "default": "[min, max]",
+          "description": "Tuple [valeurMin, valeurMax]. Liaison via v-model. À défaut, les poignées partent des bornes min/max."
+        },
+        {
+          "name": "min",
+          "type": "number",
+          "required": false,
+          "default": 0,
+          "description": "Borne inférieure de la plage."
+        },
+        {
+          "name": "max",
+          "type": "number",
+          "required": false,
+          "default": 100,
+          "description": "Borne supérieure de la plage."
+        },
+        {
+          "name": "step",
+          "type": "number",
+          "required": false,
+          "default": 1,
+          "description": "Pas d'incrément. Les valeurs sont alignées sur ce pas (glissement, clavier, saisie)."
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "default": "",
+          "description": "Libellé contextuel affiché au-dessus du slider (ex. 'Longueur (cm)'). Masqué si vide."
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Désactive le slider et les deux champs de saisie."
+        }
+      ],
+      "events": [
+        {
+          "name": "update:modelValue",
+          "payload": "[number, number]",
+          "description": "Émis quand une borne change (glissement, clic sur la piste, clavier ou saisie). Les poignées ne se croisent jamais."
+        }
+      ],
+      "usage": {
+        "do": [
+          "Utiliser uniquement dans les panels d'aide au choix des fiches produit.",
+          "Lier les valeurs via v-model (tuple [min, max]).",
+          "Fournir un label décrivant l'unité ou l'attribut filtré."
+        ],
+        "doNot": [
+          "Ne pas restyler le composant ni ses champs par des overrides.",
+          "Ne pas utiliser pour un curseur à valeur unique : ce composant est une plage à deux poignées."
+        ]
+      },
+      "a11y": [
+        "Chaque poignée est un <button role=\"slider\"> focusable, avec aria-valuemin/max/now et aria-label.",
+        "Clavier : flèches (±step), PageUp/PageDown (±10×step), Home/End (bornes autorisées).",
+        "Anneau de focus via :focus-visible déjà stylé.",
+        "État disabled propagé aux poignées et aux deux champs."
+      ],
+      "examples": [
+        {
+          "title": "Plage de longueur",
+          "code": "<InputSlider v-model=\"length\" label=\"Longueur (cm)\" :min=\"100\" :max=\"400\" />"
+        },
+        {
+          "title": "Plage de prix avec pas",
+          "code": "<InputSlider v-model=\"price\" label=\"Prix (€)\" :min=\"0\" :max=\"1000\" :step=\"10\" />"
+        }
+      ]
     }
   }
 }

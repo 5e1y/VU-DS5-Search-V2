@@ -23,6 +23,9 @@ import toggleLike from './components/toggleLike.vue'
 import toggleMain from './components/toggleMain.vue'
 import toggleChoice from './components/toggleChoice.vue'
 import websiteHeader from './components/websiteHeader.vue'
+import selectProductAac from './components/selectProductAac.vue'
+import inputSlider from './components/inputSlider.vue'
+import inputSliderButton from './components/inputSliderButton.vue'
 
 // websiteHeader
 const headerCartCount = ref(2)
@@ -88,12 +91,19 @@ const choiceCheck = ref(false)
 const choiceRadio = ref(false)
 const choiceStrokeCheck = ref(false)
 const choiceStrokeRadio = ref(false)
+const aacClicks = ref(0)
 
 // labelInteractiveChip
 const chips = ref(['Canapé 3 places', 'Couleur beige', 'Prix < 500€'])
 function removeChip(i: number) {
   chips.value.splice(i, 1)
 }
+
+// inputSlider
+const sliderLength = ref<[number, number]>([220, 330])
+const sliderPrice = ref<[number, number]>([150, 800])
+const sliderStep = ref<[number, number]>([20, 80])
+const sliderDisabled = ref<[number, number]>([30, 70])
 </script>
 
 <template>
@@ -734,6 +744,63 @@ function removeChip(i: number) {
         <toggleChoice toggle-type="radio" :stroke="true" label="Gauche" description="Orienté gauche" v-model="choiceStrokeRadio" />
         <toggleChoice toggle-type="radio" :stroke="true" label="Désactivé" :disabled="true" />
         <span style="font-size: 13px; color: #666;">checked: {{ choiceStrokeRadio }}</span>
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────────────────────── -->
+
+    <section>
+      <h2>selectProductAac — fiche produit (Aide au Choix)</h2>
+      <div style="display: flex; flex-direction: column; gap: 8px; max-width: 460px;">
+        <selectProductAac title="Couleur :" value="Bleu nuit" :count="9" @click="aacClicks++" />
+        <selectProductAac title="Matière :" value="Velours côtelé très résistant et doux au toucher" :count="4" @click="aacClicks++" />
+        <selectProductAac title="Modèle :" value="Canapé d'angle 5 places" :count="4" image="https://picsum.photos/seed/sofa/120/90" @click="aacClicks++" />
+        <selectProductAac title="Livraison :" value="Standard" @click="aacClicks++" />
+        <selectProductAac title="Dimensions :" value="Indisponible" :count="3" :disabled="true" />
+        <span style="font-size: 13px; color: #666;">clics : {{ aacClicks }}</span>
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────────────────────── -->
+
+    <section>
+      <h2>inputSliderButton — états</h2>
+      <div style="display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap;">
+        <inputSliderButton state="default" />
+        <inputSliderButton state="rollover" />
+        <inputSliderButton state="default" :disabled="true" />
+        <span style="font-size: 13px; color: #666;">default (16px) · rollover (24px) · disabled — survoler pour agrandir</span>
+      </div>
+    </section>
+
+    <section>
+      <h2>inputSlider — plage longueur (panel aide au choix)</h2>
+      <div style="display: flex; flex-direction: column; gap: 1rem; max-width: 464px;">
+        <inputSlider v-model="sliderLength" label="Longueur (cm)" :min="100" :max="400" />
+        <span style="font-size: 13px; color: #666;">Valeur : [{{ sliderLength[0] }}, {{ sliderLength[1] }}]</span>
+      </div>
+    </section>
+
+    <section>
+      <h2>inputSlider — plage prix</h2>
+      <div style="display: flex; flex-direction: column; gap: 1rem; max-width: 464px;">
+        <inputSlider v-model="sliderPrice" label="Prix (€)" :min="0" :max="1000" />
+        <span style="font-size: 13px; color: #666;">Valeur : [{{ sliderPrice[0] }}, {{ sliderPrice[1] }}]</span>
+      </div>
+    </section>
+
+    <section>
+      <h2>inputSlider — avec pas (step 5)</h2>
+      <div style="display: flex; flex-direction: column; gap: 1rem; max-width: 464px;">
+        <inputSlider v-model="sliderStep" label="Note (pas de 5)" :min="0" :max="100" :step="5" />
+        <span style="font-size: 13px; color: #666;">Valeur : [{{ sliderStep[0] }}, {{ sliderStep[1] }}]</span>
+      </div>
+    </section>
+
+    <section>
+      <h2>inputSlider — disabled</h2>
+      <div style="display: flex; flex-direction: column; gap: 1rem; max-width: 464px;">
+        <inputSlider v-model="sliderDisabled" label="Désactivé" :min="0" :max="100" :disabled="true" />
       </div>
     </section>
 
