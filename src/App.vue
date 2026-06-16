@@ -22,6 +22,8 @@ import promoHeader from './components/promoHeader.vue'
 import toggleLike from './components/toggleLike.vue'
 import toggleMain from './components/toggleMain.vue'
 import toggleChoice from './components/toggleChoice.vue'
+import toggleFilter from './components/toggleFilter.vue'
+import toggleColorFilter from './components/toggleColorFilter.vue'
 import websiteHeader from './components/websiteHeader.vue'
 import selectProductAac from './components/selectProductAac.vue'
 import inputSlider from './components/inputSlider.vue'
@@ -98,6 +100,16 @@ const chips = ref(['Canapé 3 places', 'Couleur beige', 'Prix < 500€'])
 function removeChip(i: number) {
   chips.value.splice(i, 1)
 }
+
+// toggleFilter
+const filterDroit = ref(false)
+const filterAngle = ref(true)
+
+// toggleColorFilter
+const colorBeige = ref(false)
+const colorBlue = ref(true)
+const colorGradient = ref(false)
+const colorImage = ref(false)
 
 // inputSlider
 const sliderLength = ref<[number, number]>([220, 330])
@@ -745,6 +757,43 @@ const sliderDisabled = ref<[number, number]>([30, 70])
         <toggleChoice toggle-type="radio" :stroke="true" label="Désactivé" :disabled="true" />
         <span style="font-size: 13px; color: #666;">checked: {{ choiceStrokeRadio }}</span>
       </div>
+    </section>
+
+    <!-- ─────────────────────────────────────────────────────── -->
+
+    <section>
+      <h2>toggleFilter — overlay / panel de filtres</h2>
+      <div style="display: flex; flex-direction: column; max-width: 280px; border-left: 1px solid #eee; padding-left: 1rem;">
+        <toggleFilter label="Droit" :count="44" v-model="filterDroit" />
+        <toggleFilter label="Angle" :count="312" v-model="filterAngle" />
+        <toggleFilter label="Convertible" :count="8" :model-value="true" />
+        <toggleFilter label="Sans compteur" :model-value="false" />
+        <toggleFilter label="Indisponible" :count="0" :disabled="true" />
+        <span style="font-size: 13px; color: #666; padding: 4px 0;">Droit: {{ filterDroit }} · Angle: {{ filterAngle }}</span>
+      </div>
+    </section>
+
+    <section>
+      <h2>toggleColorFilter — nuancier de filtres</h2>
+      <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: flex-start;">
+        <toggleColorFilter color="#fbe6d0" label="Beige" :count="52" v-model="colorBeige" />
+        <toggleColorFilter color="#2b4a7e" label="Bleu nuit" :count="18" v-model="colorBlue" />
+        <toggleColorFilter color="#ffffff" label="Blanc" :count="73" :model-value="false" />
+        <toggleColorFilter
+          color="linear-gradient(135deg, #e74c3c, #f1c40f, #2ecc71, #3498db)"
+          label="Multicolore"
+          :count="6"
+          v-model="colorGradient"
+        />
+        <toggleColorFilter
+          image="https://picsum.photos/seed/wood/64/64"
+          label="Bois"
+          :count="29"
+          v-model="colorImage"
+        />
+        <toggleColorFilter color="#7f8c8d" label="Gris" :count="4" :disabled="true" />
+      </div>
+      <span style="font-size: 13px; color: #666;">Beige: {{ colorBeige }} · Bleu: {{ colorBlue }} · Multi: {{ colorGradient }} · Bois: {{ colorImage }}</span>
     </section>
 
     <!-- ─────────────────────────────────────────────────────── -->

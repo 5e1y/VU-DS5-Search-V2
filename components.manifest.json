@@ -298,6 +298,167 @@
           "code": "<InputSlider v-model=\"price\" label=\"Prix (€)\" :min=\"0\" :max=\"1000\" :step=\"10\" />"
         }
       ]
+    },
+    "ToggleFilter": {
+      "file": "toggleFilter.vue",
+      "import": "import ToggleFilter from '@/components/toggleFilter.vue'",
+      "status": "mirror",
+      "category": "forms",
+      "summary": "Coche de filtre texte sélectionnable, utilisée dans les panels d'aide au choix et les overlays des selects de filtres du catalogue. Compose un ToggleMain (checkbox), un label et le nombre d'articles correspondant au filtre.",
+      "dependencies": ["ToggleMain"],
+      "props": [
+        {
+          "name": "modelValue",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "État actif/coché du filtre. Liaison via v-model."
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "default": "",
+          "description": "Libellé du filtre, ex. 'Droit'."
+        },
+        {
+          "name": "count",
+          "type": "number",
+          "required": false,
+          "description": "Nombre d'articles pour ce filtre. Le compteur n'est rendu que si count est fourni (0 inclus)."
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Désactive le filtre. Rendu en <div> + aria-disabled implicite (pas focusable)."
+        }
+      ],
+      "events": [
+        {
+          "name": "update:modelValue",
+          "payload": "boolean",
+          "description": "Émis au clic (ou clavier) avec la nouvelle valeur active. À lier via v-model."
+        }
+      ],
+      "usage": {
+        "do": [
+          "Utiliser dans les panels d'aide au choix et overlays de filtres catalogue.",
+          "Lier l'état via v-model et fournir count pour le nombre d'articles.",
+          "Empiler plusieurs ToggleFilter en colonne pour une liste de filtres."
+        ],
+        "doNot": [
+          "Ne pas restyler le composant ni la case par des overrides : tous les états sont pilotés en interne.",
+          "Ne pas réimplémenter la case ; ce composant réutilise ToggleMain.",
+          "Ne pas utiliser hors d'un contexte de filtrage (préférer ToggleChoice pour une option de formulaire)."
+        ]
+      },
+      "a11y": [
+        "Rendu en <button role=\"checkbox\"> avec aria-checked ; activable au clavier (Entrée/Espace).",
+        "État disabled rendu en <div> non focusable.",
+        "Anneau de focus via :focus-visible déjà stylé."
+      ],
+      "examples": [
+        {
+          "title": "Filtre avec compteur",
+          "code": "<ToggleFilter label=\"Droit\" :count=\"44\" v-model=\"isDroit\" />"
+        },
+        {
+          "title": "Filtre actif sans compteur",
+          "code": "<ToggleFilter label=\"Convertible\" :model-value=\"true\" />"
+        }
+      ]
+    },
+    "ToggleColorFilter": {
+      "file": "toggleColorFilter.vue",
+      "import": "import ToggleColorFilter from '@/components/toggleColorFilter.vue'",
+      "status": "mirror",
+      "category": "forms",
+      "summary": "Bascule de filtre nuancier couleur, utilisée dans les panels d'aide au choix et les overlays de filtres catalogue. Affiche une pastille de couleur (donnée produit) avec le nombre de produits, et le label de la couleur. Sélectionné, la pastille de compteur est remplacée par une coche.",
+      "dependencies": ["IconMain"],
+      "props": [
+        {
+          "name": "modelValue",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "État sélectionné du filtre couleur. Liaison via v-model."
+        },
+        {
+          "name": "color",
+          "type": "string",
+          "required": false,
+          "default": "",
+          "description": "Valeur CSS du nuancier (couleur unie ou dégradé). Exception 'contenu produit' à la loi des tokens : c'est une donnée, pas un token DS."
+        },
+        {
+          "name": "image",
+          "type": "string",
+          "required": false,
+          "default": "",
+          "description": "URL d'image pour le nuancier (texture bois, marbre…). Prioritaire sur color si fournie (background cover)."
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "default": "",
+          "description": "Nom de la couleur, ex. 'Bleu nuit'. Tronqué en ellipsis si trop long."
+        },
+        {
+          "name": "count",
+          "type": "number",
+          "required": false,
+          "description": "Nombre de produits, affiché dans la pastille. Masqué à l'état sélectionné (remplacé par la coche)."
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Désactive le filtre. Rendu en <div> non focusable."
+        }
+      ],
+      "events": [
+        {
+          "name": "update:modelValue",
+          "payload": "boolean",
+          "description": "Émis au clic (ou clavier) avec la nouvelle valeur sélectionnée. À lier via v-model."
+        }
+      ],
+      "usage": {
+        "do": [
+          "Fournir color (couleur ou dégradé CSS) OU image pour le nuancier.",
+          "Utiliser dans les panels/overlays de filtres couleur du catalogue.",
+          "Disposer plusieurs ToggleColorFilter dans une grille ou une ligne wrap."
+        ],
+        "doNot": [
+          "Ne pas passer une couleur de marque via un token sémantique dans color : color est une donnée produit brute.",
+          "Ne pas restyler la pastille, la coche ou l'anneau par des overrides.",
+          "Ne pas réimplémenter la coche ; elle utilise IconMain (icon=\"Check\")."
+        ]
+      },
+      "a11y": [
+        "Rendu en <button role=\"checkbox\"> avec aria-checked ; activable au clavier (Entrée/Espace).",
+        "État disabled rendu en <div> non focusable.",
+        "Anneau de focus via :focus-visible déjà stylé.",
+        "La coche active est sombre : contraste faible sur un nuancier très foncé (fidèle Figma)."
+      ],
+      "examples": [
+        {
+          "title": "Couleur unie avec compteur",
+          "code": "<ToggleColorFilter color=\"#2b4a7e\" label=\"Bleu nuit\" :count=\"18\" v-model=\"isBlue\" />"
+        },
+        {
+          "title": "Nuancier multicolore (dégradé)",
+          "code": "<ToggleColorFilter color=\"linear-gradient(135deg, #e74c3c, #f1c40f, #2ecc71)\" label=\"Multicolore\" :count=\"6\" />"
+        },
+        {
+          "title": "Nuancier image (texture)",
+          "code": "<ToggleColorFilter image=\"/img/wood.jpg\" label=\"Bois\" :count=\"29\" />"
+        }
+      ]
     }
   }
 }
