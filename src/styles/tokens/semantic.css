@@ -170,6 +170,11 @@
   --effect-bg-blur-blur-none: var(--primitive-0-rem);
   --effect-bg-blur-blur-small: var(--primitive-0-625-rem);
   --effect-bg-blur-blur-default: var(--primitive-1-25-rem);
+
+  /* image overlays (buttonTactile) */
+  --effect-image-overlay-default: var(--primitive-overlay-brown-opacity-50);
+  --effect-image-overlay-rollover: var(--primitive-overlay-brown-opacity-140);
+  --effect-image-scrim-strong: var(--primitive-black-opacity-600);
 }
 
 

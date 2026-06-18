@@ -2,6 +2,191 @@
   "$schema": "./manifest.schema.json",
   "$generatedAt": "2026-06-16T00:00:00Z",
   "components": {
+    "BtLarge": {
+      "file": "btLarge.vue",
+      "import": "import BtLarge from '@/components/btLarge.vue'",
+      "status": "mirror",
+      "category": "navigation",
+      "summary": "Carte de navigation large placée en haut de catalogue. Comme ButtonTactile, met en avant une destination, mais renvoie vers un autre catalogue (ou un catalogue filtré) avec plus d'informations : vignette, titre, description et nombre de produits ciblés. Rendu en <button>, ou en <a> si href est fourni.",
+      "dependencies": [],
+      "props": [
+        {
+          "name": "title",
+          "type": "string",
+          "required": false,
+          "default": "",
+          "description": "Titre de la destination, ex. 'Porte à galandage'. Tronqué en ellipsis sur une ligne."
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false,
+          "default": "",
+          "description": "Description courte sous le titre. Tronquée en ellipsis sur une ligne."
+        },
+        {
+          "name": "count",
+          "type": "number",
+          "required": false,
+          "description": "Nombre de produits du catalogue ciblé. Le compteur n'est rendu que si count est fourni (0 inclus)."
+        },
+        {
+          "name": "countLabel",
+          "type": "string",
+          "required": false,
+          "default": "produits",
+          "description": "Mot affiché après le nombre, ex. '23450 produits'."
+        },
+        {
+          "name": "image",
+          "type": "string",
+          "required": false,
+          "default": "",
+          "description": "URL de la vignette (donnée produit, exception à la loi des tokens). Affichée en cover dans un cadre 96px (ratio 96/120)."
+        },
+        {
+          "name": "imageAlt",
+          "type": "string",
+          "required": false,
+          "default": "",
+          "description": "Texte alternatif de la vignette. Laisser vide si l'image est décorative (le sens est porté par le titre)."
+        },
+        {
+          "name": "href",
+          "type": "string",
+          "required": false,
+          "description": "Si fourni, le composant est rendu en <a> (navigation). Sinon en <button>."
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Désactive le composant (attribut disabled natif sur <button>, aria-disabled sur <a>)."
+        }
+      ],
+      "usage": {
+        "do": [
+          "Utiliser en haut de catalogue pour renvoyer vers un autre catalogue ou un catalogue filtré.",
+          "Fournir href pour une vraie navigation (rend un <a> accessible).",
+          "Renseigner count pour annoncer le nombre de produits de la destination.",
+          "Préférer ce composant à ButtonTactile quand la destination mérite plus de contexte (description + compteur)."
+        ],
+        "doNot": [
+          "Ne pas l'utiliser pour une action de formulaire ou un CTA : préférer ButtonMain.",
+          "Ne pas restyler le composant par des overrides ; consommer la variante telle quelle.",
+          "Ne pas passer une couleur de marque dans image : image est une donnée produit."
+        ]
+      },
+      "a11y": [
+        "Polymorphe : <a> si href (navigation native), sinon <button>.",
+        "État disabled géré pour <button> (disabled) et <a> (aria-disabled).",
+        "Anneau de focus externe via :focus-visible déjà stylé (blanc + bleu).",
+        "Vignette décorative en alt=\"\" : le sens est porté par le titre."
+      ],
+      "examples": [
+        {
+          "title": "Renvoi vers un catalogue (navigation)",
+          "code": "<BtLarge title=\"Porte à galandage\" description=\"Je suis une description du bouton\" :count=\"23450\" image=\"/img/porte.jpg\" href=\"/c/portes-galandage\" />"
+        },
+        {
+          "title": "Sans vignette ni compteur",
+          "code": "<BtLarge title=\"Nouveautés\" description=\"Les dernières arrivées\" href=\"/c/nouveautes\" />"
+        }
+      ]
+    },
+    "ButtonTactile": {
+      "file": "buttonTactile.vue",
+      "import": "import ButtonTactile from '@/components/buttonTactile.vue'",
+      "status": "mirror",
+      "category": "actions",
+      "summary": "Bouton tactile image + label utilisé en haut de catalogue pour mettre en avant une catégorie phare et naviguer vers le catalogue/sous-catégorie (maillage inter-page type inspiration ou catégories principales). Rendu en <button>, ou en <a> si href est fourni.",
+      "dependencies": [],
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "default": "",
+          "description": "Texte de la catégorie, sous l'image (packshot) ou sur l'image (ambiance). Tronqué en ellipsis sur 2 lignes."
+        },
+        {
+          "name": "image",
+          "type": "string",
+          "required": false,
+          "default": "",
+          "description": "URL de l'image (donnée produit, exception à la loi des tokens). 'packshot' : produit contenu sur fond blanc ; 'ambiance' : visuel lifestyle plein cadre (cover)."
+        },
+        {
+          "name": "type",
+          "type": "union",
+          "required": false,
+          "default": "packshot",
+          "options": ["packshot", "ambiance"],
+          "description": "Variante visuelle. 'packshot' = produit détouré sur fond blanc, label sous l'image. 'ambiance' = image lifestyle plein cadre avec label blanc sur dégradé."
+        },
+        {
+          "name": "active",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Catégorie sélectionnée : le label est souligné. Les états rollover et focus sont gérés en CSS (:hover / :focus-visible)."
+        },
+        {
+          "name": "withFilter",
+          "type": "boolean",
+          "required": false,
+          "default": true,
+          "description": "Affiche le voile d'assombrissement sur l'image (s'intensifie au survol). Concerne la variante packshot."
+        },
+        {
+          "name": "href",
+          "type": "string",
+          "required": false,
+          "description": "Si fourni, le composant est rendu en <a> (navigation). Sinon en <button>."
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Désactive le composant (attribut disabled natif sur <button>, aria-disabled sur <a>)."
+        }
+      ],
+      "usage": {
+        "do": [
+          "Utiliser en haut de catalogue pour mettre en avant une catégorie phare cliquable.",
+          "Fournir href pour une vraie navigation vers le catalogue/sous-catégorie (rend un <a>).",
+          "Choisir 'packshot' pour un produit détouré, 'ambiance' pour un visuel d'inspiration.",
+          "Activer active sur la catégorie courante (label souligné)."
+        ],
+        "doNot": [
+          "Ne pas l'utiliser pour une action de formulaire ou un CTA : préférer ButtonMain.",
+          "Ne pas restyler le composant par des overrides ; consommer la variante telle quelle.",
+          "Ne pas passer une couleur de marque dans image : image est une donnée produit."
+        ]
+      },
+      "a11y": [
+        "Polymorphe : <a> si href (navigation native), sinon <button>.",
+        "État disabled géré pour <button> (disabled) et <a> (aria-disabled).",
+        "Anneau de focus via :focus-visible déjà stylé (bordure focus 2px).",
+        "Image décorative en alt=\"\" : le sens est porté par le label."
+      ],
+      "examples": [
+        {
+          "title": "Catégorie packshot (navigation)",
+          "code": "<ButtonTactile label=\"Table basse\" image=\"/img/table.png\" href=\"/c/tables-basses\" />"
+        },
+        {
+          "title": "Catégorie ambiance, sélectionnée",
+          "code": "<ButtonTactile type=\"ambiance\" label=\"Salon\" image=\"/img/salon.jpg\" :active=\"true\" href=\"/c/salon\" />"
+        },
+        {
+          "title": "Packshot sans voile",
+          "code": "<ButtonTactile label=\"Canapé\" image=\"/img/sofa.png\" :with-filter=\"false\" />"
+        }
+      ]
+    },
     "ButtonMain": {
       "file": "buttonMain.vue",
       "import": "import ButtonMain from '@/components/buttonMain.vue'",

@@ -28,6 +28,8 @@ import websiteHeader from './components/websiteHeader.vue'
 import selectProductAac from './components/selectProductAac.vue'
 import inputSlider from './components/inputSlider.vue'
 import inputSliderButton from './components/inputSliderButton.vue'
+import buttonTactile from './components/buttonTactile.vue'
+import btLarge from './components/btLarge.vue'
 
 // websiteHeader
 const headerCartCount = ref(2)
@@ -850,6 +852,64 @@ const sliderDisabled = ref<[number, number]>([30, 70])
       <h2>inputSlider — disabled</h2>
       <div style="display: flex; flex-direction: column; gap: 1rem; max-width: 464px;">
         <inputSlider v-model="sliderDisabled" label="Désactivé" :min="0" :max="100" :disabled="true" />
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────────────────────── -->
+
+    <section>
+      <h2>buttonTactile — packshot (catégorie phare)</h2>
+      <div style="display: flex; gap: 16px; flex-wrap: wrap; align-items: flex-start;">
+        <buttonTactile label="Table basse" image="https://picsum.photos/seed/packshot1/248/248" href="#" />
+        <buttonTactile label="Canapé d'angle convertible" image="https://picsum.photos/seed/packshot2/248/248" :active="true" href="#" />
+        <buttonTactile label="Fauteuil" image="https://picsum.photos/seed/packshot3/248/248" :with-filter="false" href="#" />
+        <buttonTactile label="Indisponible" image="https://picsum.photos/seed/packshot4/248/248" :disabled="true" />
+      </div>
+      <span style="font-size: 13px; color: #666;">default · active (souligné) · sans voile · disabled — survoler / Tab pour rollover &amp; focus</span>
+    </section>
+
+    <section>
+      <h2>buttonTactile — ambiance (inspiration)</h2>
+      <div style="display: flex; gap: 16px; flex-wrap: wrap; align-items: flex-start;">
+        <buttonTactile type="ambiance" label="Salon" image="https://picsum.photos/seed/ambiance1/248/360" href="#" />
+        <buttonTactile type="ambiance" label="Chambre cosy" image="https://picsum.photos/seed/ambiance2/248/360" :active="true" href="#" />
+        <buttonTactile type="ambiance" label="Cuisine" image="https://picsum.photos/seed/ambiance3/248/360" :disabled="true" />
+      </div>
+      <span style="font-size: 13px; color: #666;">default · active (souligné) · disabled</span>
+    </section>
+
+    <!-- ─────────────────────────────────────────────────────── -->
+
+    <section>
+      <h2>btLarge — renvoi vers un catalogue</h2>
+      <div style="display: flex; flex-direction: column; gap: 12px; max-width: 460px;">
+        <btLarge
+          title="Porte à galandage"
+          description="Je suis une description du bouton"
+          :count="23450"
+          image="https://picsum.photos/seed/galandage/96/120"
+          image-alt=""
+          href="#"
+        />
+        <btLarge
+          title="Titre très long qui doit être tronqué proprement en ellipsis"
+          description="Description elle aussi très longue qui dépasse la largeur disponible du bloc"
+          :count="128"
+          image="https://picsum.photos/seed/catalog2/96/120"
+          href="#"
+        />
+        <btLarge
+          title="Sans vignette ni compteur"
+          description="Rendu en bouton (pas de href)"
+        />
+        <btLarge
+          title="Indisponible"
+          description="État désactivé"
+          :count="0"
+          image="https://picsum.photos/seed/catalog3/96/120"
+          :disabled="true"
+        />
+        <span style="font-size: 13px; color: #666;">href (lien) · troncature ellipsis · bouton sans image · disabled — survoler / Tab pour rollover &amp; focus</span>
       </div>
     </section>
 
