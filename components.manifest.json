@@ -644,6 +644,198 @@
           "code": "<ToggleColorFilter image=\"/img/wood.jpg\" label=\"Bois\" :count=\"29\" />"
         }
       ]
+    },
+    "ButtonPagination": {
+      "file": "buttonPagination.vue",
+      "import": "import ButtonPagination from '@/components/buttonPagination.vue'",
+      "status": "mirror",
+      "category": "actions",
+      "summary": "Bouton de numéro de page (brique atomique de Pagination). Affiche un numéro cliquable ; l'état actif (page courante) est entouré d'une bordure. Rendu en <button>, ou en <a> si href est fourni.",
+      "dependencies": [],
+      "props": [
+        {
+          "name": "page",
+          "type": "number | string",
+          "required": true,
+          "description": "Numéro (ou libellé) de la page affiché dans le bouton."
+        },
+        {
+          "name": "active",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Page courante : ajoute la bordure d'état actif (stroke-active) et aria-current=\"page\"."
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Désactive le bouton (attribut disabled natif sur <button>, aria-disabled sur <a>)."
+        },
+        {
+          "name": "href",
+          "type": "string",
+          "required": false,
+          "description": "Si fourni, le composant est rendu en <a> (navigation). Sinon en <button>."
+        }
+      ],
+      "events": [
+        {
+          "name": "click",
+          "payload": "MouseEvent",
+          "description": "Émis au clic (ou Entrée/Espace). Le parent change la page courante."
+        }
+      ],
+      "usage": {
+        "do": [
+          "Utiliser via Pagination, qui pilote page et active.",
+          "Fournir href pour une vraie navigation (rend un <a> accessible).",
+          "Activer active sur la page courante (label encadré + aria-current)."
+        ],
+        "doNot": [
+          "Ne pas l'utiliser pour une action de formulaire ou un CTA : préférer ButtonMain.",
+          "Ne pas réimplémenter l'assemblage flèches + numéros : utiliser Pagination.",
+          "Ne pas restyler le bouton par des overrides."
+        ]
+      },
+      "a11y": [
+        "Polymorphe : <a> si href (navigation native), sinon <button>.",
+        "aria-current=\"page\" posé sur la page active.",
+        "État disabled géré pour <button> (disabled) et <a> (aria-disabled).",
+        "Anneau de focus via :focus-visible déjà stylé."
+      ],
+      "examples": [
+        {
+          "title": "Page courante",
+          "code": "<ButtonPagination :page=\"1\" :active=\"true\" />"
+        },
+        {
+          "title": "Page navigable (lien)",
+          "code": "<ButtonPagination :page=\"2\" href=\"/c/canapes?page=2\" />"
+        }
+      ]
+    },
+    "Pagination": {
+      "file": "pagination.vue",
+      "import": "import Pagination from '@/components/pagination.vue'",
+      "status": "mirror",
+      "category": "actions",
+      "summary": "Pagination complète : bouton Précédent, suite de numéros (ButtonPagination) avec ellipses, et bouton Suivant. Le nombre de numéros visibles s'adapte au device (data-theme) ; sur Tablet/Mobile les flèches passent en icône seule.",
+      "dependencies": ["ButtonMain", "ButtonPagination", "IconMain"],
+      "props": [
+        {
+          "name": "modelValue",
+          "type": "number",
+          "required": false,
+          "default": 1,
+          "description": "Page courante. Liaison via v-model."
+        },
+        {
+          "name": "total",
+          "type": "number",
+          "required": true,
+          "description": "Nombre total de pages."
+        }
+      ],
+      "events": [
+        {
+          "name": "update:modelValue",
+          "payload": "number",
+          "description": "Émis quand la page change (clic numéro, Précédent ou Suivant). À lier via v-model."
+        }
+      ],
+      "usage": {
+        "do": [
+          "Lier la page courante via v-model et fournir total.",
+          "Laisser le composant gérer la troncature responsive (Desktop 7 / Tablet 5 / Mobile 3 numéros).",
+          "Poser data-theme sur la racine pour activer le bon fenêtrage."
+        ],
+        "doNot": [
+          "Ne pas réimplémenter les flèches : elles réutilisent ButtonMain en interne.",
+          "Ne pas restyler le composant ni ses boutons par des overrides.",
+          "Ne pas utiliser pour une navigation par onglets : c'est une pagination de liste."
+        ]
+      },
+      "a11y": [
+        "Conteneur <nav aria-label=\"Pagination\">.",
+        "Flèches Précédent/Suivant gardent un aria-label même en icône seule.",
+        "Précédent désactivé en première page, Suivant en dernière page.",
+        "Les ellipses (…) sont aria-hidden."
+      ],
+      "examples": [
+        {
+          "title": "Pagination simple",
+          "code": "<Pagination v-model=\"page\" :total=\"9\" />"
+        }
+      ]
+    },
+    "ButtonSlider": {
+      "file": "buttonSlider.vue",
+      "import": "import ButtonSlider from '@/components/buttonSlider.vue'",
+      "status": "mirror",
+      "category": "actions",
+      "summary": "Commande de défilement pour carrousels et sliders : une flèche (ButtonMain primary-on-picture) posée sur un dégradé décoratif de la couleur de fond. Le bouton et le dégradé disparaissent ensemble quand le défilement n'est plus possible.",
+      "dependencies": ["ButtonMain", "IconMain"],
+      "props": [
+        {
+          "name": "direction",
+          "type": "union",
+          "required": false,
+          "default": "left",
+          "options": ["left", "right", "top", "bottom"],
+          "description": "Sens du défilement : choisit le chevron et oriente le dégradé depuis le bord correspondant."
+        },
+        {
+          "name": "canScroll",
+          "type": "boolean",
+          "required": false,
+          "default": true,
+          "description": "false masque le bouton et le dégradé (fondu d'opacité). À passer à false quand on a atteint la borne de défilement."
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Désactive le bouton (propagé au ButtonMain interne)."
+        }
+      ],
+      "events": [
+        {
+          "name": "click",
+          "payload": "MouseEvent",
+          "description": "Émis au clic. Le parent réalise le défilement réel du slider."
+        }
+      ],
+      "usage": {
+        "do": [
+          "Poser un ButtonSlider à chaque extrémité défilable du slider (left/right ou top/bottom).",
+          "Passer canScroll=false dès qu'on ne peut plus défiler dans cette direction.",
+          "Laisser le parent gérer le scroll à la réception de 'click'."
+        ],
+        "doNot": [
+          "Ne pas réimplémenter la flèche : ce composant réutilise ButtonMain.",
+          "Ne pas restyler le dégradé ni le bouton par des overrides.",
+          "Ne pas l'utiliser comme CTA : c'est une commande de défilement."
+        ]
+      },
+      "a11y": [
+        "Le dégradé est aria-hidden et pointer-events:none (purement décoratif).",
+        "Le bouton porte un aria-label décrivant le sens (Précédent/Suivant).",
+        "Masqué (canScroll=false), le composant passe en visibility:hidden : non focusable.",
+        "Anneau de focus et état disabled hérités de ButtonMain."
+      ],
+      "examples": [
+        {
+          "title": "Flèche gauche d'un carrousel",
+          "code": "<ButtonSlider direction=\"left\" :can-scroll=\"canScrollLeft\" @click=\"scrollPrev\" />"
+        },
+        {
+          "title": "Flèche droite désactivée (fin de course)",
+          "code": "<ButtonSlider direction=\"right\" :can-scroll=\"false\" />"
+        }
+      ]
     }
   }
 }

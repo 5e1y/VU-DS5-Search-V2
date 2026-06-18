@@ -30,6 +30,9 @@ import inputSlider from './components/inputSlider.vue'
 import inputSliderButton from './components/inputSliderButton.vue'
 import buttonTactile from './components/buttonTactile.vue'
 import btLarge from './components/btLarge.vue'
+import buttonPagination from './components/buttonPagination.vue'
+import pagination from './components/pagination.vue'
+import buttonSlider from './components/buttonSlider.vue'
 
 // websiteHeader
 const headerCartCount = ref(2)
@@ -118,6 +121,19 @@ const sliderLength = ref<[number, number]>([220, 330])
 const sliderPrice = ref<[number, number]>([150, 800])
 const sliderStep = ref<[number, number]>([20, 80])
 const sliderDisabled = ref<[number, number]>([30, 70])
+
+// pagination
+const pageSmall = ref(2)
+const pageLarge = ref(5)
+const paginationDevice = ref<'Desktop' | 'Tablet' | 'Mobile'>('Desktop')
+function setPaginationDevice(d: 'Desktop' | 'Tablet' | 'Mobile') {
+  paginationDevice.value = d
+  document.documentElement.dataset.theme = d
+}
+
+// buttonSlider
+const sliderCanLeft = ref(false)
+const sliderCanRight = ref(true)
 </script>
 
 <template>
@@ -911,6 +927,94 @@ const sliderDisabled = ref<[number, number]>([30, 70])
         />
         <span style="font-size: 13px; color: #666;">href (lien) · troncature ellipsis · bouton sans image · disabled — survoler / Tab pour rollover &amp; focus</span>
       </div>
+    </section>
+
+    <!-- ─────────────────────────────────────────────────────── -->
+
+    <section>
+      <h2>buttonPagination — états (brique atomique)</h2>
+      <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+        <buttonPagination :page="1" />
+        <buttonPagination :page="2" :active="true" />
+        <buttonPagination :page="3" />
+        <buttonPagination :page="4" :disabled="true" />
+        <buttonPagination :page="5" href="#" />
+      </div>
+      <span style="font-size: 13px; color: #666;">default · active (page courante) · default · disabled · lien (href) — survoler / Tab pour rollover &amp; focus</span>
+    </section>
+
+    <section>
+      <h2>pagination — assemblage complet (responsive)</h2>
+      <div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap; font-size: 13px; margin-bottom: 1rem;">
+        <span style="color: #666;">Device :</span>
+        <buttonMain
+          v-for="d in (['Desktop', 'Tablet', 'Mobile'] as const)"
+          :key="d"
+          size="small"
+          :type="paginationDevice === d ? 'primary' : 'tertiary'"
+          :label="d"
+          @click="setPaginationDevice(d)"
+        />
+        <span style="color: #666; margin-left: 8px;">numéros max : Desktop 7 · Tablet 5 · Mobile 3</span>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+        <div>
+          <pagination v-model="pageLarge" :total="9" />
+          <span style="font-size: 13px; color: #666; display: block; margin-top: 6px;">total 9 — page courante : {{ pageLarge }}</span>
+        </div>
+        <div>
+          <pagination v-model="pageSmall" :total="4" />
+          <span style="font-size: 13px; color: #666; display: block; margin-top: 6px;">total 4 (pas d'ellipse) — page courante : {{ pageSmall }}</span>
+        </div>
+      </div>
+      <p style="font-size: 13px; color: #666; margin-top: 8px;">
+        Changer le device : les numéros du milieu tombent (7→5→3) et les flèches passent en icône seule.
+        (Le sélecteur modifie le <code>data-theme</code> global de la page.)
+      </p>
+    </section>
+
+    <!-- ─────────────────────────────────────────────────────── -->
+
+    <section>
+      <h2>buttonSlider — 4 directions (sur fond visible pour le dégradé)</h2>
+      <div style="display: flex; gap: 16px; flex-wrap: wrap; align-items: center; background: #888; padding: 1.5rem; border-radius: 8px;">
+        <buttonSlider direction="left" />
+        <buttonSlider direction="right" />
+        <buttonSlider direction="top" />
+        <buttonSlider direction="bottom" />
+        <buttonSlider direction="left" :disabled="true" />
+      </div>
+      <span style="font-size: 13px; color: #666;">left · right · top · bottom · disabled — le dégradé part du bord vers l'intérieur (couleur de surface → transparent)</span>
+    </section>
+
+    <section>
+      <h2>buttonSlider — mini-carrousel (canScroll)</h2>
+      <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; font-size: 13px; margin-bottom: 1rem;">
+        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+          <input type="checkbox" v-model="sliderCanLeft" /> canScroll gauche
+        </label>
+        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+          <input type="checkbox" v-model="sliderCanRight" /> canScroll droite
+        </label>
+      </div>
+      <div style="position: relative; overflow: hidden; border-radius: 8px;">
+        <div style="display: flex; gap: 12px; overflow-x: auto; padding: 12px;">
+          <div
+            v-for="i in 10"
+            :key="i"
+            style="flex: 0 0 auto; width: 140px; height: 100px; border-radius: 8px; background: var(--surface-neutral); display: flex; align-items: center; justify-content: center; font-family: Poppins, sans-serif; font-size: 14px; color: #666;"
+          >
+            Item {{ i }}
+          </div>
+        </div>
+        <div style="position: absolute; top: 0; bottom: 0; left: 0; display: flex; align-items: center; padding-left: 8px;">
+          <buttonSlider direction="left" :can-scroll="sliderCanLeft" />
+        </div>
+        <div style="position: absolute; top: 0; bottom: 0; right: 0; display: flex; align-items: center; padding-right: 8px;">
+          <buttonSlider direction="right" :can-scroll="sliderCanRight" />
+        </div>
+      </div>
+      <span style="font-size: 13px; color: #666;">Décocher une direction → la flèche et son dégradé disparaissent en fondu (et la flèche n'est plus focusable).</span>
     </section>
 
   </main>
