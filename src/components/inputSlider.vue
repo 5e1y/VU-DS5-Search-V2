@@ -87,7 +87,9 @@ function startDragging(index: 0 | 1) {
 function onHandlePointerDown(index: 0 | 1, e: PointerEvent) {
   if (props.disabled) return
   e.stopPropagation()
-  ;(e.currentTarget as HTMLElement).focus()
+  /* Pas de .focus() ici : le glissement passe par les listeners window, et
+     focaliser au pointeur ferait apparaître l'anneau de focus au relâchement.
+     L'anneau reste réservé au focus clavier (Tab). */
   startDragging(index)
 }
 
@@ -169,6 +171,7 @@ onBeforeUnmount(stopDragging)
         :key="index"
         type="button"
         class="input-slider__handle"
+        :class="{ 'input-slider__handle--pressed': draggingIndex === index }"
         :style="{ left: `${percent(values[index])}%` }"
         role="slider"
         :aria-valuemin="index === 0 ? min : values[0]"
@@ -270,6 +273,12 @@ onBeforeUnmount(stopDragging)
   box-shadow:
     0 0 0 var(--effect-shadow-spread-small) var(--shadow-focus-focus),
     0 0 0 var(--effect-shadow-spread-medium) var(--shadow-focus-default);
+}
+
+/* Pressé (glissement actif) = identique au hover : point agrandi seul, sans
+   anneau. L'anneau de focus reste réservé au focus clavier. */
+.input-slider__handle--pressed.input-slider__handle:focus-visible {
+  box-shadow: none;
 }
 
 /* ── Champs ──────────────────────────────────────────────── */

@@ -160,6 +160,11 @@
   --primitive-white-opacity-80-: rgba(249, 250, 251, 0.800000011920929);
   --primitive-white-opacity-90-: rgba(249, 250, 251, 0.8999999761581421);
 
+  /* overlay (voiles image) */
+  --primitive-overlay-brown-opacity-50: rgba(95, 48, 48, 0.05);
+  --primitive-overlay-brown-opacity-140: rgba(89, 54, 54, 0.14);
+  --primitive-black-opacity-600: rgba(0, 0, 0, 0.6);
+
   /* ---------------------------------------------------------------- */
   /* Breakpoints                                                      */
   /* ---------------------------------------------------------------- */

@@ -2,20 +2,308 @@
   "$schema": "./manifest.schema.json",
   "$generatedAt": "2026-06-16T00:00:00Z",
   "components": {
+    "AccordionMain": {
+      "file": "accordionMain.vue",
+      "import": "import AccordionMain from '@/components/accordionMain.vue'",
+      "status": "mirror",
+      "category": "content",
+      "summary": "Accordéon dépliable : un en-tête déclencheur (titre + chevron) qui replie/déplie un corps de contenu (slot, principalement textuel) avec animation de hauteur. Deux types via ifInside : carte bordée (fond, bordure, radius 20px) ou en-tête nu sans cadre. État géré en v-model:open ou en autonomie interne.",
+      "dependencies": [
+        "IconMain"
+      ],
+      "props": [
+        {
+          "name": "title",
+          "type": "string",
+          "required": true,
+          "description": "Texte de l'en-tête déclencheur (rendu en medium-300)."
+        },
+        {
+          "name": "ifInside",
+          "type": "boolean",
+          "required": false,
+          "default": true,
+          "description": "true = carte bordée (fond surface-background, bordure, radius medium). false = en-tête nu sans cadre ni padding horizontal."
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "required": false,
+          "description": "État ouvert/fermé. Lié en v-model:open. Si fourni, le composant est contrôlé ; sinon il gère son état en interne."
+        },
+        {
+          "name": "defaultOpen",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "État initial quand le composant n'est pas contrôlé (open non fourni)."
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Désactive l'en-tête (non cliquable, couleurs atténuées)."
+        },
+        {
+          "name": "icon",
+          "type": "string",
+          "required": false,
+          "default": "ChevronDown",
+          "description": "Icône iconMain de l'indicateur (pivote de 180° à l'ouverture)."
+        }
+      ],
+      "slots": [
+        {
+          "name": "default",
+          "description": "Contenu du corps dépliable (principalement textuel)."
+        }
+      ],
+      "events": [
+        {
+          "name": "update:open",
+          "payload": "boolean",
+          "description": "Émis au toggle de l'en-tête (clic/Enter/Espace). Support v-model:open."
+        }
+      ],
+      "usage": {
+        "do": [
+          "Utiliser ifInside=true pour un accordéon en carte autonome, false pour un accordéon intégré à une liste/section.",
+          "Lier v-model:open pour piloter l'état depuis le parent, ou laisser l'autonomie interne via defaultOpen.",
+          "Mettre du contenu textuel simple dans le slot par défaut."
+        ],
+        "doNot": [
+          "Ne pas réimplémenter l'en-tête/chevron inline : passer par title et le slot.",
+          "Ne pas restyler le composant par des overrides de ses classes ou tokens."
+        ]
+      },
+      "a11y": [
+        "L'en-tête est un <button> natif avec aria-expanded et aria-controls vers le corps.",
+        "Le corps porte role='region' et est rendu inerte (inert) quand replié.",
+        "Focus clavier visible : anneau blanc+bleu (ifInside) ou bordure bleue + radius-focus-mode (nu)."
+      ],
+      "examples": [
+        {
+          "title": "Carte autonome",
+          "code": "<AccordionMain title=\"Je suis un accordion\">Contenu…</AccordionMain>"
+        },
+        {
+          "title": "En-tête nu, piloté",
+          "code": "<AccordionMain title=\"Détails\" :if-inside=\"false\" v-model:open=\"open\">Contenu…</AccordionMain>"
+        }
+      ]
+    },
+    "BtLarge": {
+      "file": "btLarge.vue",
+      "import": "import BtLarge from '@/components/btLarge.vue'",
+      "status": "mirror",
+      "category": "navigation",
+      "summary": "Carte de navigation large placée en haut de catalogue. Comme ButtonTactile, met en avant une destination, mais renvoie vers un autre catalogue (ou un catalogue filtré) avec plus d'informations : vignette, titre, description et nombre de produits ciblés. Rendu en <button>, ou en <a> si href est fourni.",
+      "dependencies": [],
+      "props": [
+        {
+          "name": "title",
+          "type": "string",
+          "required": false,
+          "default": "",
+          "description": "Titre de la destination, ex. 'Porte à galandage'. Tronqué en ellipsis sur une ligne."
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false,
+          "default": "",
+          "description": "Description courte sous le titre. Tronquée en ellipsis sur une ligne."
+        },
+        {
+          "name": "count",
+          "type": "number",
+          "required": false,
+          "description": "Nombre de produits du catalogue ciblé. Le compteur n'est rendu que si count est fourni (0 inclus)."
+        },
+        {
+          "name": "countLabel",
+          "type": "string",
+          "required": false,
+          "default": "produits",
+          "description": "Mot affiché après le nombre, ex. '23450 produits'."
+        },
+        {
+          "name": "image",
+          "type": "string",
+          "required": false,
+          "default": "",
+          "description": "URL de la vignette (donnée produit, exception à la loi des tokens). Affichée en cover dans un cadre 96px (ratio 96/120)."
+        },
+        {
+          "name": "imageAlt",
+          "type": "string",
+          "required": false,
+          "default": "",
+          "description": "Texte alternatif de la vignette. Laisser vide si l'image est décorative (le sens est porté par le titre)."
+        },
+        {
+          "name": "href",
+          "type": "string",
+          "required": false,
+          "description": "Si fourni, le composant est rendu en <a> (navigation). Sinon en <button>."
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Désactive le composant (attribut disabled natif sur <button>, aria-disabled sur <a>)."
+        }
+      ],
+      "usage": {
+        "do": [
+          "Utiliser en haut de catalogue pour renvoyer vers un autre catalogue ou un catalogue filtré.",
+          "Fournir href pour une vraie navigation (rend un <a> accessible).",
+          "Renseigner count pour annoncer le nombre de produits de la destination.",
+          "Préférer ce composant à ButtonTactile quand la destination mérite plus de contexte (description + compteur)."
+        ],
+        "doNot": [
+          "Ne pas l'utiliser pour une action de formulaire ou un CTA : préférer ButtonMain.",
+          "Ne pas restyler le composant par des overrides ; consommer la variante telle quelle.",
+          "Ne pas passer une couleur de marque dans image : image est une donnée produit."
+        ]
+      },
+      "a11y": [
+        "Polymorphe : <a> si href (navigation native), sinon <button>.",
+        "État disabled géré pour <button> (disabled) et <a> (aria-disabled).",
+        "Anneau de focus externe via :focus-visible déjà stylé (blanc + bleu).",
+        "Vignette décorative en alt=\"\" : le sens est porté par le titre."
+      ],
+      "examples": [
+        {
+          "title": "Renvoi vers un catalogue (navigation)",
+          "code": "<BtLarge title=\"Porte à galandage\" description=\"Je suis une description du bouton\" :count=\"23450\" image=\"/img/porte.jpg\" href=\"/c/portes-galandage\" />"
+        },
+        {
+          "title": "Sans vignette ni compteur",
+          "code": "<BtLarge title=\"Nouveautés\" description=\"Les dernières arrivées\" href=\"/c/nouveautes\" />"
+        }
+      ]
+    },
+    "ButtonTactile": {
+      "file": "buttonTactile.vue",
+      "import": "import ButtonTactile from '@/components/buttonTactile.vue'",
+      "status": "mirror",
+      "category": "actions",
+      "summary": "Bouton tactile image + label utilisé en haut de catalogue pour mettre en avant une catégorie phare et naviguer vers le catalogue/sous-catégorie (maillage inter-page type inspiration ou catégories principales). Rendu en <button>, ou en <a> si href est fourni.",
+      "dependencies": [],
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "default": "",
+          "description": "Texte de la catégorie, sous l'image (packshot) ou sur l'image (ambiance). Tronqué en ellipsis sur 2 lignes."
+        },
+        {
+          "name": "image",
+          "type": "string",
+          "required": false,
+          "default": "",
+          "description": "URL de l'image (donnée produit, exception à la loi des tokens). 'packshot' : produit contenu sur fond blanc ; 'ambiance' : visuel lifestyle plein cadre (cover)."
+        },
+        {
+          "name": "type",
+          "type": "union",
+          "required": false,
+          "default": "packshot",
+          "options": [
+            "packshot",
+            "ambiance"
+          ],
+          "description": "Variante visuelle. 'packshot' = produit détouré sur fond blanc, label sous l'image. 'ambiance' = image lifestyle plein cadre avec label blanc sur dégradé."
+        },
+        {
+          "name": "active",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Catégorie sélectionnée : le label est souligné. Les états rollover et focus sont gérés en CSS (:hover / :focus-visible)."
+        },
+        {
+          "name": "withFilter",
+          "type": "boolean",
+          "required": false,
+          "default": true,
+          "description": "Affiche le voile d'assombrissement sur l'image (s'intensifie au survol). Concerne la variante packshot."
+        },
+        {
+          "name": "href",
+          "type": "string",
+          "required": false,
+          "description": "Si fourni, le composant est rendu en <a> (navigation). Sinon en <button>."
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Désactive le composant (attribut disabled natif sur <button>, aria-disabled sur <a>)."
+        }
+      ],
+      "usage": {
+        "do": [
+          "Utiliser en haut de catalogue pour mettre en avant une catégorie phare cliquable.",
+          "Fournir href pour une vraie navigation vers le catalogue/sous-catégorie (rend un <a>).",
+          "Choisir 'packshot' pour un produit détouré, 'ambiance' pour un visuel d'inspiration.",
+          "Activer active sur la catégorie courante (label souligné)."
+        ],
+        "doNot": [
+          "Ne pas l'utiliser pour une action de formulaire ou un CTA : préférer ButtonMain.",
+          "Ne pas restyler le composant par des overrides ; consommer la variante telle quelle.",
+          "Ne pas passer une couleur de marque dans image : image est une donnée produit."
+        ]
+      },
+      "a11y": [
+        "Polymorphe : <a> si href (navigation native), sinon <button>.",
+        "État disabled géré pour <button> (disabled) et <a> (aria-disabled).",
+        "Anneau de focus via :focus-visible déjà stylé (bordure focus 2px).",
+        "Image décorative en alt=\"\" : le sens est porté par le label."
+      ],
+      "examples": [
+        {
+          "title": "Catégorie packshot (navigation)",
+          "code": "<ButtonTactile label=\"Table basse\" image=\"/img/table.png\" href=\"/c/tables-basses\" />"
+        },
+        {
+          "title": "Catégorie ambiance, sélectionnée",
+          "code": "<ButtonTactile type=\"ambiance\" label=\"Salon\" image=\"/img/salon.jpg\" :active=\"true\" href=\"/c/salon\" />"
+        },
+        {
+          "title": "Packshot sans voile",
+          "code": "<ButtonTactile label=\"Canapé\" image=\"/img/sofa.png\" :with-filter=\"false\" />"
+        }
+      ]
+    },
     "ButtonMain": {
       "file": "buttonMain.vue",
       "import": "import ButtonMain from '@/components/buttonMain.vue'",
       "status": "mirror",
       "category": "actions",
       "summary": "Bouton d'action principal. Rendu en <button>, ou en <a> si href est fourni.",
-      "dependencies": ["IconMain"],
+      "dependencies": [
+        "IconMain"
+      ],
       "props": [
         {
           "name": "type",
           "type": "union",
           "required": false,
           "default": "primary",
-          "options": ["primary", "secondary", "tertiary", "text", "ghost", "primary-on-picture"],
+          "options": [
+            "primary",
+            "secondary",
+            "tertiary",
+            "text",
+            "ghost",
+            "primary-on-picture"
+          ],
           "description": "Style visuel. 'primary' = action principale ; 'secondary' = bordure ; 'tertiary'/'ghost' = faible emphase ; 'text' = lien souligné ; 'primary-on-picture' = posé sur une image (fond flouté)."
         },
         {
@@ -23,7 +311,10 @@
           "type": "union",
           "required": false,
           "default": "default",
-          "options": ["default", "small"],
+          "options": [
+            "default",
+            "small"
+          ],
           "description": "Taille. 'small' réduit le padding du label et l'icône."
         },
         {
@@ -96,7 +387,10 @@
       "status": "mirror",
       "category": "forms",
       "summary": "Ligne cliquable de la partie information d'une fiche produit (parcours Aide au Choix). Affiche un titre, la valeur retenue, un badge du nombre de valeurs possibles et un chevron ; émet 'click' pour ouvrir un panel de sélection.",
-      "dependencies": ["IconMain", "LabelMain"],
+      "dependencies": [
+        "IconMain",
+        "LabelMain"
+      ],
       "props": [
         {
           "name": "title",
@@ -170,6 +464,117 @@
         }
       ]
     },
+    "ListItem": {
+      "file": "listItem.vue",
+      "import": "import ListItem from '@/components/listItem.vue'",
+      "status": "mirror",
+      "category": "navigation",
+      "summary": "Élément de liste générique pour menus et listes navigables. Trois niveaux de hiérarchie (level-0/1/2 = indentation gauche croissante) et deux densités (large 48px / compact 36px). Icônes gauche/droite optionnelles, texte central. États rollover/focus gérés en CSS, active (item sélectionné, texte souligné) et disabled en props. Rendu polymorphe bouton ou lien (href).",
+      "dependencies": [
+        "IconMain"
+      ],
+      "props": [
+        {
+          "name": "text",
+          "type": "string",
+          "required": true,
+          "description": "Libellé de l'item (rendu en medium-300 en large, medium-200 en compact ; souligné si active)."
+        },
+        {
+          "name": "type",
+          "type": "'large' | 'compact'",
+          "required": false,
+          "default": "large",
+          "options": [
+            "large",
+            "compact"
+          ],
+          "description": "Densité de l'item : large (hauteur 48px, icônes large) ou compact (36px, icônes medium)."
+        },
+        {
+          "name": "level",
+          "type": "'level-0' | 'level-1' | 'level-2'",
+          "required": false,
+          "default": "level-0",
+          "options": [
+            "level-0",
+            "level-1",
+            "level-2"
+          ],
+          "description": "Niveau hiérarchique = indentation gauche : level-0 (8px), level-1 (24px), level-2 (48px)."
+        },
+        {
+          "name": "iconLeft",
+          "type": "string",
+          "required": false,
+          "description": "Nom d'icône iconMain affichée à gauche. Omis = pas d'icône gauche."
+        },
+        {
+          "name": "iconRight",
+          "type": "string",
+          "required": false,
+          "description": "Nom d'icône iconMain affichée à droite (ex. ChevronRight pour un item navigable). Omis = pas d'icône droite."
+        },
+        {
+          "name": "active",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Item sélectionné : fond rollover + texte souligné."
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Désactive l'item (non cliquable, couleur atténuée). Géré sur button (disabled) et lien (aria-disabled)."
+        },
+        {
+          "name": "href",
+          "type": "string",
+          "required": false,
+          "description": "Si fourni, l'item est rendu comme <a> (lien) au lieu de <button>."
+        }
+      ],
+      "events": [
+        {
+          "name": "click",
+          "payload": "void",
+          "description": "Émis au clic (sauf si disabled)."
+        }
+      ],
+      "usage": {
+        "do": [
+          "Utiliser dans des menus ou listes navigables ; combiner les level pour rendre une hiérarchie.",
+          "Passer iconRight=\"ChevronRight\" pour un item qui ouvre un sous-niveau ou une page.",
+          "Mettre active sur l'item correspondant à la page/section courante."
+        ],
+        "doNot": [
+          "Ne pas re-styler iconMain ni le texte par-dessus le composant.",
+          "Ne pas utiliser pour une action principale type bouton : préférer ButtonMain.",
+          "Ne pas forcer rollover/focus en CSS externe : ces états sont déjà gérés."
+        ]
+      },
+      "a11y": [
+        "Rendu natif button ou lien (a) selon href ; navigable et activable au clavier.",
+        "État disabled géré pour button (disabled) et lien (aria-disabled).",
+        "Anneau de focus clavier via :focus-visible déjà stylé."
+      ],
+      "examples": [
+        {
+          "title": "Item de menu simple",
+          "code": "<ListItem text=\"Mon compte\" iconLeft=\"User\" />"
+        },
+        {
+          "title": "Item navigable (lien + chevron)",
+          "code": "<ListItem text=\"Catégories\" iconRight=\"ChevronRight\" href=\"/categories\" />"
+        },
+        {
+          "title": "Sous-niveau actif, compact",
+          "code": "<ListItem text=\"Canapés\" type=\"compact\" level=\"level-1\" active />"
+        }
+      ]
+    },
     "InputSliderButton": {
       "file": "inputSliderButton.vue",
       "import": "import InputSliderButton from '@/components/inputSliderButton.vue'",
@@ -183,7 +588,10 @@
           "type": "union",
           "required": false,
           "default": "default",
-          "options": ["default", "rollover"],
+          "options": [
+            "default",
+            "rollover"
+          ],
           "description": "État visuel. 'default' = point 16px ; 'rollover' = point 24px (survol ou glissement actif). Le survol agrandit aussi le point via CSS."
         },
         {
@@ -219,7 +627,10 @@
       "status": "mirror",
       "category": "forms",
       "summary": "Slider de plage à deux poignées pour les panels d'aide au choix des fiches produit (filtres prix, dimensions, valeurs numériques). Deux champs de saisie synchronisés affichent et modifient les bornes ; un label décrit le contexte.",
-      "dependencies": ["InputSliderButton", "Input"],
+      "dependencies": [
+        "InputSliderButton",
+        "Input"
+      ],
       "props": [
         {
           "name": "modelValue",
@@ -296,6 +707,738 @@
         {
           "title": "Plage de prix avec pas",
           "code": "<InputSlider v-model=\"price\" label=\"Prix (€)\" :min=\"0\" :max=\"1000\" :step=\"10\" />"
+        }
+      ]
+    },
+    "ToggleFilter": {
+      "file": "toggleFilter.vue",
+      "import": "import ToggleFilter from '@/components/toggleFilter.vue'",
+      "status": "mirror",
+      "category": "forms",
+      "summary": "Coche de filtre texte sélectionnable, utilisée dans les panels d'aide au choix et les overlays des selects de filtres du catalogue. Compose un ToggleMain (checkbox), un label et le nombre d'articles correspondant au filtre.",
+      "dependencies": [
+        "ToggleMain"
+      ],
+      "props": [
+        {
+          "name": "modelValue",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "État actif/coché du filtre. Liaison via v-model."
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "default": "",
+          "description": "Libellé du filtre, ex. 'Droit'."
+        },
+        {
+          "name": "count",
+          "type": "number",
+          "required": false,
+          "description": "Nombre d'articles pour ce filtre. Le compteur n'est rendu que si count est fourni (0 inclus)."
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Désactive le filtre. Rendu en <div> + aria-disabled implicite (pas focusable)."
+        }
+      ],
+      "events": [
+        {
+          "name": "update:modelValue",
+          "payload": "boolean",
+          "description": "Émis au clic (ou clavier) avec la nouvelle valeur active. À lier via v-model."
+        }
+      ],
+      "usage": {
+        "do": [
+          "Utiliser dans les panels d'aide au choix et overlays de filtres catalogue.",
+          "Lier l'état via v-model et fournir count pour le nombre d'articles.",
+          "Empiler plusieurs ToggleFilter en colonne pour une liste de filtres."
+        ],
+        "doNot": [
+          "Ne pas restyler le composant ni la case par des overrides : tous les états sont pilotés en interne.",
+          "Ne pas réimplémenter la case ; ce composant réutilise ToggleMain.",
+          "Ne pas utiliser hors d'un contexte de filtrage (préférer ToggleChoice pour une option de formulaire)."
+        ]
+      },
+      "a11y": [
+        "Rendu en <button role=\"checkbox\"> avec aria-checked ; activable au clavier (Entrée/Espace).",
+        "État disabled rendu en <div> non focusable.",
+        "Anneau de focus via :focus-visible déjà stylé."
+      ],
+      "examples": [
+        {
+          "title": "Filtre avec compteur",
+          "code": "<ToggleFilter label=\"Droit\" :count=\"44\" v-model=\"isDroit\" />"
+        },
+        {
+          "title": "Filtre actif sans compteur",
+          "code": "<ToggleFilter label=\"Convertible\" :model-value=\"true\" />"
+        }
+      ]
+    },
+    "ToggleColorFilter": {
+      "file": "toggleColorFilter.vue",
+      "import": "import ToggleColorFilter from '@/components/toggleColorFilter.vue'",
+      "status": "mirror",
+      "category": "forms",
+      "summary": "Bascule de filtre nuancier couleur, utilisée dans les panels d'aide au choix et les overlays de filtres catalogue. Affiche une pastille de couleur (donnée produit) avec le nombre de produits, et le label de la couleur. Sélectionné, la pastille de compteur est remplacée par une coche.",
+      "dependencies": [
+        "IconMain"
+      ],
+      "props": [
+        {
+          "name": "modelValue",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "État sélectionné du filtre couleur. Liaison via v-model."
+        },
+        {
+          "name": "color",
+          "type": "string",
+          "required": false,
+          "default": "",
+          "description": "Valeur CSS du nuancier (couleur unie ou dégradé). Exception 'contenu produit' à la loi des tokens : c'est une donnée, pas un token DS."
+        },
+        {
+          "name": "image",
+          "type": "string",
+          "required": false,
+          "default": "",
+          "description": "URL d'image pour le nuancier (texture bois, marbre…). Prioritaire sur color si fournie (background cover)."
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "default": "",
+          "description": "Nom de la couleur, ex. 'Bleu nuit'. Tronqué en ellipsis si trop long."
+        },
+        {
+          "name": "count",
+          "type": "number",
+          "required": false,
+          "description": "Nombre de produits, affiché dans la pastille. Masqué à l'état sélectionné (remplacé par la coche)."
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Désactive le filtre. Rendu en <div> non focusable."
+        }
+      ],
+      "events": [
+        {
+          "name": "update:modelValue",
+          "payload": "boolean",
+          "description": "Émis au clic (ou clavier) avec la nouvelle valeur sélectionnée. À lier via v-model."
+        }
+      ],
+      "usage": {
+        "do": [
+          "Fournir color (couleur ou dégradé CSS) OU image pour le nuancier.",
+          "Utiliser dans les panels/overlays de filtres couleur du catalogue.",
+          "Disposer plusieurs ToggleColorFilter dans une grille ou une ligne wrap."
+        ],
+        "doNot": [
+          "Ne pas passer une couleur de marque via un token sémantique dans color : color est une donnée produit brute.",
+          "Ne pas restyler la pastille, la coche ou l'anneau par des overrides.",
+          "Ne pas réimplémenter la coche ; elle utilise IconMain (icon=\"Check\")."
+        ]
+      },
+      "a11y": [
+        "Rendu en <button role=\"checkbox\"> avec aria-checked ; activable au clavier (Entrée/Espace).",
+        "État disabled rendu en <div> non focusable.",
+        "Anneau de focus via :focus-visible déjà stylé.",
+        "La coche active est sombre : contraste faible sur un nuancier très foncé (fidèle Figma)."
+      ],
+      "examples": [
+        {
+          "title": "Couleur unie avec compteur",
+          "code": "<ToggleColorFilter color=\"#2b4a7e\" label=\"Bleu nuit\" :count=\"18\" v-model=\"isBlue\" />"
+        },
+        {
+          "title": "Nuancier multicolore (dégradé)",
+          "code": "<ToggleColorFilter color=\"linear-gradient(135deg, #e74c3c, #f1c40f, #2ecc71)\" label=\"Multicolore\" :count=\"6\" />"
+        },
+        {
+          "title": "Nuancier image (texture)",
+          "code": "<ToggleColorFilter image=\"/img/wood.jpg\" label=\"Bois\" :count=\"29\" />"
+        }
+      ]
+    },
+    "ButtonPagination": {
+      "file": "buttonPagination.vue",
+      "import": "import ButtonPagination from '@/components/buttonPagination.vue'",
+      "status": "mirror",
+      "category": "actions",
+      "summary": "Bouton de numéro de page (brique atomique de Pagination). Affiche un numéro cliquable ; l'état actif (page courante) est entouré d'une bordure. Rendu en <button>, ou en <a> si href est fourni.",
+      "dependencies": [],
+      "props": [
+        {
+          "name": "page",
+          "type": "number | string",
+          "required": true,
+          "description": "Numéro (ou libellé) de la page affiché dans le bouton."
+        },
+        {
+          "name": "active",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Page courante : ajoute la bordure d'état actif (stroke-active) et aria-current=\"page\"."
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Désactive le bouton (attribut disabled natif sur <button>, aria-disabled sur <a>)."
+        },
+        {
+          "name": "href",
+          "type": "string",
+          "required": false,
+          "description": "Si fourni, le composant est rendu en <a> (navigation). Sinon en <button>."
+        }
+      ],
+      "events": [
+        {
+          "name": "click",
+          "payload": "MouseEvent",
+          "description": "Émis au clic (ou Entrée/Espace). Le parent change la page courante."
+        }
+      ],
+      "usage": {
+        "do": [
+          "Utiliser via Pagination, qui pilote page et active.",
+          "Fournir href pour une vraie navigation (rend un <a> accessible).",
+          "Activer active sur la page courante (label encadré + aria-current)."
+        ],
+        "doNot": [
+          "Ne pas l'utiliser pour une action de formulaire ou un CTA : préférer ButtonMain.",
+          "Ne pas réimplémenter l'assemblage flèches + numéros : utiliser Pagination.",
+          "Ne pas restyler le bouton par des overrides."
+        ]
+      },
+      "a11y": [
+        "Polymorphe : <a> si href (navigation native), sinon <button>.",
+        "aria-current=\"page\" posé sur la page active.",
+        "État disabled géré pour <button> (disabled) et <a> (aria-disabled).",
+        "Anneau de focus via :focus-visible déjà stylé."
+      ],
+      "examples": [
+        {
+          "title": "Page courante",
+          "code": "<ButtonPagination :page=\"1\" :active=\"true\" />"
+        },
+        {
+          "title": "Page navigable (lien)",
+          "code": "<ButtonPagination :page=\"2\" href=\"/c/canapes?page=2\" />"
+        }
+      ]
+    },
+    "Pagination": {
+      "file": "pagination.vue",
+      "import": "import Pagination from '@/components/pagination.vue'",
+      "status": "mirror",
+      "category": "actions",
+      "summary": "Pagination complète : bouton Précédent, suite de numéros (ButtonPagination) avec ellipses, et bouton Suivant. Le nombre de numéros visibles s'adapte au device (data-theme) ; sur Tablet/Mobile les flèches passent en icône seule.",
+      "dependencies": [
+        "ButtonMain",
+        "ButtonPagination",
+        "IconMain"
+      ],
+      "props": [
+        {
+          "name": "modelValue",
+          "type": "number",
+          "required": false,
+          "default": 1,
+          "description": "Page courante. Liaison via v-model."
+        },
+        {
+          "name": "total",
+          "type": "number",
+          "required": true,
+          "description": "Nombre total de pages."
+        }
+      ],
+      "events": [
+        {
+          "name": "update:modelValue",
+          "payload": "number",
+          "description": "Émis quand la page change (clic numéro, Précédent ou Suivant). À lier via v-model."
+        }
+      ],
+      "usage": {
+        "do": [
+          "Lier la page courante via v-model et fournir total.",
+          "Laisser le composant gérer la troncature responsive (Desktop 7 / Tablet 5 / Mobile 3 numéros).",
+          "Poser data-theme sur la racine pour activer le bon fenêtrage."
+        ],
+        "doNot": [
+          "Ne pas réimplémenter les flèches : elles réutilisent ButtonMain en interne.",
+          "Ne pas restyler le composant ni ses boutons par des overrides.",
+          "Ne pas utiliser pour une navigation par onglets : c'est une pagination de liste."
+        ]
+      },
+      "a11y": [
+        "Conteneur <nav aria-label=\"Pagination\">.",
+        "Flèches Précédent/Suivant gardent un aria-label même en icône seule.",
+        "Précédent désactivé en première page, Suivant en dernière page.",
+        "Les ellipses (…) sont aria-hidden."
+      ],
+      "examples": [
+        {
+          "title": "Pagination simple",
+          "code": "<Pagination v-model=\"page\" :total=\"9\" />"
+        }
+      ]
+    },
+    "ButtonSlider": {
+      "file": "buttonSlider.vue",
+      "import": "import ButtonSlider from '@/components/buttonSlider.vue'",
+      "status": "mirror",
+      "category": "actions",
+      "summary": "Commande de défilement pour carrousels et sliders : une flèche (ButtonMain primary-on-picture) posée sur un dégradé décoratif de la couleur de fond. Le bouton et le dégradé disparaissent ensemble quand le défilement n'est plus possible.",
+      "dependencies": [
+        "ButtonMain",
+        "IconMain"
+      ],
+      "props": [
+        {
+          "name": "direction",
+          "type": "union",
+          "required": false,
+          "default": "left",
+          "options": [
+            "left",
+            "right",
+            "top",
+            "bottom"
+          ],
+          "description": "Sens du défilement : choisit le chevron et oriente le dégradé depuis le bord correspondant."
+        },
+        {
+          "name": "canScroll",
+          "type": "boolean",
+          "required": false,
+          "default": true,
+          "description": "false masque le bouton et le dégradé (fondu d'opacité). À passer à false quand on a atteint la borne de défilement."
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Désactive le bouton (propagé au ButtonMain interne)."
+        }
+      ],
+      "events": [
+        {
+          "name": "click",
+          "payload": "MouseEvent",
+          "description": "Émis au clic. Le parent réalise le défilement réel du slider."
+        }
+      ],
+      "usage": {
+        "do": [
+          "Poser un ButtonSlider à chaque extrémité défilable du slider (left/right ou top/bottom).",
+          "Passer canScroll=false dès qu'on ne peut plus défiler dans cette direction.",
+          "Laisser le parent gérer le scroll à la réception de 'click'."
+        ],
+        "doNot": [
+          "Ne pas réimplémenter la flèche : ce composant réutilise ButtonMain.",
+          "Ne pas restyler le dégradé ni le bouton par des overrides.",
+          "Ne pas l'utiliser comme CTA : c'est une commande de défilement."
+        ]
+      },
+      "a11y": [
+        "Le dégradé est aria-hidden et pointer-events:none (purement décoratif).",
+        "Le bouton porte un aria-label décrivant le sens (Précédent/Suivant).",
+        "Masqué (canScroll=false), le composant passe en visibility:hidden : non focusable.",
+        "Anneau de focus et état disabled hérités de ButtonMain."
+      ],
+      "examples": [
+        {
+          "title": "Flèche gauche d'un carrousel",
+          "code": "<ButtonSlider direction=\"left\" :can-scroll=\"canScrollLeft\" @click=\"scrollPrev\" />"
+        },
+        {
+          "title": "Flèche droite désactivée (fin de course)",
+          "code": "<ButtonSlider direction=\"right\" :can-scroll=\"false\" />"
+        }
+      ]
+    },
+    "ButtonTab": {
+      "file": "buttonTab.vue",
+      "import": "import ButtonTab from '@/components/buttonTab.vue'",
+      "status": "mirror",
+      "category": "actions",
+      "summary": "Bouton d'onglet unitaire, brique de base de TabList et Tab. Variante 'default' (onglet de navigation classique, radius 20px, badge notification optionnel) et 'range' (onglet plus haut utilisé dans les tabs des hero sections). L'état actif est piloté par prop ; rollover et focus sont gérés en CSS. Rendu en <button>, ou en <a> si href est fourni.",
+      "dependencies": [],
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "default": "",
+          "description": "Texte de l'onglet, centré (classe medium-200)."
+        },
+        {
+          "name": "type",
+          "type": "union",
+          "required": false,
+          "default": "default",
+          "options": [
+            "default",
+            "range"
+          ],
+          "description": "Variante visuelle. 'default' = onglet de navigation (44px de haut, badge possible). 'range' = onglet de hero section (52px, sans badge)."
+        },
+        {
+          "name": "active",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Onglet sélectionné : fond opaque + texte renforcé. Rollover et focus sont gérés en CSS (:hover / :focus-visible)."
+        },
+        {
+          "name": "showBadge",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Affiche une pastille de notification. Pris en compte uniquement quand type='default'."
+        },
+        {
+          "name": "count",
+          "type": "number",
+          "required": false,
+          "description": "Valeur affichée dans le badge (0 inclus). Rendu seulement si showBadge et type='default'."
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Désactive le composant (disabled natif sur <button>, aria-disabled sur <a>)."
+        },
+        {
+          "name": "href",
+          "type": "string",
+          "required": false,
+          "description": "Si fourni, le composant est rendu en <a> (navigation). Sinon en <button>."
+        }
+      ],
+      "events": [
+        {
+          "name": "click",
+          "payload": "void",
+          "description": "Émis au clic (sauf disabled). TabList l'écoute pour changer d'onglet actif."
+        }
+      ],
+      "usage": {
+        "do": [
+          "Préférer son usage via TabList plutôt qu'isolé.",
+          "Utiliser type='range' uniquement dans le contexte des hero sections.",
+          "Réserver le badge (showBadge + count) à type='default'.",
+          "Activer active sur l'onglet courant."
+        ],
+        "doNot": [
+          "Ne pas restyler le composant par des overrides ; consommer la variante telle quelle.",
+          "Ne pas afficher de badge en type='range' (non prévu par le design).",
+          "Ne pas l'utiliser comme CTA : préférer ButtonMain."
+        ]
+      },
+      "a11y": [
+        "Polymorphe : <a> si href (navigation native), sinon <button>.",
+        "role='tab' + aria-selected reflétant l'état actif.",
+        "État disabled géré pour <button> (disabled) et <a> (aria-disabled).",
+        "Anneau de focus externe via :focus-visible (blanc + bleu)."
+      ],
+      "examples": [
+        {
+          "title": "Onglet actif avec badge",
+          "code": "<ButtonTab label=\"Avis\" :active=\"true\" :show-badge=\"true\" :count=\"12\" />"
+        },
+        {
+          "title": "Onglet range (hero section)",
+          "code": "<ButtonTab type=\"range\" label=\"Grand angle gauche\" />"
+        }
+      ]
+    },
+    "SelectTab": {
+      "file": "selectTab.vue",
+      "import": "import SelectTab from '@/components/selectTab.vue'",
+      "status": "mirror",
+      "category": "forms",
+      "summary": "Version 'select' de l'onglet (chevron pivotant), utilisée surtout sur mobile pour remplacer une rangée d'onglets. Même fonctionnement présentationnel que Select : prop open, émet 'click' au parent qui gère l'ouverture de la liste. Ne rend pas lui-même les options.",
+      "dependencies": [
+        "iconMain"
+      ],
+      "props": [
+        {
+          "name": "modelValue",
+          "type": "string",
+          "required": false,
+          "default": "",
+          "description": "Texte affiché (label de l'onglet sélectionné)."
+        },
+        {
+          "name": "placeholder",
+          "type": "string",
+          "required": false,
+          "description": "Texte affiché quand modelValue est vide (couleur atténuée)."
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "État ouvert : le chevron pivote et le contrôle prend l'apparence focus/active."
+        },
+        {
+          "name": "showIcon",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Affiche une icône à gauche du texte (via iconMain)."
+        },
+        {
+          "name": "icon",
+          "type": "string",
+          "required": false,
+          "description": "Nom de l'icône (set iconMain), rendu si showIcon."
+        },
+        {
+          "name": "type",
+          "type": "union",
+          "required": false,
+          "default": "default",
+          "options": [
+            "default",
+            "range"
+          ],
+          "description": "Variante de fond au repos. 'default' = fond blanc. 'range' = fond translucide (hero sections)."
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Désactive le composant (opacité réduite, non focusable)."
+        }
+      ],
+      "events": [
+        {
+          "name": "click",
+          "payload": "void",
+          "description": "Émis au clic / Entrée / Espace (sauf disabled). Le parent bascule open et la liste d'options."
+        }
+      ],
+      "usage": {
+        "do": [
+          "Utiliser comme alternative mobile à une rangée d'onglets (via TabList layout='select' ou Tab).",
+          "Piloter open et la liste d'options depuis le parent (composant présentationnel).",
+          "Passer le label de l'onglet courant dans modelValue."
+        ],
+        "doNot": [
+          "Ne pas attendre que le composant rende la liste d'options : il ne le fait pas (comme Select).",
+          "Ne pas restyler le composant par des overrides.",
+          "Ne pas utiliser une emoji ou un SVG ad hoc en guise d'icône : passer par icon."
+        ]
+      },
+      "a11y": [
+        "role='button', aria-expanded reflétant open, aria-disabled si désactivé.",
+        "Activable au clavier (Entrée / Espace), tabindex retiré si disabled.",
+        "Anneau de focus + bordure active via :focus-visible / --open."
+      ],
+      "examples": [
+        {
+          "title": "Select d'onglets fermé",
+          "code": "<SelectTab :model-value=\"current\" :open=\"open\" @click=\"open = !open\" />"
+        },
+        {
+          "title": "Avec icône, variante range",
+          "code": "<SelectTab type=\"range\" :show-icon=\"true\" icon=\"Aperture\" :model-value=\"current\" :open=\"open\" @click=\"toggle\" />"
+        }
+      ]
+    },
+    "TabList": {
+      "file": "tabList.vue",
+      "import": "import TabList from '@/components/tabList.vue'",
+      "status": "mirror",
+      "category": "navigation",
+      "summary": "Liste d'onglets pilotée par un tableau items + v-model. En layout='tabs', rend une rangée de ButtonTab séparés par des séparateurs verticaux ; en layout='select', rend un SelectTab unique (repli mobile). Gère l'onglet actif et émet update:modelValue au clic.",
+      "dependencies": [
+        "ButtonTab",
+        "SelectTab"
+      ],
+      "props": [
+        {
+          "name": "items",
+          "type": "TabItem[]",
+          "required": false,
+          "default": "[]",
+          "description": "Onglets à afficher. Chaque item : { label, value?, badge?, disabled? }. value sert de clé/valeur active (sinon l'index est utilisé)."
+        },
+        {
+          "name": "modelValue",
+          "type": "string | number",
+          "required": false,
+          "description": "Valeur (ou index) de l'onglet actif. Lié en v-model."
+        },
+        {
+          "name": "layout",
+          "type": "union",
+          "required": false,
+          "default": "tabs",
+          "options": [
+            "tabs",
+            "select"
+          ],
+          "description": "'tabs' = rangée de ButtonTab + séparateurs. 'select' = un SelectTab unique (mobile)."
+        },
+        {
+          "name": "type",
+          "type": "union",
+          "required": false,
+          "default": "default",
+          "options": [
+            "default",
+            "range"
+          ],
+          "description": "Variante propagée aux ButtonTab / SelectTab enfants."
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Relayé au SelectTab en layout='select' (état ouvert)."
+        }
+      ],
+      "events": [
+        {
+          "name": "update:modelValue",
+          "payload": "string | number",
+          "description": "Émis au clic sur un onglet (sa value ou son index). Support v-model."
+        },
+        {
+          "name": "toggle",
+          "payload": "void",
+          "description": "Émis quand le SelectTab est cliqué (layout='select')."
+        }
+      ],
+      "usage": {
+        "do": [
+          "Fournir items + v-model pour un fonctionnement clé en main.",
+          "Utiliser layout='select' comme repli mobile, ou laisser Tab gérer le responsive.",
+          "Donner un badge à un item uniquement en type='default'."
+        ],
+        "doNot": [
+          "Ne pas réimplémenter les onglets inline : utiliser ButtonTab/SelectTab via ce composant.",
+          "Ne pas restyler les séparateurs ou les onglets par des overrides."
+        ]
+      },
+      "a11y": [
+        "Les ButtonTab portent role='tab' et aria-selected.",
+        "Les séparateurs sont aria-hidden (décoratifs).",
+        "Le focus clavier traverse chaque onglet."
+      ],
+      "examples": [
+        {
+          "title": "Rangée d'onglets pilotée",
+          "code": "<TabList :items=\"tabs\" v-model=\"active\" />"
+        },
+        {
+          "title": "Repli select (mobile)",
+          "code": "<TabList :items=\"tabs\" v-model=\"active\" layout=\"select\" :open=\"open\" @toggle=\"open = !open\" />"
+        }
+      ]
+    },
+    "Tab": {
+      "file": "tab.vue",
+      "import": "import Tab from '@/components/tab.vue'",
+      "status": "mirror",
+      "category": "navigation",
+      "summary": "Conteneur d'onglets : un cadre coloré (fond surface-neutral, padding 8px) qui enveloppe un TabList. Bascule automatiquement entre la rangée d'onglets (desktop/tablet, radius large) et un SelectTab (mobile, radius medium) selon le data-theme de la racine.",
+      "dependencies": [
+        "TabList"
+      ],
+      "props": [
+        {
+          "name": "items",
+          "type": "TabItem[]",
+          "required": false,
+          "default": "[]",
+          "description": "Onglets à afficher (mêmes que TabList) : { label, value?, badge?, disabled? }."
+        },
+        {
+          "name": "modelValue",
+          "type": "string | number",
+          "required": false,
+          "description": "Valeur (ou index) de l'onglet actif. Lié en v-model."
+        },
+        {
+          "name": "type",
+          "type": "union",
+          "required": false,
+          "default": "default",
+          "options": [
+            "default",
+            "range"
+          ],
+          "description": "Variante propagée au TabList."
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Relayé au SelectTab quand le thème est Mobile."
+        }
+      ],
+      "events": [
+        {
+          "name": "update:modelValue",
+          "payload": "string | number",
+          "description": "Émis quand l'onglet actif change (re-émis depuis TabList). Support v-model."
+        },
+        {
+          "name": "toggle",
+          "payload": "void",
+          "description": "Émis quand le SelectTab est cliqué (thème Mobile)."
+        }
+      ],
+      "usage": {
+        "do": [
+          "Utiliser comme point d'entrée des onglets : il gère le responsive tout seul.",
+          "Poser data-theme='Mobile' sur la racine pour obtenir le repli SelectTab.",
+          "Fournir items + v-model."
+        ],
+        "doNot": [
+          "Ne pas forcer le layout à la main : Tab le déduit du data-theme.",
+          "Ne pas restyler le cadre par des overrides."
+        ]
+      },
+      "a11y": [
+        "Délègue toute l'accessibilité à TabList / ButtonTab / SelectTab.",
+        "Réagit en direct au changement de data-theme (MutationObserver)."
+      ],
+      "examples": [
+        {
+          "title": "Conteneur d'onglets responsive",
+          "code": "<Tab :items=\"tabs\" v-model=\"active\" @toggle=\"open = !open\" :open=\"open\" />"
         }
       ]
     }

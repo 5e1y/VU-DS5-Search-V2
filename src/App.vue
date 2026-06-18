@@ -22,10 +22,23 @@ import promoHeader from './components/promoHeader.vue'
 import toggleLike from './components/toggleLike.vue'
 import toggleMain from './components/toggleMain.vue'
 import toggleChoice from './components/toggleChoice.vue'
+import toggleFilter from './components/toggleFilter.vue'
+import toggleColorFilter from './components/toggleColorFilter.vue'
 import websiteHeader from './components/websiteHeader.vue'
 import selectProductAac from './components/selectProductAac.vue'
 import inputSlider from './components/inputSlider.vue'
 import inputSliderButton from './components/inputSliderButton.vue'
+import buttonTactile from './components/buttonTactile.vue'
+import btLarge from './components/btLarge.vue'
+import buttonPagination from './components/buttonPagination.vue'
+import pagination from './components/pagination.vue'
+import buttonSlider from './components/buttonSlider.vue'
+import buttonTab from './components/buttonTab.vue'
+import selectTab from './components/selectTab.vue'
+import tabList from './components/tabList.vue'
+import tab from './components/tab.vue'
+import accordionMain from './components/accordionMain.vue'
+import listItem from './components/listItem.vue'
 
 // websiteHeader
 const headerCartCount = ref(2)
@@ -99,11 +112,60 @@ function removeChip(i: number) {
   chips.value.splice(i, 1)
 }
 
+// toggleFilter
+const filterDroit = ref(false)
+const filterAngle = ref(true)
+
+// toggleColorFilter
+const colorBeige = ref(false)
+const colorBlue = ref(true)
+const colorGradient = ref(false)
+const colorImage = ref(false)
+
 // inputSlider
 const sliderLength = ref<[number, number]>([220, 330])
 const sliderPrice = ref<[number, number]>([150, 800])
 const sliderStep = ref<[number, number]>([20, 80])
 const sliderDisabled = ref<[number, number]>([30, 70])
+
+// pagination
+const pageSmall = ref(2)
+const pageLarge = ref(5)
+const paginationDevice = ref<'Desktop' | 'Tablet' | 'Mobile'>('Desktop')
+function setPaginationDevice(d: 'Desktop' | 'Tablet' | 'Mobile') {
+  paginationDevice.value = d
+  document.documentElement.dataset.theme = d
+}
+
+// buttonSlider
+const sliderCanLeft = ref(false)
+const sliderCanRight = ref(true)
+
+// tab / tabList
+const tabItems = [
+  { label: 'Grand angle gauche', value: 'gag' },
+  { label: 'Standard', value: 'std' },
+  { label: 'Téléobjectif', value: 'tele' },
+  { label: 'Macro', value: 'macro' },
+  { label: 'Fisheye', value: 'fish' },
+  { label: 'Portrait', value: 'portrait' },
+  { label: 'Grand angle droit', value: 'gad' },
+]
+const tabItemsBadge = [
+  { label: 'Description', value: 'desc' },
+  { label: 'Caractéristiques', value: 'specs' },
+  { label: 'Avis', value: 'reviews', badge: 12 },
+  { label: 'Livraison', value: 'shipping', disabled: true },
+]
+const tabActive = ref('gag')
+const tabActiveRange = ref('std')
+const tabBadgeActive = ref('desc')
+const tabContainerActive = ref('gag')
+const selectTabOpen = ref(false)
+const selectTabRangeOpen = ref(false)
+const tabContainerOpen = ref(false)
+const accordionInsideOpen = ref(true)
+const accordionNuOpen = ref(false)
 </script>
 
 <template>
@@ -750,6 +812,43 @@ const sliderDisabled = ref<[number, number]>([30, 70])
     <!-- ─────────────────────────────────────────────────────── -->
 
     <section>
+      <h2>toggleFilter — overlay / panel de filtres</h2>
+      <div style="display: flex; flex-direction: column; max-width: 280px; border-left: 1px solid #eee; padding-left: 1rem;">
+        <toggleFilter label="Droit" :count="44" v-model="filterDroit" />
+        <toggleFilter label="Angle" :count="312" v-model="filterAngle" />
+        <toggleFilter label="Convertible" :count="8" :model-value="true" />
+        <toggleFilter label="Sans compteur" :model-value="false" />
+        <toggleFilter label="Indisponible" :count="0" :disabled="true" />
+        <span style="font-size: 13px; color: #666; padding: 4px 0;">Droit: {{ filterDroit }} · Angle: {{ filterAngle }}</span>
+      </div>
+    </section>
+
+    <section>
+      <h2>toggleColorFilter — nuancier de filtres</h2>
+      <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: flex-start;">
+        <toggleColorFilter color="#fbe6d0" label="Beige" :count="52" v-model="colorBeige" />
+        <toggleColorFilter color="#2b4a7e" label="Bleu nuit" :count="18" v-model="colorBlue" />
+        <toggleColorFilter color="#ffffff" label="Blanc" :count="73" :model-value="false" />
+        <toggleColorFilter
+          color="linear-gradient(135deg, #e74c3c, #f1c40f, #2ecc71, #3498db)"
+          label="Multicolore"
+          :count="6"
+          v-model="colorGradient"
+        />
+        <toggleColorFilter
+          image="https://picsum.photos/seed/wood/64/64"
+          label="Bois"
+          :count="29"
+          v-model="colorImage"
+        />
+        <toggleColorFilter color="#7f8c8d" label="Gris" :count="4" :disabled="true" />
+      </div>
+      <span style="font-size: 13px; color: #666;">Beige: {{ colorBeige }} · Bleu: {{ colorBlue }} · Multi: {{ colorGradient }} · Bois: {{ colorImage }}</span>
+    </section>
+
+    <!-- ─────────────────────────────────────────────────────── -->
+
+    <section>
       <h2>selectProductAac — fiche produit (Aide au Choix)</h2>
       <div style="display: flex; flex-direction: column; gap: 8px; max-width: 460px;">
         <selectProductAac title="Couleur :" value="Bleu nuit" :count="9" @click="aacClicks++" />
@@ -802,6 +901,301 @@ const sliderDisabled = ref<[number, number]>([30, 70])
       <div style="display: flex; flex-direction: column; gap: 1rem; max-width: 464px;">
         <inputSlider v-model="sliderDisabled" label="Désactivé" :min="0" :max="100" :disabled="true" />
       </div>
+    </section>
+
+    <!-- ─────────────────────────────────────────────────────── -->
+
+    <section>
+      <h2>buttonTactile — packshot (catégorie phare)</h2>
+      <div style="display: flex; gap: 16px; flex-wrap: wrap; align-items: flex-start;">
+        <buttonTactile label="Table basse" image="https://picsum.photos/seed/packshot1/248/248" href="#" />
+        <buttonTactile label="Canapé d'angle convertible" image="https://picsum.photos/seed/packshot2/248/248" :active="true" href="#" />
+        <buttonTactile label="Fauteuil" image="https://picsum.photos/seed/packshot3/248/248" :with-filter="false" href="#" />
+        <buttonTactile label="Indisponible" image="https://picsum.photos/seed/packshot4/248/248" :disabled="true" />
+      </div>
+      <span style="font-size: 13px; color: #666;">default · active (souligné) · sans voile · disabled — survoler / Tab pour rollover &amp; focus</span>
+    </section>
+
+    <section>
+      <h2>buttonTactile — ambiance (inspiration)</h2>
+      <div style="display: flex; gap: 16px; flex-wrap: wrap; align-items: flex-start;">
+        <buttonTactile type="ambiance" label="Salon" image="https://picsum.photos/seed/ambiance1/248/360" href="#" />
+        <buttonTactile type="ambiance" label="Chambre cosy" image="https://picsum.photos/seed/ambiance2/248/360" :active="true" href="#" />
+        <buttonTactile type="ambiance" label="Cuisine" image="https://picsum.photos/seed/ambiance3/248/360" :disabled="true" />
+      </div>
+      <span style="font-size: 13px; color: #666;">default · active (souligné) · disabled</span>
+    </section>
+
+    <!-- ─────────────────────────────────────────────────────── -->
+
+    <section>
+      <h2>btLarge — renvoi vers un catalogue</h2>
+      <div style="display: flex; flex-direction: column; gap: 12px; max-width: 460px;">
+        <btLarge
+          title="Porte à galandage"
+          description="Je suis une description du bouton"
+          :count="23450"
+          image="https://picsum.photos/seed/galandage/96/120"
+          image-alt=""
+          href="#"
+        />
+        <btLarge
+          title="Titre très long qui doit être tronqué proprement en ellipsis"
+          description="Description elle aussi très longue qui dépasse la largeur disponible du bloc"
+          :count="128"
+          image="https://picsum.photos/seed/catalog2/96/120"
+          href="#"
+        />
+        <btLarge
+          title="Sans vignette ni compteur"
+          description="Rendu en bouton (pas de href)"
+        />
+        <btLarge
+          title="Indisponible"
+          description="État désactivé"
+          :count="0"
+          image="https://picsum.photos/seed/catalog3/96/120"
+          :disabled="true"
+        />
+        <span style="font-size: 13px; color: #666;">href (lien) · troncature ellipsis · bouton sans image · disabled — survoler / Tab pour rollover &amp; focus</span>
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────────────────────── -->
+
+    <section>
+      <h2>buttonPagination — états (brique atomique)</h2>
+      <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+        <buttonPagination :page="1" />
+        <buttonPagination :page="2" :active="true" />
+        <buttonPagination :page="3" />
+        <buttonPagination :page="4" :disabled="true" />
+        <buttonPagination :page="5" href="#" />
+      </div>
+      <span style="font-size: 13px; color: #666;">default · active (page courante) · default · disabled · lien (href) — survoler / Tab pour rollover &amp; focus</span>
+    </section>
+
+    <section>
+      <h2>pagination — assemblage complet (responsive)</h2>
+      <div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap; font-size: 13px; margin-bottom: 1rem;">
+        <span style="color: #666;">Device :</span>
+        <buttonMain
+          v-for="d in (['Desktop', 'Tablet', 'Mobile'] as const)"
+          :key="d"
+          size="small"
+          :type="paginationDevice === d ? 'primary' : 'tertiary'"
+          :label="d"
+          @click="setPaginationDevice(d)"
+        />
+        <span style="color: #666; margin-left: 8px;">numéros max : Desktop 7 · Tablet 5 · Mobile 3</span>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+        <div>
+          <pagination v-model="pageLarge" :total="9" />
+          <span style="font-size: 13px; color: #666; display: block; margin-top: 6px;">total 9 — page courante : {{ pageLarge }}</span>
+        </div>
+        <div>
+          <pagination v-model="pageSmall" :total="4" />
+          <span style="font-size: 13px; color: #666; display: block; margin-top: 6px;">total 4 (pas d'ellipse) — page courante : {{ pageSmall }}</span>
+        </div>
+      </div>
+      <p style="font-size: 13px; color: #666; margin-top: 8px;">
+        Changer le device : les numéros du milieu tombent (7→5→3) et les flèches passent en icône seule.
+        (Le sélecteur modifie le <code>data-theme</code> global de la page.)
+      </p>
+    </section>
+
+    <!-- ─────────────────────────────────────────────────────── -->
+
+    <section>
+      <h2>buttonSlider — 4 directions (sur fond visible pour le dégradé)</h2>
+      <div style="display: flex; gap: 16px; flex-wrap: wrap; align-items: center; background: #888; padding: 1.5rem; border-radius: 8px;">
+        <buttonSlider direction="left" />
+        <buttonSlider direction="right" />
+        <buttonSlider direction="top" />
+        <buttonSlider direction="bottom" />
+        <buttonSlider direction="left" :disabled="true" />
+      </div>
+      <span style="font-size: 13px; color: #666;">left · right · top · bottom · disabled — le dégradé part du bord vers l'intérieur (couleur de surface → transparent)</span>
+    </section>
+
+    <section>
+      <h2>buttonSlider — mini-carrousel (canScroll)</h2>
+      <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; font-size: 13px; margin-bottom: 1rem;">
+        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+          <input type="checkbox" v-model="sliderCanLeft" /> canScroll gauche
+        </label>
+        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+          <input type="checkbox" v-model="sliderCanRight" /> canScroll droite
+        </label>
+      </div>
+      <div style="position: relative; overflow: hidden; border-radius: 8px;">
+        <div style="display: flex; gap: 12px; overflow-x: auto; padding: 12px;">
+          <div
+            v-for="i in 10"
+            :key="i"
+            style="flex: 0 0 auto; width: 140px; height: 100px; border-radius: 8px; background: var(--surface-neutral); display: flex; align-items: center; justify-content: center; font-family: Poppins, sans-serif; font-size: 14px; color: #666;"
+          >
+            Item {{ i }}
+          </div>
+        </div>
+        <div style="position: absolute; top: 0; bottom: 0; left: 0; display: flex; align-items: center; padding-left: 8px;">
+          <buttonSlider direction="left" :can-scroll="sliderCanLeft" />
+        </div>
+        <div style="position: absolute; top: 0; bottom: 0; right: 0; display: flex; align-items: center; padding-right: 8px;">
+          <buttonSlider direction="right" :can-scroll="sliderCanRight" />
+        </div>
+      </div>
+      <span style="font-size: 13px; color: #666;">Décocher une direction → la flèche et son dégradé disparaissent en fondu (et la flèche n'est plus focusable).</span>
+    </section>
+
+    <section>
+      <h2>buttonTab — type default (états)</h2>
+      <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; padding: 12px; border-radius: 20px; background: var(--surface-neutral);">
+        <buttonTab label="Défaut" style="width: auto;" />
+        <buttonTab label="Actif" :active="true" style="width: auto;" />
+        <buttonTab label="Avis" :show-badge="true" :count="12" style="width: auto;" />
+        <buttonTab label="Désactivé" :disabled="true" style="width: auto;" />
+      </div>
+      <span style="font-size: 13px; color: #666;">Survol → fond clair ; actif → fond blanc ; focus clavier (Tab) → double anneau. Badge réservé au type default.</span>
+    </section>
+
+    <section>
+      <h2>buttonTab — type range (hero section)</h2>
+      <div style="display: flex; gap: 2px; align-items: center; flex-wrap: wrap; padding: 12px; border-radius: 20px; background: var(--text-icon-neutral-hard);">
+        <buttonTab type="range" label="Grand angle gauche" style="width: auto;" />
+        <buttonTab type="range" label="Standard" :active="true" style="width: auto;" />
+        <buttonTab type="range" label="Téléobjectif" style="width: auto;" />
+      </div>
+      <span style="font-size: 13px; color: #666;">Variante plus haute (52px), fonds translucides pensés pour un fond image/sombre.</span>
+    </section>
+
+    <section>
+      <h2>selectTab — default &amp; range</h2>
+      <div style="display: flex; gap: 1rem; align-items: flex-start; flex-wrap: wrap;">
+        <div style="width: 320px;">
+          <selectTab
+            :model-value="tabItems.find(i => i.value === tabActive)?.label"
+            :open="selectTabOpen"
+            @click="selectTabOpen = !selectTabOpen"
+          />
+        </div>
+        <div style="width: 320px; padding: 12px; border-radius: 14px; background: var(--text-icon-neutral-hard);">
+          <selectTab
+            type="range"
+            :show-icon="true"
+            icon="Aperture"
+            :model-value="tabItems.find(i => i.value === tabActiveRange)?.label"
+            :open="selectTabRangeOpen"
+            @click="selectTabRangeOpen = !selectTabRangeOpen"
+          />
+        </div>
+      </div>
+      <span style="font-size: 13px; color: #666;">Présentationnel comme select.vue : le chevron pivote selon open, le clic émet just « click ». La liste d'options reste gérée par le parent.</span>
+    </section>
+
+    <section>
+      <h2>tabList — layout tabs (v-model)</h2>
+      <div style="padding: 12px; border-radius: 20px; background: var(--surface-neutral);">
+        <tabList :items="tabItems" v-model="tabActive" />
+      </div>
+      <div style="margin-top: 1rem; padding: 12px; border-radius: 20px; background: var(--surface-neutral);">
+        <tabList :items="tabItemsBadge" v-model="tabBadgeActive" />
+      </div>
+      <span style="font-size: 13px; color: #666;">Onglet actif : « {{ tabActive }} » / « {{ tabBadgeActive }} ». Cliquer met à jour le v-model ; séparateurs verticaux entre les onglets ; un item peut être disabled ou porter un badge.</span>
+    </section>
+
+    <section>
+      <h2>tab — conteneur responsive (data-theme)</h2>
+      <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; font-size: 13px; margin-bottom: 1rem;">
+        <button type="button" @click="setPaginationDevice('Desktop')">data-theme = Desktop</button>
+        <button type="button" @click="setPaginationDevice('Tablet')">data-theme = Tablet</button>
+        <button type="button" @click="setPaginationDevice('Mobile')">data-theme = Mobile</button>
+      </div>
+      <tab
+        :items="tabItems"
+        v-model="tabContainerActive"
+        :open="tabContainerOpen"
+        @toggle="tabContainerOpen = !tabContainerOpen"
+      />
+      <span style="font-size: 13px; color: #666;">Passer data-theme à « Mobile » (boutons ci-dessus, réutilisés de pagination) → le conteneur bascule en SelectTab (radius medium). Desktop/Tablet → rangée d'onglets (radius large).</span>
+    </section>
+
+    <section>
+      <h2>accordionMain — type carte (if-inside), autonome</h2>
+      <accordionMain title="Je suis un accordion" :default-open="false">
+        <p class="normal-300" style="color: var(--text-icon-neutral-medium)">
+          Contenu de l'accordéon. Du texte explicatif vient se loger ici et se
+          déplie avec une animation de hauteur quand on clique sur l'en-tête.
+        </p>
+      </accordionMain>
+    </section>
+
+    <section>
+      <h2>accordionMain — type carte, piloté (v-model:open)</h2>
+      <accordionMain title="Je suis un accordion" v-model:open="accordionInsideOpen">
+        <p class="normal-300" style="color: var(--text-icon-neutral-medium)">
+          Cet accordéon est contrôlé via v-model:open (état :
+          {{ accordionInsideOpen ? 'ouvert' : 'fermé' }}).
+        </p>
+      </accordionMain>
+    </section>
+
+    <section>
+      <h2>accordionMain — type nu (if-inside = false)</h2>
+      <accordionMain
+        title="Je suis un accordion"
+        :if-inside="false"
+        v-model:open="accordionNuOpen"
+      >
+        <p class="normal-300" style="color: var(--text-icon-neutral-medium)">
+          Version sans cadre : pas de bordure, pas de fond, pas de padding
+          horizontal. Utile intégré dans une liste ou une section.
+        </p>
+      </accordionMain>
+    </section>
+
+    <section>
+      <h2>accordionMain — disabled</h2>
+      <accordionMain title="Je suis un accordion" disabled>
+        <p class="normal-300">Contenu inaccessible.</p>
+      </accordionMain>
+    </section>
+
+    <!-- ─────────────────────────────────────────────────────── -->
+
+    <section>
+      <h2>listItem — type large, états &amp; niveaux</h2>
+      <div style="display: flex; flex-direction: column; width: 324px; border: 1px solid #eee; border-radius: 4px; padding: 4px;">
+        <listItem text="Je suis un item" icon-left="CircleDashed" icon-right="CircleDashed" />
+        <listItem text="Je suis un item" icon-left="CircleDashed" icon-right="CircleDashed" :active="true" />
+        <listItem text="Je suis un item" icon-left="CircleDashed" icon-right="CircleDashed" :disabled="true" />
+        <listItem text="Je suis un item" level="level-1" icon-left="CircleDashed" icon-right="CircleDashed" />
+        <listItem text="Je suis un item" level="level-2" icon-left="CircleDashed" icon-right="CircleDashed" />
+      </div>
+      <span style="font-size: 13px; color: #666;">default · active (souligné) · disabled · level-1 · level-2 — survoler / Tab pour rollover &amp; focus</span>
+    </section>
+
+    <section>
+      <h2>listItem — type compact, états &amp; niveaux</h2>
+      <div style="display: flex; flex-direction: column; width: 324px; border: 1px solid #eee; border-radius: 4px; padding: 4px;">
+        <listItem type="compact" text="Je suis un item" icon-left="CircleDashed" icon-right="CircleDashed" />
+        <listItem type="compact" text="Je suis un item" icon-left="CircleDashed" icon-right="CircleDashed" :active="true" />
+        <listItem type="compact" text="Je suis un item" icon-left="CircleDashed" icon-right="CircleDashed" :disabled="true" />
+        <listItem type="compact" text="Je suis un item" level="level-1" icon-left="CircleDashed" icon-right="CircleDashed" />
+        <listItem type="compact" text="Je suis un item" level="level-2" icon-left="CircleDashed" icon-right="CircleDashed" />
+      </div>
+      <span style="font-size: 13px; color: #666;">compact (36px) — mêmes états &amp; niveaux</span>
+    </section>
+
+    <section>
+      <h2>listItem — combinaisons d'icônes &amp; lien</h2>
+      <div style="display: flex; flex-direction: column; width: 324px; border: 1px solid #eee; border-radius: 4px; padding: 4px;">
+        <listItem text="Mon compte" icon-left="User" />
+        <listItem text="Catégories (lien + chevron)" icon-right="ChevronRight" href="#" />
+        <listItem text="Sans icône" />
+      </div>
+      <span style="font-size: 13px; color: #666;">icône gauche seule · lien href avec chevron droit · texte seul</span>
     </section>
 
   </main>
