@@ -33,6 +33,10 @@ import btLarge from './components/btLarge.vue'
 import buttonPagination from './components/buttonPagination.vue'
 import pagination from './components/pagination.vue'
 import buttonSlider from './components/buttonSlider.vue'
+import buttonTab from './components/buttonTab.vue'
+import selectTab from './components/selectTab.vue'
+import tabList from './components/tabList.vue'
+import tab from './components/tab.vue'
 
 // websiteHeader
 const headerCartCount = ref(2)
@@ -134,6 +138,30 @@ function setPaginationDevice(d: 'Desktop' | 'Tablet' | 'Mobile') {
 // buttonSlider
 const sliderCanLeft = ref(false)
 const sliderCanRight = ref(true)
+
+// tab / tabList
+const tabItems = [
+  { label: 'Grand angle gauche', value: 'gag' },
+  { label: 'Standard', value: 'std' },
+  { label: 'Téléobjectif', value: 'tele' },
+  { label: 'Macro', value: 'macro' },
+  { label: 'Fisheye', value: 'fish' },
+  { label: 'Portrait', value: 'portrait' },
+  { label: 'Grand angle droit', value: 'gad' },
+]
+const tabItemsBadge = [
+  { label: 'Description', value: 'desc' },
+  { label: 'Caractéristiques', value: 'specs' },
+  { label: 'Avis', value: 'reviews', badge: 12 },
+  { label: 'Livraison', value: 'shipping', disabled: true },
+]
+const tabActive = ref('gag')
+const tabActiveRange = ref('std')
+const tabBadgeActive = ref('desc')
+const tabContainerActive = ref('gag')
+const selectTabOpen = ref(false)
+const selectTabRangeOpen = ref(false)
+const tabContainerOpen = ref(false)
 </script>
 
 <template>
@@ -1015,6 +1043,78 @@ const sliderCanRight = ref(true)
         </div>
       </div>
       <span style="font-size: 13px; color: #666;">Décocher une direction → la flèche et son dégradé disparaissent en fondu (et la flèche n'est plus focusable).</span>
+    </section>
+
+    <section>
+      <h2>buttonTab — type default (états)</h2>
+      <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; padding: 12px; border-radius: 20px; background: var(--surface-neutral);">
+        <buttonTab label="Défaut" style="width: auto;" />
+        <buttonTab label="Actif" :active="true" style="width: auto;" />
+        <buttonTab label="Avis" :show-badge="true" :count="12" style="width: auto;" />
+        <buttonTab label="Désactivé" :disabled="true" style="width: auto;" />
+      </div>
+      <span style="font-size: 13px; color: #666;">Survol → fond clair ; actif → fond blanc ; focus clavier (Tab) → double anneau. Badge réservé au type default.</span>
+    </section>
+
+    <section>
+      <h2>buttonTab — type range (hero section)</h2>
+      <div style="display: flex; gap: 2px; align-items: center; flex-wrap: wrap; padding: 12px; border-radius: 20px; background: var(--text-icon-neutral-hard);">
+        <buttonTab type="range" label="Grand angle gauche" style="width: auto;" />
+        <buttonTab type="range" label="Standard" :active="true" style="width: auto;" />
+        <buttonTab type="range" label="Téléobjectif" style="width: auto;" />
+      </div>
+      <span style="font-size: 13px; color: #666;">Variante plus haute (52px), fonds translucides pensés pour un fond image/sombre.</span>
+    </section>
+
+    <section>
+      <h2>selectTab — default &amp; range</h2>
+      <div style="display: flex; gap: 1rem; align-items: flex-start; flex-wrap: wrap;">
+        <div style="width: 320px;">
+          <selectTab
+            :model-value="tabItems.find(i => i.value === tabActive)?.label"
+            :open="selectTabOpen"
+            @click="selectTabOpen = !selectTabOpen"
+          />
+        </div>
+        <div style="width: 320px; padding: 12px; border-radius: 14px; background: var(--text-icon-neutral-hard);">
+          <selectTab
+            type="range"
+            :show-icon="true"
+            icon="Aperture"
+            :model-value="tabItems.find(i => i.value === tabActiveRange)?.label"
+            :open="selectTabRangeOpen"
+            @click="selectTabRangeOpen = !selectTabRangeOpen"
+          />
+        </div>
+      </div>
+      <span style="font-size: 13px; color: #666;">Présentationnel comme select.vue : le chevron pivote selon open, le clic émet just « click ». La liste d'options reste gérée par le parent.</span>
+    </section>
+
+    <section>
+      <h2>tabList — layout tabs (v-model)</h2>
+      <div style="padding: 12px; border-radius: 20px; background: var(--surface-neutral);">
+        <tabList :items="tabItems" v-model="tabActive" />
+      </div>
+      <div style="margin-top: 1rem; padding: 12px; border-radius: 20px; background: var(--surface-neutral);">
+        <tabList :items="tabItemsBadge" v-model="tabBadgeActive" />
+      </div>
+      <span style="font-size: 13px; color: #666;">Onglet actif : « {{ tabActive }} » / « {{ tabBadgeActive }} ». Cliquer met à jour le v-model ; séparateurs verticaux entre les onglets ; un item peut être disabled ou porter un badge.</span>
+    </section>
+
+    <section>
+      <h2>tab — conteneur responsive (data-theme)</h2>
+      <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; font-size: 13px; margin-bottom: 1rem;">
+        <button type="button" @click="setPaginationDevice('Desktop')">data-theme = Desktop</button>
+        <button type="button" @click="setPaginationDevice('Tablet')">data-theme = Tablet</button>
+        <button type="button" @click="setPaginationDevice('Mobile')">data-theme = Mobile</button>
+      </div>
+      <tab
+        :items="tabItems"
+        v-model="tabContainerActive"
+        :open="tabContainerOpen"
+        @toggle="tabContainerOpen = !tabContainerOpen"
+      />
+      <span style="font-size: 13px; color: #666;">Passer data-theme à « Mobile » (boutons ci-dessus, réutilisés de pagination) → le conteneur bascule en SelectTab (radius medium). Desktop/Tablet → rangée d'onglets (radius large).</span>
     </section>
 
   </main>

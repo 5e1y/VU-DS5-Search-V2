@@ -836,6 +836,347 @@
           "code": "<ButtonSlider direction=\"right\" :can-scroll=\"false\" />"
         }
       ]
+    },
+    "ButtonTab": {
+      "file": "buttonTab.vue",
+      "import": "import ButtonTab from '@/components/buttonTab.vue'",
+      "status": "mirror",
+      "category": "actions",
+      "summary": "Bouton d'onglet unitaire, brique de base de TabList et Tab. Variante 'default' (onglet de navigation classique, radius 20px, badge notification optionnel) et 'range' (onglet plus haut utilisé dans les tabs des hero sections). L'état actif est piloté par prop ; rollover et focus sont gérés en CSS. Rendu en <button>, ou en <a> si href est fourni.",
+      "dependencies": [],
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "default": "",
+          "description": "Texte de l'onglet, centré (classe medium-200)."
+        },
+        {
+          "name": "type",
+          "type": "union",
+          "required": false,
+          "default": "default",
+          "options": ["default", "range"],
+          "description": "Variante visuelle. 'default' = onglet de navigation (44px de haut, badge possible). 'range' = onglet de hero section (52px, sans badge)."
+        },
+        {
+          "name": "active",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Onglet sélectionné : fond opaque + texte renforcé. Rollover et focus sont gérés en CSS (:hover / :focus-visible)."
+        },
+        {
+          "name": "showBadge",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Affiche une pastille de notification. Pris en compte uniquement quand type='default'."
+        },
+        {
+          "name": "count",
+          "type": "number",
+          "required": false,
+          "description": "Valeur affichée dans le badge (0 inclus). Rendu seulement si showBadge et type='default'."
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Désactive le composant (disabled natif sur <button>, aria-disabled sur <a>)."
+        },
+        {
+          "name": "href",
+          "type": "string",
+          "required": false,
+          "description": "Si fourni, le composant est rendu en <a> (navigation). Sinon en <button>."
+        }
+      ],
+      "events": [
+        {
+          "name": "click",
+          "payload": "void",
+          "description": "Émis au clic (sauf disabled). TabList l'écoute pour changer d'onglet actif."
+        }
+      ],
+      "usage": {
+        "do": [
+          "Préférer son usage via TabList plutôt qu'isolé.",
+          "Utiliser type='range' uniquement dans le contexte des hero sections.",
+          "Réserver le badge (showBadge + count) à type='default'.",
+          "Activer active sur l'onglet courant."
+        ],
+        "doNot": [
+          "Ne pas restyler le composant par des overrides ; consommer la variante telle quelle.",
+          "Ne pas afficher de badge en type='range' (non prévu par le design).",
+          "Ne pas l'utiliser comme CTA : préférer ButtonMain."
+        ]
+      },
+      "a11y": [
+        "Polymorphe : <a> si href (navigation native), sinon <button>.",
+        "role='tab' + aria-selected reflétant l'état actif.",
+        "État disabled géré pour <button> (disabled) et <a> (aria-disabled).",
+        "Anneau de focus externe via :focus-visible (blanc + bleu)."
+      ],
+      "examples": [
+        {
+          "title": "Onglet actif avec badge",
+          "code": "<ButtonTab label=\"Avis\" :active=\"true\" :show-badge=\"true\" :count=\"12\" />"
+        },
+        {
+          "title": "Onglet range (hero section)",
+          "code": "<ButtonTab type=\"range\" label=\"Grand angle gauche\" />"
+        }
+      ]
+    },
+    "SelectTab": {
+      "file": "selectTab.vue",
+      "import": "import SelectTab from '@/components/selectTab.vue'",
+      "status": "mirror",
+      "category": "forms",
+      "summary": "Version 'select' de l'onglet (chevron pivotant), utilisée surtout sur mobile pour remplacer une rangée d'onglets. Même fonctionnement présentationnel que Select : prop open, émet 'click' au parent qui gère l'ouverture de la liste. Ne rend pas lui-même les options.",
+      "dependencies": ["iconMain"],
+      "props": [
+        {
+          "name": "modelValue",
+          "type": "string",
+          "required": false,
+          "default": "",
+          "description": "Texte affiché (label de l'onglet sélectionné)."
+        },
+        {
+          "name": "placeholder",
+          "type": "string",
+          "required": false,
+          "description": "Texte affiché quand modelValue est vide (couleur atténuée)."
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "État ouvert : le chevron pivote et le contrôle prend l'apparence focus/active."
+        },
+        {
+          "name": "showIcon",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Affiche une icône à gauche du texte (via iconMain)."
+        },
+        {
+          "name": "icon",
+          "type": "string",
+          "required": false,
+          "description": "Nom de l'icône (set iconMain), rendu si showIcon."
+        },
+        {
+          "name": "type",
+          "type": "union",
+          "required": false,
+          "default": "default",
+          "options": ["default", "range"],
+          "description": "Variante de fond au repos. 'default' = fond blanc. 'range' = fond translucide (hero sections)."
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Désactive le composant (opacité réduite, non focusable)."
+        }
+      ],
+      "events": [
+        {
+          "name": "click",
+          "payload": "void",
+          "description": "Émis au clic / Entrée / Espace (sauf disabled). Le parent bascule open et la liste d'options."
+        }
+      ],
+      "usage": {
+        "do": [
+          "Utiliser comme alternative mobile à une rangée d'onglets (via TabList layout='select' ou Tab).",
+          "Piloter open et la liste d'options depuis le parent (composant présentationnel).",
+          "Passer le label de l'onglet courant dans modelValue."
+        ],
+        "doNot": [
+          "Ne pas attendre que le composant rende la liste d'options : il ne le fait pas (comme Select).",
+          "Ne pas restyler le composant par des overrides.",
+          "Ne pas utiliser une emoji ou un SVG ad hoc en guise d'icône : passer par icon."
+        ]
+      },
+      "a11y": [
+        "role='button', aria-expanded reflétant open, aria-disabled si désactivé.",
+        "Activable au clavier (Entrée / Espace), tabindex retiré si disabled.",
+        "Anneau de focus + bordure active via :focus-visible / --open."
+      ],
+      "examples": [
+        {
+          "title": "Select d'onglets fermé",
+          "code": "<SelectTab :model-value=\"current\" :open=\"open\" @click=\"open = !open\" />"
+        },
+        {
+          "title": "Avec icône, variante range",
+          "code": "<SelectTab type=\"range\" :show-icon=\"true\" icon=\"Aperture\" :model-value=\"current\" :open=\"open\" @click=\"toggle\" />"
+        }
+      ]
+    },
+    "TabList": {
+      "file": "tabList.vue",
+      "import": "import TabList from '@/components/tabList.vue'",
+      "status": "mirror",
+      "category": "navigation",
+      "summary": "Liste d'onglets pilotée par un tableau items + v-model. En layout='tabs', rend une rangée de ButtonTab séparés par des séparateurs verticaux ; en layout='select', rend un SelectTab unique (repli mobile). Gère l'onglet actif et émet update:modelValue au clic.",
+      "dependencies": ["ButtonTab", "SelectTab"],
+      "props": [
+        {
+          "name": "items",
+          "type": "TabItem[]",
+          "required": false,
+          "default": "[]",
+          "description": "Onglets à afficher. Chaque item : { label, value?, badge?, disabled? }. value sert de clé/valeur active (sinon l'index est utilisé)."
+        },
+        {
+          "name": "modelValue",
+          "type": "string | number",
+          "required": false,
+          "description": "Valeur (ou index) de l'onglet actif. Lié en v-model."
+        },
+        {
+          "name": "layout",
+          "type": "union",
+          "required": false,
+          "default": "tabs",
+          "options": ["tabs", "select"],
+          "description": "'tabs' = rangée de ButtonTab + séparateurs. 'select' = un SelectTab unique (mobile)."
+        },
+        {
+          "name": "type",
+          "type": "union",
+          "required": false,
+          "default": "default",
+          "options": ["default", "range"],
+          "description": "Variante propagée aux ButtonTab / SelectTab enfants."
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Relayé au SelectTab en layout='select' (état ouvert)."
+        }
+      ],
+      "events": [
+        {
+          "name": "update:modelValue",
+          "payload": "string | number",
+          "description": "Émis au clic sur un onglet (sa value ou son index). Support v-model."
+        },
+        {
+          "name": "toggle",
+          "payload": "void",
+          "description": "Émis quand le SelectTab est cliqué (layout='select')."
+        }
+      ],
+      "usage": {
+        "do": [
+          "Fournir items + v-model pour un fonctionnement clé en main.",
+          "Utiliser layout='select' comme repli mobile, ou laisser Tab gérer le responsive.",
+          "Donner un badge à un item uniquement en type='default'."
+        ],
+        "doNot": [
+          "Ne pas réimplémenter les onglets inline : utiliser ButtonTab/SelectTab via ce composant.",
+          "Ne pas restyler les séparateurs ou les onglets par des overrides."
+        ]
+      },
+      "a11y": [
+        "Les ButtonTab portent role='tab' et aria-selected.",
+        "Les séparateurs sont aria-hidden (décoratifs).",
+        "Le focus clavier traverse chaque onglet."
+      ],
+      "examples": [
+        {
+          "title": "Rangée d'onglets pilotée",
+          "code": "<TabList :items=\"tabs\" v-model=\"active\" />"
+        },
+        {
+          "title": "Repli select (mobile)",
+          "code": "<TabList :items=\"tabs\" v-model=\"active\" layout=\"select\" :open=\"open\" @toggle=\"open = !open\" />"
+        }
+      ]
+    },
+    "Tab": {
+      "file": "tab.vue",
+      "import": "import Tab from '@/components/tab.vue'",
+      "status": "mirror",
+      "category": "navigation",
+      "summary": "Conteneur d'onglets : un cadre coloré (fond surface-neutral, padding 8px) qui enveloppe un TabList. Bascule automatiquement entre la rangée d'onglets (desktop/tablet, radius large) et un SelectTab (mobile, radius medium) selon le data-theme de la racine.",
+      "dependencies": ["TabList"],
+      "props": [
+        {
+          "name": "items",
+          "type": "TabItem[]",
+          "required": false,
+          "default": "[]",
+          "description": "Onglets à afficher (mêmes que TabList) : { label, value?, badge?, disabled? }."
+        },
+        {
+          "name": "modelValue",
+          "type": "string | number",
+          "required": false,
+          "description": "Valeur (ou index) de l'onglet actif. Lié en v-model."
+        },
+        {
+          "name": "type",
+          "type": "union",
+          "required": false,
+          "default": "default",
+          "options": ["default", "range"],
+          "description": "Variante propagée au TabList."
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Relayé au SelectTab quand le thème est Mobile."
+        }
+      ],
+      "events": [
+        {
+          "name": "update:modelValue",
+          "payload": "string | number",
+          "description": "Émis quand l'onglet actif change (re-émis depuis TabList). Support v-model."
+        },
+        {
+          "name": "toggle",
+          "payload": "void",
+          "description": "Émis quand le SelectTab est cliqué (thème Mobile)."
+        }
+      ],
+      "usage": {
+        "do": [
+          "Utiliser comme point d'entrée des onglets : il gère le responsive tout seul.",
+          "Poser data-theme='Mobile' sur la racine pour obtenir le repli SelectTab.",
+          "Fournir items + v-model."
+        ],
+        "doNot": [
+          "Ne pas forcer le layout à la main : Tab le déduit du data-theme.",
+          "Ne pas restyler le cadre par des overrides."
+        ]
+      },
+      "a11y": [
+        "Délègue toute l'accessibilité à TabList / ButtonTab / SelectTab.",
+        "Réagit en direct au changement de data-theme (MutationObserver)."
+      ],
+      "examples": [
+        {
+          "title": "Conteneur d'onglets responsive",
+          "code": "<Tab :items=\"tabs\" v-model=\"active\" @toggle=\"open = !open\" :open=\"open\" />"
+        }
+      ]
     }
   }
 }
