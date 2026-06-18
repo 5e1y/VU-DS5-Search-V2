@@ -37,6 +37,8 @@ import buttonTab from './components/buttonTab.vue'
 import selectTab from './components/selectTab.vue'
 import tabList from './components/tabList.vue'
 import tab from './components/tab.vue'
+import accordionMain from './components/accordionMain.vue'
+import listItem from './components/listItem.vue'
 
 // websiteHeader
 const headerCartCount = ref(2)
@@ -162,6 +164,8 @@ const tabContainerActive = ref('gag')
 const selectTabOpen = ref(false)
 const selectTabRangeOpen = ref(false)
 const tabContainerOpen = ref(false)
+const accordionInsideOpen = ref(true)
+const accordionNuOpen = ref(false)
 </script>
 
 <template>
@@ -1115,6 +1119,83 @@ const tabContainerOpen = ref(false)
         @toggle="tabContainerOpen = !tabContainerOpen"
       />
       <span style="font-size: 13px; color: #666;">Passer data-theme à « Mobile » (boutons ci-dessus, réutilisés de pagination) → le conteneur bascule en SelectTab (radius medium). Desktop/Tablet → rangée d'onglets (radius large).</span>
+    </section>
+
+    <section>
+      <h2>accordionMain — type carte (if-inside), autonome</h2>
+      <accordionMain title="Je suis un accordion" :default-open="false">
+        <p class="normal-300" style="color: var(--text-icon-neutral-medium)">
+          Contenu de l'accordéon. Du texte explicatif vient se loger ici et se
+          déplie avec une animation de hauteur quand on clique sur l'en-tête.
+        </p>
+      </accordionMain>
+    </section>
+
+    <section>
+      <h2>accordionMain — type carte, piloté (v-model:open)</h2>
+      <accordionMain title="Je suis un accordion" v-model:open="accordionInsideOpen">
+        <p class="normal-300" style="color: var(--text-icon-neutral-medium)">
+          Cet accordéon est contrôlé via v-model:open (état :
+          {{ accordionInsideOpen ? 'ouvert' : 'fermé' }}).
+        </p>
+      </accordionMain>
+    </section>
+
+    <section>
+      <h2>accordionMain — type nu (if-inside = false)</h2>
+      <accordionMain
+        title="Je suis un accordion"
+        :if-inside="false"
+        v-model:open="accordionNuOpen"
+      >
+        <p class="normal-300" style="color: var(--text-icon-neutral-medium)">
+          Version sans cadre : pas de bordure, pas de fond, pas de padding
+          horizontal. Utile intégré dans une liste ou une section.
+        </p>
+      </accordionMain>
+    </section>
+
+    <section>
+      <h2>accordionMain — disabled</h2>
+      <accordionMain title="Je suis un accordion" disabled>
+        <p class="normal-300">Contenu inaccessible.</p>
+      </accordionMain>
+    </section>
+
+    <!-- ─────────────────────────────────────────────────────── -->
+
+    <section>
+      <h2>listItem — type large, états &amp; niveaux</h2>
+      <div style="display: flex; flex-direction: column; width: 324px; border: 1px solid #eee; border-radius: 4px; padding: 4px;">
+        <listItem text="Je suis un item" icon-left="CircleDashed" icon-right="CircleDashed" />
+        <listItem text="Je suis un item" icon-left="CircleDashed" icon-right="CircleDashed" :active="true" />
+        <listItem text="Je suis un item" icon-left="CircleDashed" icon-right="CircleDashed" :disabled="true" />
+        <listItem text="Je suis un item" level="level-1" icon-left="CircleDashed" icon-right="CircleDashed" />
+        <listItem text="Je suis un item" level="level-2" icon-left="CircleDashed" icon-right="CircleDashed" />
+      </div>
+      <span style="font-size: 13px; color: #666;">default · active (souligné) · disabled · level-1 · level-2 — survoler / Tab pour rollover &amp; focus</span>
+    </section>
+
+    <section>
+      <h2>listItem — type compact, états &amp; niveaux</h2>
+      <div style="display: flex; flex-direction: column; width: 324px; border: 1px solid #eee; border-radius: 4px; padding: 4px;">
+        <listItem type="compact" text="Je suis un item" icon-left="CircleDashed" icon-right="CircleDashed" />
+        <listItem type="compact" text="Je suis un item" icon-left="CircleDashed" icon-right="CircleDashed" :active="true" />
+        <listItem type="compact" text="Je suis un item" icon-left="CircleDashed" icon-right="CircleDashed" :disabled="true" />
+        <listItem type="compact" text="Je suis un item" level="level-1" icon-left="CircleDashed" icon-right="CircleDashed" />
+        <listItem type="compact" text="Je suis un item" level="level-2" icon-left="CircleDashed" icon-right="CircleDashed" />
+      </div>
+      <span style="font-size: 13px; color: #666;">compact (36px) — mêmes états &amp; niveaux</span>
+    </section>
+
+    <section>
+      <h2>listItem — combinaisons d'icônes &amp; lien</h2>
+      <div style="display: flex; flex-direction: column; width: 324px; border: 1px solid #eee; border-radius: 4px; padding: 4px;">
+        <listItem text="Mon compte" icon-left="User" />
+        <listItem text="Catégories (lien + chevron)" icon-right="ChevronRight" href="#" />
+        <listItem text="Sans icône" />
+      </div>
+      <span style="font-size: 13px; color: #666;">icône gauche seule · lien href avec chevron droit · texte seul</span>
     </section>
 
   </main>

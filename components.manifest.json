@@ -2,6 +2,97 @@
   "$schema": "./manifest.schema.json",
   "$generatedAt": "2026-06-16T00:00:00Z",
   "components": {
+    "AccordionMain": {
+      "file": "accordionMain.vue",
+      "import": "import AccordionMain from '@/components/accordionMain.vue'",
+      "status": "mirror",
+      "category": "content",
+      "summary": "Accordéon dépliable : un en-tête déclencheur (titre + chevron) qui replie/déplie un corps de contenu (slot, principalement textuel) avec animation de hauteur. Deux types via ifInside : carte bordée (fond, bordure, radius 20px) ou en-tête nu sans cadre. État géré en v-model:open ou en autonomie interne.",
+      "dependencies": [
+        "IconMain"
+      ],
+      "props": [
+        {
+          "name": "title",
+          "type": "string",
+          "required": true,
+          "description": "Texte de l'en-tête déclencheur (rendu en medium-300)."
+        },
+        {
+          "name": "ifInside",
+          "type": "boolean",
+          "required": false,
+          "default": true,
+          "description": "true = carte bordée (fond surface-background, bordure, radius medium). false = en-tête nu sans cadre ni padding horizontal."
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "required": false,
+          "description": "État ouvert/fermé. Lié en v-model:open. Si fourni, le composant est contrôlé ; sinon il gère son état en interne."
+        },
+        {
+          "name": "defaultOpen",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "État initial quand le composant n'est pas contrôlé (open non fourni)."
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Désactive l'en-tête (non cliquable, couleurs atténuées)."
+        },
+        {
+          "name": "icon",
+          "type": "string",
+          "required": false,
+          "default": "ChevronDown",
+          "description": "Icône iconMain de l'indicateur (pivote de 180° à l'ouverture)."
+        }
+      ],
+      "slots": [
+        {
+          "name": "default",
+          "description": "Contenu du corps dépliable (principalement textuel)."
+        }
+      ],
+      "events": [
+        {
+          "name": "update:open",
+          "payload": "boolean",
+          "description": "Émis au toggle de l'en-tête (clic/Enter/Espace). Support v-model:open."
+        }
+      ],
+      "usage": {
+        "do": [
+          "Utiliser ifInside=true pour un accordéon en carte autonome, false pour un accordéon intégré à une liste/section.",
+          "Lier v-model:open pour piloter l'état depuis le parent, ou laisser l'autonomie interne via defaultOpen.",
+          "Mettre du contenu textuel simple dans le slot par défaut."
+        ],
+        "doNot": [
+          "Ne pas réimplémenter l'en-tête/chevron inline : passer par title et le slot.",
+          "Ne pas restyler le composant par des overrides de ses classes ou tokens."
+        ]
+      },
+      "a11y": [
+        "L'en-tête est un <button> natif avec aria-expanded et aria-controls vers le corps.",
+        "Le corps porte role='region' et est rendu inerte (inert) quand replié.",
+        "Focus clavier visible : anneau blanc+bleu (ifInside) ou bordure bleue + radius-focus-mode (nu)."
+      ],
+      "examples": [
+        {
+          "title": "Carte autonome",
+          "code": "<AccordionMain title=\"Je suis un accordion\">Contenu…</AccordionMain>"
+        },
+        {
+          "title": "En-tête nu, piloté",
+          "code": "<AccordionMain title=\"Détails\" :if-inside=\"false\" v-model:open=\"open\">Contenu…</AccordionMain>"
+        }
+      ]
+    },
     "BtLarge": {
       "file": "btLarge.vue",
       "import": "import BtLarge from '@/components/btLarge.vue'",
@@ -122,7 +213,10 @@
           "type": "union",
           "required": false,
           "default": "packshot",
-          "options": ["packshot", "ambiance"],
+          "options": [
+            "packshot",
+            "ambiance"
+          ],
           "description": "Variante visuelle. 'packshot' = produit détouré sur fond blanc, label sous l'image. 'ambiance' = image lifestyle plein cadre avec label blanc sur dégradé."
         },
         {
@@ -193,14 +287,23 @@
       "status": "mirror",
       "category": "actions",
       "summary": "Bouton d'action principal. Rendu en <button>, ou en <a> si href est fourni.",
-      "dependencies": ["IconMain"],
+      "dependencies": [
+        "IconMain"
+      ],
       "props": [
         {
           "name": "type",
           "type": "union",
           "required": false,
           "default": "primary",
-          "options": ["primary", "secondary", "tertiary", "text", "ghost", "primary-on-picture"],
+          "options": [
+            "primary",
+            "secondary",
+            "tertiary",
+            "text",
+            "ghost",
+            "primary-on-picture"
+          ],
           "description": "Style visuel. 'primary' = action principale ; 'secondary' = bordure ; 'tertiary'/'ghost' = faible emphase ; 'text' = lien souligné ; 'primary-on-picture' = posé sur une image (fond flouté)."
         },
         {
@@ -208,7 +311,10 @@
           "type": "union",
           "required": false,
           "default": "default",
-          "options": ["default", "small"],
+          "options": [
+            "default",
+            "small"
+          ],
           "description": "Taille. 'small' réduit le padding du label et l'icône."
         },
         {
@@ -281,7 +387,10 @@
       "status": "mirror",
       "category": "forms",
       "summary": "Ligne cliquable de la partie information d'une fiche produit (parcours Aide au Choix). Affiche un titre, la valeur retenue, un badge du nombre de valeurs possibles et un chevron ; émet 'click' pour ouvrir un panel de sélection.",
-      "dependencies": ["IconMain", "LabelMain"],
+      "dependencies": [
+        "IconMain",
+        "LabelMain"
+      ],
       "props": [
         {
           "name": "title",
@@ -355,6 +464,117 @@
         }
       ]
     },
+    "ListItem": {
+      "file": "listItem.vue",
+      "import": "import ListItem from '@/components/listItem.vue'",
+      "status": "mirror",
+      "category": "navigation",
+      "summary": "Élément de liste générique pour menus et listes navigables. Trois niveaux de hiérarchie (level-0/1/2 = indentation gauche croissante) et deux densités (large 48px / compact 36px). Icônes gauche/droite optionnelles, texte central. États rollover/focus gérés en CSS, active (item sélectionné, texte souligné) et disabled en props. Rendu polymorphe bouton ou lien (href).",
+      "dependencies": [
+        "IconMain"
+      ],
+      "props": [
+        {
+          "name": "text",
+          "type": "string",
+          "required": true,
+          "description": "Libellé de l'item (rendu en medium-300 en large, medium-200 en compact ; souligné si active)."
+        },
+        {
+          "name": "type",
+          "type": "'large' | 'compact'",
+          "required": false,
+          "default": "large",
+          "options": [
+            "large",
+            "compact"
+          ],
+          "description": "Densité de l'item : large (hauteur 48px, icônes large) ou compact (36px, icônes medium)."
+        },
+        {
+          "name": "level",
+          "type": "'level-0' | 'level-1' | 'level-2'",
+          "required": false,
+          "default": "level-0",
+          "options": [
+            "level-0",
+            "level-1",
+            "level-2"
+          ],
+          "description": "Niveau hiérarchique = indentation gauche : level-0 (8px), level-1 (24px), level-2 (48px)."
+        },
+        {
+          "name": "iconLeft",
+          "type": "string",
+          "required": false,
+          "description": "Nom d'icône iconMain affichée à gauche. Omis = pas d'icône gauche."
+        },
+        {
+          "name": "iconRight",
+          "type": "string",
+          "required": false,
+          "description": "Nom d'icône iconMain affichée à droite (ex. ChevronRight pour un item navigable). Omis = pas d'icône droite."
+        },
+        {
+          "name": "active",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Item sélectionné : fond rollover + texte souligné."
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Désactive l'item (non cliquable, couleur atténuée). Géré sur button (disabled) et lien (aria-disabled)."
+        },
+        {
+          "name": "href",
+          "type": "string",
+          "required": false,
+          "description": "Si fourni, l'item est rendu comme <a> (lien) au lieu de <button>."
+        }
+      ],
+      "events": [
+        {
+          "name": "click",
+          "payload": "void",
+          "description": "Émis au clic (sauf si disabled)."
+        }
+      ],
+      "usage": {
+        "do": [
+          "Utiliser dans des menus ou listes navigables ; combiner les level pour rendre une hiérarchie.",
+          "Passer iconRight=\"ChevronRight\" pour un item qui ouvre un sous-niveau ou une page.",
+          "Mettre active sur l'item correspondant à la page/section courante."
+        ],
+        "doNot": [
+          "Ne pas re-styler iconMain ni le texte par-dessus le composant.",
+          "Ne pas utiliser pour une action principale type bouton : préférer ButtonMain.",
+          "Ne pas forcer rollover/focus en CSS externe : ces états sont déjà gérés."
+        ]
+      },
+      "a11y": [
+        "Rendu natif button ou lien (a) selon href ; navigable et activable au clavier.",
+        "État disabled géré pour button (disabled) et lien (aria-disabled).",
+        "Anneau de focus clavier via :focus-visible déjà stylé."
+      ],
+      "examples": [
+        {
+          "title": "Item de menu simple",
+          "code": "<ListItem text=\"Mon compte\" iconLeft=\"User\" />"
+        },
+        {
+          "title": "Item navigable (lien + chevron)",
+          "code": "<ListItem text=\"Catégories\" iconRight=\"ChevronRight\" href=\"/categories\" />"
+        },
+        {
+          "title": "Sous-niveau actif, compact",
+          "code": "<ListItem text=\"Canapés\" type=\"compact\" level=\"level-1\" active />"
+        }
+      ]
+    },
     "InputSliderButton": {
       "file": "inputSliderButton.vue",
       "import": "import InputSliderButton from '@/components/inputSliderButton.vue'",
@@ -368,7 +588,10 @@
           "type": "union",
           "required": false,
           "default": "default",
-          "options": ["default", "rollover"],
+          "options": [
+            "default",
+            "rollover"
+          ],
           "description": "État visuel. 'default' = point 16px ; 'rollover' = point 24px (survol ou glissement actif). Le survol agrandit aussi le point via CSS."
         },
         {
@@ -404,7 +627,10 @@
       "status": "mirror",
       "category": "forms",
       "summary": "Slider de plage à deux poignées pour les panels d'aide au choix des fiches produit (filtres prix, dimensions, valeurs numériques). Deux champs de saisie synchronisés affichent et modifient les bornes ; un label décrit le contexte.",
-      "dependencies": ["InputSliderButton", "Input"],
+      "dependencies": [
+        "InputSliderButton",
+        "Input"
+      ],
       "props": [
         {
           "name": "modelValue",
@@ -490,7 +716,9 @@
       "status": "mirror",
       "category": "forms",
       "summary": "Coche de filtre texte sélectionnable, utilisée dans les panels d'aide au choix et les overlays des selects de filtres du catalogue. Compose un ToggleMain (checkbox), un label et le nombre d'articles correspondant au filtre.",
-      "dependencies": ["ToggleMain"],
+      "dependencies": [
+        "ToggleMain"
+      ],
       "props": [
         {
           "name": "modelValue",
@@ -561,7 +789,9 @@
       "status": "mirror",
       "category": "forms",
       "summary": "Bascule de filtre nuancier couleur, utilisée dans les panels d'aide au choix et les overlays de filtres catalogue. Affiche une pastille de couleur (donnée produit) avec le nombre de produits, et le label de la couleur. Sélectionné, la pastille de compteur est remplacée par une coche.",
-      "dependencies": ["IconMain"],
+      "dependencies": [
+        "IconMain"
+      ],
       "props": [
         {
           "name": "modelValue",
@@ -722,7 +952,11 @@
       "status": "mirror",
       "category": "actions",
       "summary": "Pagination complète : bouton Précédent, suite de numéros (ButtonPagination) avec ellipses, et bouton Suivant. Le nombre de numéros visibles s'adapte au device (data-theme) ; sur Tablet/Mobile les flèches passent en icône seule.",
-      "dependencies": ["ButtonMain", "ButtonPagination", "IconMain"],
+      "dependencies": [
+        "ButtonMain",
+        "ButtonPagination",
+        "IconMain"
+      ],
       "props": [
         {
           "name": "modelValue",
@@ -776,14 +1010,22 @@
       "status": "mirror",
       "category": "actions",
       "summary": "Commande de défilement pour carrousels et sliders : une flèche (ButtonMain primary-on-picture) posée sur un dégradé décoratif de la couleur de fond. Le bouton et le dégradé disparaissent ensemble quand le défilement n'est plus possible.",
-      "dependencies": ["ButtonMain", "IconMain"],
+      "dependencies": [
+        "ButtonMain",
+        "IconMain"
+      ],
       "props": [
         {
           "name": "direction",
           "type": "union",
           "required": false,
           "default": "left",
-          "options": ["left", "right", "top", "bottom"],
+          "options": [
+            "left",
+            "right",
+            "top",
+            "bottom"
+          ],
           "description": "Sens du défilement : choisit le chevron et oriente le dégradé depuis le bord correspondant."
         },
         {
@@ -857,7 +1099,10 @@
           "type": "union",
           "required": false,
           "default": "default",
-          "options": ["default", "range"],
+          "options": [
+            "default",
+            "range"
+          ],
           "description": "Variante visuelle. 'default' = onglet de navigation (44px de haut, badge possible). 'range' = onglet de hero section (52px, sans badge)."
         },
         {
@@ -937,7 +1182,9 @@
       "status": "mirror",
       "category": "forms",
       "summary": "Version 'select' de l'onglet (chevron pivotant), utilisée surtout sur mobile pour remplacer une rangée d'onglets. Même fonctionnement présentationnel que Select : prop open, émet 'click' au parent qui gère l'ouverture de la liste. Ne rend pas lui-même les options.",
-      "dependencies": ["iconMain"],
+      "dependencies": [
+        "iconMain"
+      ],
       "props": [
         {
           "name": "modelValue",
@@ -977,7 +1224,10 @@
           "type": "union",
           "required": false,
           "default": "default",
-          "options": ["default", "range"],
+          "options": [
+            "default",
+            "range"
+          ],
           "description": "Variante de fond au repos. 'default' = fond blanc. 'range' = fond translucide (hero sections)."
         },
         {
@@ -1029,7 +1279,10 @@
       "status": "mirror",
       "category": "navigation",
       "summary": "Liste d'onglets pilotée par un tableau items + v-model. En layout='tabs', rend une rangée de ButtonTab séparés par des séparateurs verticaux ; en layout='select', rend un SelectTab unique (repli mobile). Gère l'onglet actif et émet update:modelValue au clic.",
-      "dependencies": ["ButtonTab", "SelectTab"],
+      "dependencies": [
+        "ButtonTab",
+        "SelectTab"
+      ],
       "props": [
         {
           "name": "items",
@@ -1049,7 +1302,10 @@
           "type": "union",
           "required": false,
           "default": "tabs",
-          "options": ["tabs", "select"],
+          "options": [
+            "tabs",
+            "select"
+          ],
           "description": "'tabs' = rangée de ButtonTab + séparateurs. 'select' = un SelectTab unique (mobile)."
         },
         {
@@ -1057,7 +1313,10 @@
           "type": "union",
           "required": false,
           "default": "default",
-          "options": ["default", "range"],
+          "options": [
+            "default",
+            "range"
+          ],
           "description": "Variante propagée aux ButtonTab / SelectTab enfants."
         },
         {
@@ -1113,7 +1372,9 @@
       "status": "mirror",
       "category": "navigation",
       "summary": "Conteneur d'onglets : un cadre coloré (fond surface-neutral, padding 8px) qui enveloppe un TabList. Bascule automatiquement entre la rangée d'onglets (desktop/tablet, radius large) et un SelectTab (mobile, radius medium) selon le data-theme de la racine.",
-      "dependencies": ["TabList"],
+      "dependencies": [
+        "TabList"
+      ],
       "props": [
         {
           "name": "items",
@@ -1133,7 +1394,10 @@
           "type": "union",
           "required": false,
           "default": "default",
-          "options": ["default", "range"],
+          "options": [
+            "default",
+            "range"
+          ],
           "description": "Variante propagée au TabList."
         },
         {
