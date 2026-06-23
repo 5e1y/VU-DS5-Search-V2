@@ -105,7 +105,7 @@
   --interactive-tertiary-background-rollover: var(--primitive-squid-opacity-200);
 
   /* ghost */
-  --interactive-ghost-background-default: var(--surface-background);
+  --interactive-ghost-background-default: transparent;
   --interactive-ghost-background-rollover: var(--primitive-squid-opacity-100);
 
   /* input */

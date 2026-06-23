@@ -41,7 +41,7 @@ function tick() {
     return
   }
 
-  const currentPhrase = PHRASES[phraseIndex]
+  const currentPhrase = PHRASES[phraseIndex]!
 
   if (!isDeleting) {
     charIndex++

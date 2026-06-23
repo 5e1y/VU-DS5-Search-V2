@@ -6,6 +6,8 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 
 // https://vite.dev/config/
 export default defineConfig({
+  // GitHub Pages sert le site sous /<repo>/
+  base: '/Vente-unique-DS5/',
   plugins: [
     vue(),
     vueDevTools(),
