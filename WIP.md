@@ -12,5 +12,5 @@ pour publier un nouveau test.
 
 ## Déploiement
 
-GitHub Pages via `.github/workflows/pages.yml` (build Vite à chaque push sur `main`).
+GitHub Pages via branche gh-pages (build Vite poussé manuellement).
 URL : https://5e1y.github.io/VU-DS5-Search-V2/
