@@ -30,6 +30,10 @@ const suggestions = computed(() => {
   return list
 })
 
+// Base Vite (ex. "/VU-DS5-Search-V2/" sur GitHub Pages) — pour des assets corrects en sous-chemin.
+const base = import.meta.env.BASE_URL
+const recentThumb = `${base}figma/prod0.png`
+
 const recent = ref(['Canapé d’angle', 'Canapé d’angle', 'Canapé d’angle', 'Canapé d’angle'])
 function removeRecent(i: number) {
   recent.value.splice(i, 1)
@@ -38,7 +42,7 @@ function removeRecent(i: number) {
 const categories = [
   'Canapé', 'Meuble de salon', 'Salle à manger', 'Chambre', 'Matelas',
   'Luminaire', 'Mobilier de jardin', 'Meuble salle de bain', 'Verrière', 'Table basse',
-].map((label, i) => ({ label, image: `/figma/cat${i}.png` }))
+].map((label, i) => ({ label, image: `${base}figma/cat${i}.png` }))
 
 const productTitles = [
   'Canapé 2 places en tissu bouclette blanc ivoire OVOTAS',
@@ -47,7 +51,7 @@ const productTitles = [
 const products = Array.from({ length: 14 }, (_, i) => ({
   title: productTitles[i % productTitles.length],
   price: '1 149,99 €',
-  image: `/figma/prod${i}.png`,
+  image: `${base}figma/prod${i}.png`,
   liked: false,
 }))
 
@@ -136,7 +140,7 @@ function onLeave(el: Element, done: () => void) {
                   :key="i"
                   type="past"
                   :text="r"
-                  image="/figma/prod0.png"
+                  :image="recentThumb"
                   @clear="removeRecent(i)"
                 />
               </div>
