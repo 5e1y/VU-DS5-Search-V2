@@ -13,4 +13,4 @@ pour publier un nouveau test.
 ## Déploiement
 
 GitHub Pages via `.github/workflows/pages.yml` (build Vite à chaque push sur `main`).
-URL : https://5e1y.github.io/Vente-unique-DS5/
+URL : https://5e1y.github.io/VU-DS5-Search-V2/
