@@ -47,6 +47,19 @@ const isDesktop = ref(true)
 const isScrolled = ref(false)
 const searchValue = ref('')
 
+// Overlay de recherche : on capture la position de la barre au clic
+// (point de départ du morph), mais l'overlay s'ouvre en position fixe Figma.
+const searchOpen = ref(false)
+const searchRect = ref<{ top: number; left: number; width: number; height: number } | null>(null)
+function openSearch(e: Event) {
+  const el = (e.currentTarget as HTMLElement).getBoundingClientRect()
+  searchRect.value = { top: el.top, left: el.left, width: el.width, height: el.height }
+  searchOpen.value = true
+}
+function closeSearch() {
+  searchOpen.value = false
+}
+
 const promoTargetDateResolved = computed<Date>(() => {
   if (props.promoTargetDate) return props.promoTargetDate
   const d = new Date()
@@ -117,10 +130,16 @@ onUnmounted(() => {
           </div>
 
           <div class="wh-search">
-            <InputSearchBar
-              v-model="searchValue"
-              @search="emit('search', $event)"
-            />
+            <div
+              class="wh-search__field"
+              @mousedown="openSearch"
+              @focusin="openSearch"
+            >
+              <InputSearchBar
+                v-model="searchValue"
+                @search="emit('search', $event)"
+              />
+            </div>
           </div>
 
           <div class="wh-actions">
@@ -206,7 +225,11 @@ onUnmounted(() => {
 
         <!-- Ligne recherche -->
         <div class="wh-search-row">
-          <div class="wh-searchbar-wrapper">
+          <div
+            class="wh-searchbar-wrapper"
+            @mousedown="openSearch"
+            @focusin="openSearch"
+          >
             <InputSearchBar
               v-model="searchValue"
               @search="emit('search', $event)"
@@ -220,6 +243,7 @@ onUnmounted(() => {
       </div>
     </template>
 
+    <slot name="search-overlay" :open="searchOpen" :close="closeSearch" :origin="searchRect" />
   </header>
 </template>
 
@@ -301,6 +325,11 @@ onUnmounted(() => {
   flex: 1;
   min-width: 0;
   padding-inline: 24px;
+}
+
+/* Point d'ancrage de la barre (départ du morph) ; l'overlay s'ouvre en fixe. */
+.wh-search__field {
+  position: relative;
 }
 
 /* ── Header action buttons ───────────────────────────────────── */
