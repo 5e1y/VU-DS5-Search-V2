@@ -367,8 +367,9 @@ function onKeydown(e: KeyboardEvent) {
   min-height: 0;
   overflow-y: auto;
   scrollbar-width: thin;
-  /* Marge pour que le halo de focus ne soit pas rogné par l'overflow. */
-  padding: var(--spacing-extra-small);
+  /* Place pour le halo de focus, compensée en marge négative pour ne pas décaler le contenu. */
+  padding: var(--spacing-extra-extra-small);
+  margin-inline: calc(-1 * var(--spacing-extra-extra-small));
 }
 
 /* ── État saisie : 2 colonnes Catalogues / Produits ── */
@@ -406,8 +407,9 @@ function onKeydown(e: KeyboardEvent) {
   min-height: 0;
   overflow-y: auto;
   scrollbar-width: thin;
-  /* Marge pour que le halo de focus ne soit pas rogné par l'overflow. */
-  padding: var(--spacing-extra-small);
+  /* Place pour le halo de focus, compensée en marge négative pour aligner avec l'en-tête. */
+  padding: var(--spacing-extra-extra-small);
+  margin-inline: calc(-1 * var(--spacing-extra-extra-small));
 }
 /* Catalogues : lignes collées (gap 0), conforme Figma. */
 .ws-col__scroll--list {
