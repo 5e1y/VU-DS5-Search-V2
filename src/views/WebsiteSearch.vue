@@ -122,12 +122,86 @@ function onEnter(el: Element, done: () => void) {
 function onLeave(el: Element, done: () => void) {
   flip(el as HTMLElement, false, done)
 }
+
+/* ── Navigation clavier ──────────────────────────────────────
+   Échap ferme ; Tab reste natif (ordre du DOM) ; les flèches font une
+   navigation directionnelle 2D entre éléments focusables. ── */
+const FOCUSABLE =
+  'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])'
+
+function focusables(root: HTMLElement): HTMLElement[] {
+  return Array.from(root.querySelectorAll<HTMLElement>(FOCUSABLE)).filter(
+    (el) => el.offsetParent !== null, // exclut les éléments masqués
+  )
+}
+
+function pickDirectional(items: HTMLElement[], current: Element, dir: string): HTMLElement | null {
+  const cur = current.getBoundingClientRect()
+  const cx = cur.left + cur.width / 2
+  const cy = cur.top + cur.height / 2
+  let best: HTMLElement | null = null
+  let bestScore = Infinity
+  for (const el of items) {
+    if (el === current) continue
+    const r = el.getBoundingClientRect()
+    const dx = r.left + r.width / 2 - cx
+    const dy = r.top + r.height / 2 - cy
+    let primary: number
+    let secondary: number
+    if (dir === 'ArrowDown') {
+      if (dy <= 1) continue
+      primary = dy
+      secondary = Math.abs(dx)
+    } else if (dir === 'ArrowUp') {
+      if (dy >= -1) continue
+      primary = -dy
+      secondary = Math.abs(dx)
+    } else if (dir === 'ArrowRight') {
+      if (dx <= 1) continue
+      primary = dx
+      secondary = Math.abs(dy)
+    } else {
+      if (dx >= -1) continue
+      primary = -dx
+      secondary = Math.abs(dy)
+    }
+    // Pénalise le désalignement pour préférer le voisin "en face".
+    const score = primary + secondary * 2
+    if (score < bestScore) {
+      bestScore = score
+      best = el
+    }
+  }
+  return best
+}
+
+function onKeydown(e: KeyboardEvent) {
+  if (e.key === 'Escape') {
+    emit('close')
+    return
+  }
+  if (!e.key.startsWith('Arrow')) return
+
+  const root = e.currentTarget as HTMLElement
+  const active = document.activeElement as HTMLElement | null
+  // Dans un champ texte, on laisse ←/↑/→ déplacer le curseur ; seul ↓ sort vers les résultats.
+  const inField = active?.tagName === 'INPUT'
+  if (inField && e.key !== 'ArrowDown') return
+
+  const items = focusables(root)
+  if (!items.length) return
+  e.preventDefault()
+
+  const current = active && items.includes(active) ? active : null
+  const next = current ? pickDirectional(items, current, e.key) : items[0]
+  next?.focus()
+}
 </script>
 
 <template>
   <Teleport to="body">
     <Transition :css="false" @enter="onEnter" @leave="onLeave">
-      <div v-if="open" class="ws-overlay" @click.self="emit('close')">
+      <div v-if="open" class="ws-overlay" @click.self="emit('close')" @keydown="onKeydown">
         <div class="ws-panel shadow-large">
           <!-- Searchbar + Fermer (fixe) -->
           <div class="ws-searchrow">
