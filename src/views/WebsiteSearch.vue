@@ -367,6 +367,8 @@ function onKeydown(e: KeyboardEvent) {
   min-height: 0;
   overflow-y: auto;
   scrollbar-width: thin;
+  /* Marge pour que le halo de focus ne soit pas rogné par l'overflow. */
+  padding: var(--spacing-extra-small);
 }
 
 /* ── État saisie : 2 colonnes Catalogues / Produits ── */
@@ -404,6 +406,8 @@ function onKeydown(e: KeyboardEvent) {
   min-height: 0;
   overflow-y: auto;
   scrollbar-width: thin;
+  /* Marge pour que le halo de focus ne soit pas rogné par l'overflow. */
+  padding: var(--spacing-extra-small);
 }
 /* Catalogues : lignes collées (gap 0), conforme Figma. */
 .ws-col__scroll--list {

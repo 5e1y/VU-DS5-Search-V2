@@ -63,6 +63,10 @@ onUnmounted(() => ro?.disconnect())
   overflow-x: auto;
   overflow-y: clip;
   scrollbar-width: none;
+  /* Marge pour que le halo de focus des items ne soit pas rogné par l'overflow.
+     La marge négative verticale compense pour ne pas changer la hauteur de la rangée. */
+  padding: var(--spacing-extra-small);
+  margin-block: calc(-1 * var(--spacing-extra-small));
 }
 .slider-row__track::-webkit-scrollbar {
   display: none;
