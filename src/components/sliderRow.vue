@@ -63,10 +63,10 @@ onUnmounted(() => ro?.disconnect())
   overflow-x: auto;
   overflow-y: clip;
   scrollbar-width: none;
-  /* Place pour le halo de focus des items, compensée en marge négative
-     (verticale + horizontale) pour ne pas décaler la rangée. */
+  /* Place pour le halo de focus des items. Compensation verticale uniquement :
+     pas de marge horizontale, sinon le contenu se décale des dégradés de bord. */
   padding: var(--spacing-extra-extra-small);
-  margin: calc(-1 * var(--spacing-extra-extra-small));
+  margin-block: calc(-1 * var(--spacing-extra-extra-small));
 }
 .slider-row__track::-webkit-scrollbar {
   display: none;
