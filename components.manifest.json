@@ -281,6 +281,82 @@
         }
       ]
     },
+    "CardProductBoxHorizontal": {
+      "file": "cardProductBoxHorizontal.vue",
+      "import": "import CardProductBoxHorizontal from '@/components/cardProductBoxHorizontal.vue'",
+      "status": "mirror",
+      "category": "content",
+      "summary": "Tuile produit horizontale pour mises en page compactes (image à gauche, titre + prix à droite), ex. colonne 'Produits' de la recherche. Rendu en <button>, ou en <a> si href est fourni. Seule la taille extraSmall est implémentée pour l'instant.",
+      "dependencies": [],
+      "props": [
+        {
+          "name": "title",
+          "type": "string",
+          "required": false,
+          "default": "",
+          "description": "Titre produit (medium-200), tronqué en ellipsis sur 2 lignes."
+        },
+        {
+          "name": "image",
+          "type": "string",
+          "required": false,
+          "default": "",
+          "description": "URL de l'image produit (donnée produit, exception à la loi des tokens). Affichée en ratio 40/30 (cover)."
+        },
+        {
+          "name": "price",
+          "type": "string",
+          "required": false,
+          "default": "",
+          "description": "Prix formaté (semi-bold-200), ex. '1 149,99 €'."
+        },
+        {
+          "name": "size",
+          "type": "union",
+          "required": false,
+          "default": "extraSmall",
+          "options": [
+            "extraSmall"
+          ],
+          "description": "Taille de la tuile. Seule 'extraSmall' est implémentée (image 96×72). large/small à venir."
+        },
+        {
+          "name": "href",
+          "type": "string",
+          "required": false,
+          "description": "Si fourni, le composant est rendu en <a> (navigation). Sinon en <button>."
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "description": "Désactive le composant (disabled natif sur <button>, aria-disabled sur <a>)."
+        }
+      ],
+      "usage": {
+        "do": [
+          "Utiliser dans des listes verticales compactes de produits (résultats de recherche, suggestions).",
+          "Fournir href pour une navigation native vers la fiche produit (rend un <a>)."
+        ],
+        "doNot": [
+          "Ne pas restyler le composant par des overrides ; consommer la variante telle quelle.",
+          "Ne pas l'utiliser comme carte produit principale du catalogue : c'est une tuile compacte."
+        ]
+      },
+      "a11y": [
+        "Polymorphe : <a> si href (navigation native), sinon <button>.",
+        "État disabled géré pour <button> (disabled) et <a> (aria-disabled).",
+        "Rollover (bordure) au :hover ; anneau de focus + bordure au :focus-visible.",
+        "Image décorative en alt=\"\" : le sens est porté par le titre."
+      ],
+      "examples": [
+        {
+          "title": "Résultat produit (navigation)",
+          "code": "<CardProductBoxHorizontal title=\"Canapé 3 places ZULIPRO\" image=\"/img/sofa.jpg\" price=\"1 149,99 €\" href=\"/p/zulipro\" />"
+        }
+      ]
+    },
     "ButtonMain": {
       "file": "buttonMain.vue",
       "import": "import ButtonMain from '@/components/buttonMain.vue'",

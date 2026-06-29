@@ -6,6 +6,7 @@ import buttonTactile from '../components/buttonTactile.vue'
 import sliderRow from '../components/sliderRow.vue'
 import toggleLike from '../components/toggleLike.vue'
 import searchResult from '../components/searchResult.vue'
+import cardProductBoxHorizontal from '../components/cardProductBoxHorizontal.vue'
 
 type Rect = { top: number; left: number; width: number; height: number }
 
@@ -32,17 +33,25 @@ const suggestions = computed(() => {
 
 // Base Vite (ex. "/VU-DS5-Search-V2/" sur GitHub Pages) — pour des assets corrects en sous-chemin.
 const base = import.meta.env.BASE_URL
-const recentThumb = `${base}figma/prod0.png`
-
-const recent = ref(['Canapé d’angle', 'Canapé d’angle', 'Canapé d’angle', 'Canapé d’angle'])
-function removeRecent(i: number) {
-  recent.value.splice(i, 1)
-}
 
 const categories = [
   'Canapé', 'Meuble de salon', 'Salle à manger', 'Chambre', 'Matelas',
   'Luminaire', 'Mobilier de jardin', 'Meuble salle de bain', 'Verrière', 'Table basse',
 ].map((label, i) => ({ label, image: `${base}figma/cat${i}.png` }))
+
+// Recherches récentes : libellés + vignettes tirés au hasard depuis les rayons (catégories).
+const RECENT_POOL = [
+  'Canapé d’angle', 'Table à manger', 'Matelas 160x200', 'Lampe de chevet',
+  'Chaise scandinave', 'Étagère murale', 'Tapis berbère', 'Buffet en bois',
+  'Fauteuil en velours', 'Lit coffre',
+]
+const pick = <T,>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)] as T
+const recent = ref(
+  Array.from({ length: 4 }, () => ({ text: pick(RECENT_POOL), image: pick(categories).image })),
+)
+function removeRecent(i: number) {
+  recent.value.splice(i, 1)
+}
 
 const productTitles = [
   'Canapé 2 places en tissu bouclette blanc ivoire OVOTAS',
@@ -106,6 +115,9 @@ function flip(overlayEl: HTMLElement, entering: boolean, done: () => void) {
 
 function onEnter(el: Element, done: () => void) {
   flip(el as HTMLElement, true, done)
+  // Double rAF : focus après le clic d'ouverture et le 1er rendu, sinon le focus est volé.
+  const input = el.querySelector('.input-search-bar__field') as HTMLInputElement | null
+  requestAnimationFrame(() => requestAnimationFrame(() => input?.focus({ preventScroll: true })))
 }
 function onLeave(el: Element, done: () => void) {
   flip(el as HTMLElement, false, done)
@@ -120,27 +132,51 @@ function onLeave(el: Element, done: () => void) {
           <!-- Searchbar + Fermer (fixe) -->
           <div class="ws-searchrow">
             <inputSearchBar v-model="query" show-camera class="ws-searchrow__input" />
-            <buttonMain type="ghost" label="Fermer" @click="emit('close')" />
+            <buttonMain type="ghost" label="Fermer" class="ws-close ws-close--desktop" @click="emit('close')" />
+            <buttonMain type="ghost" iconLeft="X" aria-label="Fermer" class="ws-close ws-close--mobile" @click="emit('close')" />
           </div>
 
-          <!-- État saisie : suggestions d'autocomplétion -->
-          <div v-if="suggestions.length" class="ws-scroll ws-scroll--list">
-            <searchResult v-for="(s, i) in suggestions" :key="i" type="present">
-              <span v-if="s.pre" class="semi-bold-300">{{ s.pre + ' ' }}</span><span>{{ s.q }}</span><span v-if="s.post" class="semi-bold-300">{{ ' ' + s.post }}</span>
-            </searchResult>
+          <!-- État saisie : 2 colonnes Catalogues / Produits -->
+          <div v-if="suggestions.length" class="ws-results">
+            <section class="ws-col">
+              <header class="ws-col__header">
+                <h2 class="ws-col__title medium-400">Catalogues</h2>
+              </header>
+              <div class="ws-col__scroll ws-col__scroll--list ws-col__scroll--fade">
+                <searchResult v-for="(s, i) in suggestions" :key="i" type="present">
+                  <span v-if="s.pre" class="semi-bold-300">{{ s.pre + ' ' }}</span><span>{{ s.q }}</span><span v-if="s.post" class="semi-bold-300">{{ ' ' + s.post }}</span>
+                </searchResult>
+              </div>
+            </section>
+
+            <section class="ws-col">
+              <header class="ws-col__header">
+                <h2 class="ws-col__title medium-400">Produits</h2>
+                <buttonMain type="secondary" size="small" label="Tout voir" icon-right="ChevronRight" />
+              </header>
+              <div class="ws-col__scroll ws-col__scroll--fade">
+                <cardProductBoxHorizontal
+                  v-for="(p, i) in products"
+                  :key="i"
+                  :title="p.title"
+                  :image="p.image"
+                  :price="p.price"
+                />
+              </div>
+            </section>
           </div>
 
           <!-- État par défaut : récentes / catégories / produits -->
           <div v-else class="ws-scroll">
-            <section class="ws-section">
+            <section v-if="recent.length" class="ws-section">
               <h2 class="ws-section__title medium-400">Recherches récentes</h2>
               <div class="ws-recent">
                 <searchResult
                   v-for="(r, i) in recent"
                   :key="i"
                   type="past"
-                  :text="r"
-                  :image="recentThumb"
+                  :text="r.text"
+                  :image="r.image"
                   @clear="removeRecent(i)"
                 />
               </div>
@@ -225,7 +261,7 @@ function onLeave(el: Element, done: () => void) {
 
 .ws-searchrow {
   display: flex;
-  gap: var(--spacing-large);
+  gap: var(--spacing-small);
   align-items: center;
   width: 100%;
   flex-shrink: 0;
@@ -233,6 +269,19 @@ function onLeave(el: Element, done: () => void) {
 .ws-searchrow__input {
   flex: 1;
   min-width: 0;
+}
+
+/* Bouton fermer : libellé "Fermer" en desktop, croix en mobile. */
+.ws-close--mobile {
+  display: none;
+}
+@media (max-width: 991px) {
+  .ws-close--desktop {
+    display: none;
+  }
+  .ws-close--mobile {
+    display: inline-flex;
+  }
 }
 
 /* Zone défilable */
@@ -246,9 +295,68 @@ function onLeave(el: Element, done: () => void) {
   scrollbar-width: thin;
 }
 
-/* Liste de suggestions : lignes de 48px collées (gap 0), conforme Figma. */
-.ws-scroll--list {
+/* ── État saisie : 2 colonnes Catalogues / Produits ── */
+.ws-results {
+  display: flex;
+  gap: var(--spacing-large);
+  flex: 1;
+  min-height: 0;
+}
+.ws-col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-extra-small);
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+}
+.ws-col__header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-small);
+  min-height: 44px;
+  flex-shrink: 0;
+}
+.ws-col__title {
+  flex: 1;
+  min-width: 0;
+  color: var(--text-icon-neutral-hard);
+}
+.ws-col__scroll {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-extra-small);
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+/* Catalogues : lignes collées (gap 0), conforme Figma. */
+.ws-col__scroll--list {
   gap: 0;
+}
+/* Fondu en bas de colonne (remplace le dégradé Figma). */
+.ws-col__scroll--fade {
+  mask-image: linear-gradient(to bottom, black calc(100% - 64px), transparent);
+}
+
+/* Mobile : colonnes empilées, plus de scroll/fondu par colonne. */
+@media (max-width: 991px) {
+  .ws-results {
+    flex-direction: column;
+    overflow-y: auto;
+  }
+  /* Colonnes à hauteur de contenu : sinon elles se chevauchent une fois empilées. */
+  .ws-col {
+    flex: none;
+    min-height: auto;
+  }
+  .ws-col__scroll {
+    overflow: visible;
+  }
+  .ws-col__scroll--fade {
+    mask-image: none;
+  }
 }
 
 /* ── Sections ── */
@@ -286,6 +394,11 @@ function onLeave(el: Element, done: () => void) {
   border: 1px solid var(--interactive-product-box-stroke-default);
   border-radius: var(--radius-large);
   overflow: clip;
+  transition: border-color 150ms ease;
+}
+/* Rollover : bordure rollover au survol (spec cardProductBox small). */
+.ws-card:hover {
+  border-color: var(--interactive-product-box-stroke-rollover);
 }
 .ws-card__media {
   position: relative;
