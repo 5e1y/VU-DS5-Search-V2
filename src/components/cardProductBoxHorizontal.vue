@@ -92,11 +92,11 @@ const rootClasses = computed(() => [
   opacity: 0.5;
 }
 
-/* ── Image (ratio 40/30) ── */
+/* ── Image (ratio 4:5) ── */
 .cpbh--extraSmall .cpbh__media {
   flex-shrink: 0;
-  width: 96px;
   height: 72px;
+  aspect-ratio: 40 / 50;
   border-radius: var(--radius-medium);
   overflow: clip;
 }

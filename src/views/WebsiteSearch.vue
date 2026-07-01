@@ -47,7 +47,7 @@ const RECENT_POOL = [
 ]
 const pick = <T,>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)] as T
 const recent = ref(
-  Array.from({ length: 4 }, () => ({ text: pick(RECENT_POOL), image: pick(categories).image })),
+  Array.from({ length: 4 }, () => ({ text: pick(RECENT_POOL) })),
 )
 function removeRecent(i: number) {
   recent.value.splice(i, 1)
@@ -250,7 +250,6 @@ function onKeydown(e: KeyboardEvent) {
                   :key="i"
                   type="past"
                   :text="r.text"
-                  :image="r.image"
                   @clear="removeRecent(i)"
                 />
               </div>
@@ -312,6 +311,9 @@ function onKeydown(e: KeyboardEvent) {
   gap: var(--spacing-large);
   width: 994px;
   max-width: 100%;
+  /* Hauteur figée (Figma 700px) : la vue "recherche tapée" ne dépasse jamais
+     la hauteur de la vue "juste cliqué" — mêmes deux états, même hauteur. */
+  height: 700px;
   max-height: calc(100vh - var(--spacing-large) - var(--spacing-huge));
   padding: var(--spacing-medium);
   background: var(--surface-background);

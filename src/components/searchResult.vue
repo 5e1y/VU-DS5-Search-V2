@@ -7,7 +7,6 @@ withDefaults(
   defineProps<{
     text?: string
     type?: SearchResultType
-    image?: string
   }>(),
   {
     text: '',
@@ -30,10 +29,6 @@ const emit = defineEmits<{
     @click="emit('click')"
     @keydown.enter="emit('click')"
   >
-    <span v-if="type === 'past' && image" class="search-result__thumb">
-      <img :src="image" alt="" />
-    </span>
-
     <span class="search-result__text" :class="type === 'present' ? 'normal-300' : 'medium-200'">
       <slot>{{ text }}</slot>
     </span>
@@ -62,7 +57,8 @@ const emit = defineEmits<{
 /* ── Variante "past" (anciennes recherches) ── */
 .search-result--past {
   gap: var(--spacing-extra-small);
-  padding: var(--spacing-extra-small);
+  padding: var(--spacing-extra-extra-small);
+  padding-left: var(--spacing-medium);
   border-radius: var(--radius-medium);
   background: var(--interactive-tertiary-background-default);
 }
@@ -78,19 +74,6 @@ const emit = defineEmits<{
 }
 .search-result--present:hover {
   background: var(--interactive-ghost-background-rollover);
-}
-
-.search-result__thumb {
-  flex-shrink: 0;
-  width: 64px;
-  height: 48px;
-  overflow: clip;
-  border-radius: var(--radius-small);
-}
-.search-result__thumb img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
 }
 
 .search-result__text {
